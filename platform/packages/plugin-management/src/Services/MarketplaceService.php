@@ -3,7 +3,7 @@
 namespace Botble\PluginManagement\Services;
 
 use Botble\Base\Exceptions\RequiresLicenseActivatedException;
-use Botble\Base\Supports\Core;
+// use Botble\Base\Supports\Core;
 use Botble\Base\Supports\Zipper;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;

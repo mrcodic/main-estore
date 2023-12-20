@@ -6,7 +6,7 @@ use Botble\Base\Facades\Assets;
 use Botble\Base\Facades\BaseHelper;
 use Botble\Base\Facades\PageTitle;
 use Botble\Base\Http\Responses\BaseHttpResponse;
-use Botble\PluginManagement\Services\MarketplaceService;
+// use Botble\PluginManagement\Services\MarketplaceService;
 use Botble\PluginManagement\Services\PluginService;
 use Exception;
 use Illuminate\Contracts\View\View;
@@ -134,44 +134,44 @@ class PluginManagementController extends Controller
         }
     }
 
-    public function checkRequirement(
-        Request $request,
-        BaseHttpResponse $response,
-        MarketplaceService $marketplaceService
-    ): BaseHttpResponse {
-        $name = strtolower($request->input('name'));
+    // public function checkRequirement(
+    //     Request $request,
+    //     BaseHttpResponse $response,
+    //     MarketplaceService $marketplaceService
+    // ): BaseHttpResponse {
+    //     $name = strtolower($request->input('name'));
 
-        $requiredPlugins = $this->pluginService->getDependencies($name);
+    //     $requiredPlugins = $this->pluginService->getDependencies($name);
 
-        if (! empty($requiredPlugins)) {
-            $content = $this->pluginService->getPluginInfo($name);
+    //     if (! empty($requiredPlugins)) {
+    //         $content = $this->pluginService->getPluginInfo($name);
 
-            $data = $marketplaceService->callApi('POST', '/products/check-update', [
-                'products' => collect($requiredPlugins)->mapWithKeys(fn ($item) => [$item => '0.0.0'])->toArray(),
-            ])->json('data');
+    //         $data = $marketplaceService->callApi('POST', '/products/check-update', [
+    //             'products' => collect($requiredPlugins)->mapWithKeys(fn ($item) => [$item => '0.0.0'])->toArray(),
+    //         ])->json('data');
 
-            $existingPluginsOnMarketplace = collect($data)->pluck('id')->all();
+    //         $existingPluginsOnMarketplace = collect($data)->pluck('id')->all();
 
-            if (empty($existingPluginsOnMarketplace)) {
-                return $response
-                    ->setError()
-                    ->setMessage(trans('packages/plugin-management::plugin.missing_required_plugins', [
-                        'plugins' => implode(',', $requiredPlugins),
-                    ]));
-            }
+    //         if (empty($existingPluginsOnMarketplace)) {
+    //             return $response
+    //                 ->setError()
+    //                 ->setMessage(trans('packages/plugin-management::plugin.missing_required_plugins', [
+    //                     'plugins' => implode(',', $requiredPlugins),
+    //                 ]));
+    //         }
 
-            return $response
-                ->setError()
-                ->setData([
-                    'pluginName' => $content['id'],
-                    'existing_plugins_on_marketplace' => $existingPluginsOnMarketplace,
-                ])
-                ->setMessage(__('packages/plugin-management::plugin.requirement_not_met', [
-                    'plugin' => "<strong>{$content['name']}</strong>",
-                    'required_plugins' => '<strong>' . implode(', ', $requiredPlugins) . '</strong>',
-                ]));
-        }
+    //         return $response
+    //             ->setError()
+    //             ->setData([
+    //                 'pluginName' => $content['id'],
+    //                 'existing_plugins_on_marketplace' => $existingPluginsOnMarketplace,
+    //             ])
+    //             ->setMessage(__('packages/plugin-management::plugin.requirement_not_met', [
+    //                 'plugin' => "<strong>{$content['name']}</strong>",
+    //                 'required_plugins' => '<strong>' . implode(', ', $requiredPlugins) . '</strong>',
+    //             ]));
+    //     }
 
-        return $response;
-    }
+    //     return $response;
+    // }
 }

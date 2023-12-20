@@ -41,24 +41,24 @@ Route::group(['namespace' => 'Botble\Base\Http\Controllers', 'middleware' => ['w
             'permission' => false,
         ]);
 
-        Route::get('system/check-update', [
-            'as' => 'system.check-update',
-            'uses' => 'SystemController@getCheckUpdate',
-            'permission' => 'superuser',
-        ]);
+        // Route::get('system/check-update', [
+        //     'as' => 'system.check-update',
+        //     'uses' => 'SystemController@getCheckUpdate',
+        //     'permission' => 'superuser',
+        // ]);
 
-        Route::get('system/updater', [
-            'as' => 'system.updater',
-            'uses' => 'SystemController@getUpdater',
-            'permission' => 'superuser',
-        ]);
+        // Route::get('system/updater', [
+        //     'as' => 'system.updater',
+        //     'uses' => 'SystemController@getUpdater',
+        //     'permission' => 'superuser',
+        // ]);
 
-        Route::post('system/updater', [
-            'as' => 'system.updater.post',
-            'uses' => 'SystemController@postUpdater',
-            'permission' => 'superuser',
-            'middleware' => 'preventDemo',
-        ]);
+        // Route::post('system/updater', [
+        //     'as' => 'system.updater.post',
+        //     'uses' => 'SystemController@postUpdater',
+        //     'permission' => 'superuser',
+        //     'middleware' => 'preventDemo',
+        // ]);
 
         Route::get('system/cleanup', [
             'as' => 'system.cleanup',

@@ -25,11 +25,11 @@ Route::group(['namespace' => 'Botble\PluginManagement\Http\Controllers', 'middle
                 'permission' => 'plugins.index',
             ]);
 
-            Route::post('check-requirement', [
-                'as' => 'plugins.check-requirement',
-                'uses' => 'PluginManagementController@checkRequirement',
-                'permission' => 'plugins.index',
-            ]);
+            // Route::post('check-requirement', [
+            //     'as' => 'plugins.check-requirement',
+            //     'uses' => 'PluginManagementController@checkRequirement',
+            //     'permission' => 'plugins.index',
+            // ]);
         });
 
         Route::group(['prefix' => 'plugins/marketplace', 'permission' => 'plugins.marketplace'], function () {

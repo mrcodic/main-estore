@@ -4,7 +4,7 @@ namespace Botble\Base\Commands;
 
 use Botble\Base\Commands\Traits\ValidateCommandInput;
 use Botble\Base\Exceptions\LicenseIsAlreadyActivatedException;
-use Botble\Base\Supports\Core;
+// use Botble\Base\Supports\Core;
 use Botble\Setting\Facades\Setting;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Validator;

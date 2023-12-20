@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div class="max-width-1200">
         <div class="flexbox-annotated-section">
             <div class="flexbox-annotated-section-annotation">
@@ -286,4 +286,4 @@ export default {
         },
     },
 }
-</script>
+</script> -->

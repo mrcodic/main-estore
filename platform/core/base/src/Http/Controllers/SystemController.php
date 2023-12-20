@@ -11,7 +11,7 @@ use Botble\Base\Facades\PageTitle;
 use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\Base\Services\CleanDatabaseService;
 use Botble\Base\Services\ClearCacheService;
-use Botble\Base\Supports\Core;
+// use Botble\Base\Supports\Core;
 use Botble\Base\Supports\Language;
 use Botble\Base\Supports\MembershipAuthorization;
 use Botble\Base\Supports\SystemManagement;
@@ -142,79 +142,79 @@ class SystemController extends Controller
         return $response->setData($data);
     }
 
-    public function getCheckUpdate(BaseHttpResponse $response, Core $core)
-    {
-        if (! config('core.base.general.enable_system_updater')) {
-            return $response;
-        }
+    // public function getCheckUpdate(BaseHttpResponse $response, Core $core)
+    // {
+    //     if (! config('core.base.general.enable_system_updater')) {
+    //         return $response;
+    //     }
 
-        $response->setData(['has_new_version' => false]);
+    //     $response->setData(['has_new_version' => false]);
 
-        $updateData = $core->checkUpdate();
+    //     $updateData = $core->checkUpdate();
 
-        if ($updateData) {
-            $response
-                ->setData(['has_new_version' => true])
-                ->setMessage(
-                    sprintf('A new version (%s / released on %s) is available to update', $updateData->version, BaseHelper::formatDate($updateData->releasedDate))
-                );
-        }
+    //     if ($updateData) {
+    //         $response
+    //             ->setData(['has_new_version' => true])
+    //             ->setMessage(
+    //                 sprintf('A new version (%s / released on %s) is available to update', $updateData->version, BaseHelper::formatDate($updateData->releasedDate))
+    //             );
+    //     }
 
-        return $response;
-    }
+    //     return $response;
+    // }
 
-    public function getUpdater(Core $core)
-    {
-        if (! config('core.base.general.enable_system_updater')) {
-            abort(404);
-        }
+    // public function getUpdater(Core $core)
+    // {
+    //     if (! config('core.base.general.enable_system_updater')) {
+    //         abort(404);
+    //     }
 
-        header('Cache-Control: no-cache');
+    //     header('Cache-Control: no-cache');
 
-        Assets::addScriptsDirectly('vendor/core/core/base/js/system-update.js');
-        Assets::usingVueJS();
+    //     Assets::addScriptsDirectly('vendor/core/core/base/js/system-update.js');
+    //     Assets::usingVueJS();
 
-        BaseHelper::maximumExecutionTimeAndMemoryLimit();
+    //     BaseHelper::maximumExecutionTimeAndMemoryLimit();
 
-        PageTitle::setTitle(trans('core/base::system.updater'));
+    //     PageTitle::setTitle(trans('core/base::system.updater'));
 
-        $isOutdated = false;
+    //     $isOutdated = false;
 
-        $latestUpdate = $core->getLatestVersion();
+    //     $latestUpdate = $core->getLatestVersion();
 
-        if ($latestUpdate) {
-            $isOutdated = version_compare($core->version(), $latestUpdate->version, '<');
-        }
+    //     if ($latestUpdate) {
+    //         $isOutdated = version_compare($core->version(), $latestUpdate->version, '<');
+    //     }
 
-        $updateData = ['message' => null, 'status' => false];
+    //     $updateData = ['message' => null, 'status' => false];
 
-        return view('core/base::system.updater', compact('latestUpdate', 'isOutdated', 'updateData'));
-    }
+    //     return view('core/base::system.updater', compact('latestUpdate', 'isOutdated', 'updateData'));
+    // }
 
-    public function postUpdater(Core $core, Request $request, BaseHttpResponse $response): BaseHttpResponse
-    {
-        $request->validate([
-            'step' => ['required_without:step_name', 'integer', 'min:1', 'max:4'],
-            'step_name' => ['required_without:step', 'string'],
-            'update_id' => ['required', 'string'],
-            'version' => ['required', 'string'],
-        ]);
+    // public function postUpdater(Core $core, Request $request, BaseHttpResponse $response): BaseHttpResponse
+    // {
+    //     $request->validate([
+    //         'step' => ['required_without:step_name', 'integer', 'min:1', 'max:4'],
+    //         'step_name' => ['required_without:step', 'string'],
+    //         'update_id' => ['required', 'string'],
+    //         'version' => ['required', 'string'],
+    //     ]);
 
-        BaseHelper::maximumExecutionTimeAndMemoryLimit();
+    //     BaseHelper::maximumExecutionTimeAndMemoryLimit();
 
-        if ($request->filled('step_name')) {
-            return $this->postUpdaterByStepName($core, $request, $response);
-        }
+    //     if ($request->filled('step_name')) {
+    //         return $this->postUpdaterByStepName($core, $request, $response);
+    //     }
 
-        if ($request->filled('step')) {
-            return $this->postUpdaterByStep($core, $request, $response);
-        }
+    //     if ($request->filled('step')) {
+    //         return $this->postUpdaterByStep($core, $request, $response);
+    //     }
 
-        return $response
-            ->setMessage(__('Something went wrong.'))
-            ->setError()
-            ->setCode(422);
-    }
+    //     return $response
+    //         ->setMessage(__('Something went wrong.'))
+    //         ->setError()
+    //         ->setCode(422);
+    // }
 
     public function getCleanup(
         Request $request,
@@ -257,102 +257,102 @@ class SystemController extends Controller
     /**
      * @deprecated Will be removed in the future, use postUpdaterByStepName instead.
      */
-    protected function postUpdaterByStep(Core $core, Request $request, BaseHttpResponse $response): BaseHttpResponse
-    {
-        $updateId = $request->input('update_id');
-        $version = $request->input('version');
+    // protected function postUpdaterByStep(Core $core, Request $request, BaseHttpResponse $response): BaseHttpResponse
+    // {
+    //     $updateId = $request->input('update_id');
+    //     $version = $request->input('version');
 
-        try {
-            switch ($request->integer('step', 1)) {
-                case 1:
-                    event(new UpdatingEvent());
+    //     try {
+    //         switch ($request->integer('step', 1)) {
+    //             case 1:
+    //                 event(new UpdatingEvent());
 
-                    if ($core->downloadUpdate($updateId, $version)) {
-                        return $response->setMessage(__('The update files have been downloaded successfully.'));
-                    }
+    //                 if ($core->downloadUpdate($updateId, $version)) {
+    //                     return $response->setMessage(__('The update files have been downloaded successfully.'));
+    //                 }
 
-                    return $response
-                        ->setMessage(__('Could not download updated file. Please check your license or your internet network.'))
-                        ->setError()
-                        ->setCode(422);
+    //                 return $response
+    //                     ->setMessage(__('Could not download updated file. Please check your license or your internet network.'))
+    //                     ->setError()
+    //                     ->setCode(422);
 
-                case 2:
-                    if ($core->updateFilesAndDatabase($version)) {
-                        return $response->setMessage(__('Your files and database have been updated successfully.'));
-                    }
+    //             case 2:
+    //                 if ($core->updateFilesAndDatabase($version)) {
+    //                     return $response->setMessage(__('Your files and database have been updated successfully.'));
+    //                 }
 
-                    return $response
-                        ->setMessage(__('Could not update files & database.'))
-                        ->setError()
-                        ->setCode(422);
-                case 3:
-                    $core->publishUpdateAssets();
+    //                 return $response
+    //                     ->setMessage(__('Could not update files & database.'))
+    //                     ->setError()
+    //                     ->setCode(422);
+    //             case 3:
+    //                 $core->publishUpdateAssets();
 
-                    return $response->setMessage(__('Your asset files have been published successfully.'));
-                case 4:
-                    $core->cleanCaches();
+    //                 return $response->setMessage(__('Your asset files have been published successfully.'));
+    //             case 4:
+    //                 $core->cleanCaches();
 
-                    event(new UpdatedEvent());
+    //                 event(new UpdatedEvent());
 
-                    return $response->setMessage(__('Your system has been cleaned up successfully.'));
-                default:
-                    throw new Exception(__('Invalid step.'));
-            }
-        } catch (Throwable $exception) {
-            $core->logError($exception);
+    //                 return $response->setMessage(__('Your system has been cleaned up successfully.'));
+    //             default:
+    //                 throw new Exception(__('Invalid step.'));
+    //         }
+    //     } catch (Throwable $exception) {
+    //         $core->logError($exception);
 
-            return $response
-                ->setMessage($exception->getMessage())
-                ->setError()
-                ->setCode(422);
-        }
-    }
+    //         return $response
+    //             ->setMessage($exception->getMessage())
+    //             ->setError()
+    //             ->setCode(422);
+    //     }
+    // }
 
-    protected function postUpdaterByStepName(Core $core, Request $request, BaseHttpResponse $response): BaseHttpResponse
-    {
-        $updateId = $request->input('update_id');
-        $version = $request->input('version');
-        $stepName = $request->input('step_name');
-        $step = SystemUpdaterStepEnum::tryFrom($stepName);
+    // protected function postUpdaterByStepName(Core $core, Request $request, BaseHttpResponse $response): BaseHttpResponse
+    // {
+    //     $updateId = $request->input('update_id');
+    //     $version = $request->input('version');
+    //     $stepName = $request->input('step_name');
+    //     $step = SystemUpdaterStepEnum::tryFrom($stepName);
 
-        if (! $step) {
-            return $response
-                ->setMessage(__('Invalid step.'))
-                ->setError()
-                ->setCode(422);
-        }
+    //     if (! $step) {
+    //         return $response
+    //             ->setMessage(__('Invalid step.'))
+    //             ->setError()
+    //             ->setCode(422);
+    //     }
 
-        try {
-            $success = match ($step->getValue()) {
-                SystemUpdaterStepEnum::DOWNLOAD => $core->downloadUpdate($updateId, $version),
-                SystemUpdaterStepEnum::UPDATE_FILES => $core->updateFiles($version),
-                SystemUpdaterStepEnum::UPDATE_DATABASE => $core->updateDatabase(),
-                SystemUpdaterStepEnum::PUBLISH_CORE_ASSETS => $core->publishCoreAssets(),
-                SystemUpdaterStepEnum::PUBLISH_PACKAGES_ASSETS => $core->publishPackagesAssets(),
-                SystemUpdaterStepEnum::CLEAN_UP => $core->cleanUp(),
-                default => throw new Exception(__('Invalid step.')),
-            };
+    //     try {
+    //         $success = match ($step->getValue()) {
+    //             SystemUpdaterStepEnum::DOWNLOAD => $core->downloadUpdate($updateId, $version),
+    //             SystemUpdaterStepEnum::UPDATE_FILES => $core->updateFiles($version),
+    //             SystemUpdaterStepEnum::UPDATE_DATABASE => $core->updateDatabase(),
+    //             SystemUpdaterStepEnum::PUBLISH_CORE_ASSETS => $core->publishCoreAssets(),
+    //             SystemUpdaterStepEnum::PUBLISH_PACKAGES_ASSETS => $core->publishPackagesAssets(),
+    //             SystemUpdaterStepEnum::CLEAN_UP => $core->cleanUp(),
+    //             default => throw new Exception(__('Invalid step.')),
+    //         };
 
-            if (! $success) {
-                return $response
-                    ->setError()
-                    ->setMessage($step->failedMessage());
-            }
+    //         if (! $success) {
+    //             return $response
+    //                 ->setError()
+    //                 ->setMessage($step->failedMessage());
+    //         }
 
-            return $response
-                ->setData([
-                    'next_step' => $step->nextStep(),
-                    'next_message' => $step->nextStepMessage(),
-                    'current_percent' => $step->currentPercent(),
-                ])
-                ->setMessage($step->successMessage());
-        } catch (Throwable $exception) {
-            $core->logError($exception);
+    //         return $response
+    //             ->setData([
+    //                 'next_step' => $step->nextStep(),
+    //                 'next_message' => $step->nextStepMessage(),
+    //                 'current_percent' => $step->currentPercent(),
+    //             ])
+    //             ->setMessage($step->successMessage());
+    //     } catch (Throwable $exception) {
+    //         $core->logError($exception);
 
-            return $response
-                ->setMessage($exception->getMessage())
-                ->setError()
-                ->setCode(422);
-        }
-    }
+    //         return $response
+    //             ->setMessage($exception->getMessage())
+    //             ->setError()
+    //             ->setCode(422);
+    //     }
+    // }
 }

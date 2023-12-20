@@ -4,7 +4,7 @@ use Botble\Base\Facades\BaseHelper;
 use Botble\Base\Facades\DashboardMenu;
 use Botble\Base\Facades\Html;
 use Botble\Base\Facades\PageTitle;
-use Botble\Base\Supports\Core;
+// use Botble\Base\Supports\Core;
 use Botble\Base\Supports\DashboardMenu as DashboardMenuSupport;
 use Botble\Base\Supports\Editor;
 use Botble\Base\Supports\PageTitle as PageTitleSupport;
@@ -65,11 +65,11 @@ if (! function_exists('dashboard_menu')) {
 if (! function_exists('get_cms_version')) {
     function get_cms_version(): string
     {
-        try {
-            return Core::make()->version();
-        } catch (Throwable) {
+        // try {
+        //     return Core::make()->version();
+        // } catch (Throwable) {
             return '...';
-        }
+        // }
     }
 }
 
@@ -83,11 +83,11 @@ if (! function_exists('get_core_version')) {
 if (! function_exists('get_minimum_php_version')) {
     function get_minimum_php_version(): string
     {
-        try {
-            return Core::make()->minimumPhpVersion();
-        } catch (Throwable) {
+        // try {
+        //     return Core::make()->minimumPhpVersion();
+        // } catch (Throwable) {
             return phpversion();
-        }
+        // }
     }
 }
 

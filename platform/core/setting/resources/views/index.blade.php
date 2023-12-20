@@ -16,13 +16,13 @@
 
 @section('content')
     <div id="main-settings">
-        <license-component
+        {{-- <license-component
             verify-url="{{ route('settings.license.verify') }}"
             activate-license-url="{{ route('settings.license.activate') }}"
             deactivate-license-url="{{ route('settings.license.deactivate') }}"
             reset-license-url="{{ route('settings.license.reset') }}"
             manage-license="{{ auth()->guard()->user()->hasPermission('core.manage.license') ? 'yes': 'no' }}"
-        ></license-component>
+        ></license-component> --}}
     </div>
 
     <div class="max-width-1200">

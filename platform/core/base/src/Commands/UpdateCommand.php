@@ -5,7 +5,7 @@ namespace Botble\Base\Commands;
 use Botble\Base\Events\UpdatedEvent;
 use Botble\Base\Events\UpdatingEvent;
 use Botble\Base\Facades\BaseHelper;
-use Botble\Base\Supports\Core;
+// use Botble\Base\Supports\Core;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Support\Composer;
