@@ -144,7 +144,6 @@ class DashboardMenu
         $routePrefix = '/' . $prefix;
 
         $links = $this->links;
-        // dd($links);
 
         $protocol = request()->getScheme() . '://' . BaseHelper::getAdminPrefix();
 
