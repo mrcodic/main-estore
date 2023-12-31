@@ -27,12 +27,16 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Spatie\Translatable\HasTranslations;
 
 /**
  * @method notOutOfStock()
  */
 class Product extends BaseModel
 {
+    // use HasTranslations;
+
+    // public $translatable = ['name', 'description', 'content'];
     protected $table = 'ec_products';
 
     protected $fillable = [
