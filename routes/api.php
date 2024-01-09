@@ -17,8 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/products/index',       [ProductsController::class, 'index'] );
-Route::get('/product/show/{id}',    [ProductsController::class, 'show'] );
-Route::get('/categories',           [CategoryController::class, 'index'] );
+Route::get('/product/show/{id}',    [ProductsController::class, 'show']  );
+Route::post('/search',              [ProductsController::class, 'search']);
+Route::get('/categories/index',     [CategoryController::class, 'index'] );
 
 // Route::post('/auth/login', [AuthController::class, 'loginUser']);
 // Route::post('/auth/parent/login', [ParentAuthController::class, 'loginUser']);

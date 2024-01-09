@@ -8,7 +8,7 @@ use Botble\Base\Enums\Http;
 use Botble\Base\Helpers\MessageResponse;
 use Botble\Ecommerce\Models\ProductCategory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 
 class CategoryController extends Controller
@@ -18,14 +18,12 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-
         $limit = $request->integer('limit', 10) ?: 10;
 
 
-        $category = ProductCategory::paginate($limit);
+        $categories = ProductCategory::paginate($limit);
 
-
-        if (! $category instanceof Collection) {
+        if (! $categories instanceof LengthAwarePaginator) {
             return new MessageResponse(
                 message: 'Not found categories',
                 code: Http::NOT_FOUND
@@ -36,8 +34,8 @@ class CategoryController extends Controller
             message: 'Get Category',
             code: Http::OK,
             body: [
-                // 'category'   => CategoriesResource::collection($category),
-                'pagination' => apiGetPagination($category)
+                'category'   => CategoriesResource::collection($categories),
+                'pagination' => apiGetPagination($categories)
             ]
         );
     }

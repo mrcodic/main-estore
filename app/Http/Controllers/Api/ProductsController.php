@@ -8,9 +8,10 @@ use App\Http\Resources\Api\Product\ProductsResource;
 use Botble\Base\Enums\Http;
 use Botble\Base\Helpers\MessageResponse;
 use Botble\Ecommerce\Models\Product;
+use Botble\Ecommerce\Models\ProductCategory;
+use Botble\Ecommerce\Models\ProductTag;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductsController extends Controller
 {
@@ -31,7 +32,7 @@ class ProductsController extends Controller
         $products = $query->paginate($limit);
 
 
-        if (! $products instanceof Collection) {
+        if (! $products instanceof LengthAwarePaginator) {
             return new MessageResponse(
                 message: 'Not found products',
                 code: Http::NOT_FOUND
@@ -78,5 +79,47 @@ class ProductsController extends Controller
         );
     }
 
+
+
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function search(Request $request)
+    {
+
+        $limit = $request->integer('limit', 10) ?: 10;
+
+
+        $query = Product::where('stock_status', 'in_stock')->where('name', 'LIKE', '%' . $request->name . '%');
+
+        $categories = 0;
+        $tags = 0;
+
+        if($request->category) $categories = ProductCategory::where('name', 'LIKE', '%' . $request->name . '%')->pluck('id')->toArray();
+        if($request->tag) $tags = ProductTag::where('name', 'LIKE', '%' . $request->name . '%')->pluck('id')->toArray();
+
+
+        $categories ? $query->whereHas('categories', fn($q) => $q->whereIn('id', $categories )): null;
+        $tags ? $query->orWhereHas('tags', fn($q) => $q->whereIn('id', $tags )): null;
+
+        $products = $query->paginate($limit);
+
+        if (! $products instanceof LengthAwarePaginator) {
+            return new MessageResponse(
+                message: 'Not found products',
+                code: Http::NOT_FOUND
+            );
+        }
+
+        return new MessageResponse(
+            message: 'Get Products',
+            code: Http::OK,
+            body: [
+                'products'   => ProductsResource::collection($products),
+                'pagination' => apiGetPagination($products)
+            ]
+        );
+    }
 
 }
