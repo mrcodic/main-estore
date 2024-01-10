@@ -228,7 +228,7 @@ class Ecommerce {
             }
 
             first.slick({
-                rtl: NinicoApp.isRtl(),
+                rtl: PixbyteApp.isRtl(),
                 slidesToShow: 1,
                 slidesToScroll: 1,
                 infinite: false,
@@ -244,7 +244,7 @@ class Ecommerce {
             }
 
             thumbnails.slick({
-                rtl: NinicoApp.isRtl(),
+                rtl: PixbyteApp.isRtl(),
                 slidesToShow: 7,
                 slidesToScroll: 1,
                 infinite: false,
@@ -364,14 +364,14 @@ class Ecommerce {
             },
             success: ({ error, message }) => {
                 if (error) {
-                    NinicoApp.showError(message)
+                    PixbyteApp.showError(message)
                     return
                 }
 
                 this.loadAjaxCart()
                 this.$body.find('.tp-cart-toggle').trigger('click')
             },
-            error: (error) => NinicoApp.handleError(error),
+            error: (error) => PixbyteApp.handleError(error),
             complete: () => {
                 $currentTarget.removeClass('loading')
             },
@@ -396,7 +396,7 @@ class Ecommerce {
             },
             success: ({ error, message, data }) => {
                 if (error) {
-                    NinicoApp.showError(message)
+                    PixbyteApp.showError(message)
                     if (data?.next_url !== undefined) {
                         window.location.href = data.next_url
                     }
@@ -415,7 +415,7 @@ class Ecommerce {
                 this.loadAjaxCart()
             },
             error: (error) => {
-                NinicoApp.handleError(error)
+                PixbyteApp.handleError(error)
             },
             complete: () => {
                 $button.removeClass('button-loading')
@@ -438,14 +438,14 @@ class Ecommerce {
                 const { error, data, message } = response
 
                 if (error) {
-                    NinicoApp.showError(message)
+                    PixbyteApp.showError(message)
                 } else {
-                    NinicoApp.showSuccess(message)
+                    PixbyteApp.showSuccess(message)
                     $('.header-cart .tp-product-compare-count').text(data.count)
                 }
             },
             error: (error) => {
-                NinicoApp.handleError(error)
+                PixbyteApp.handleError(error)
             },
             complete: () => {
                 $currentTarget.removeClass('loading')
@@ -468,15 +468,15 @@ class Ecommerce {
                 const { error, data, message } = response
 
                 if (error) {
-                    NinicoApp.showError(message)
+                    PixbyteApp.showError(message)
                 } else {
-                    NinicoApp.showSuccess(message)
+                    PixbyteApp.showSuccess(message)
                     $('.header-cart .tp-product-compare-count').text(data.count)
                     $('.compare-area').load(window.location.href + ' .compare-area > *')
                 }
             },
             error: (error) => {
-                NinicoApp.handleError(error)
+                PixbyteApp.handleError(error)
             },
         })
     }
@@ -494,7 +494,7 @@ class Ecommerce {
             },
             success: (response) => {
                 if (response.error) {
-                    NinicoApp.showError(response.message)
+                    PixbyteApp.showError(response.message)
                     return
                 }
 
@@ -507,7 +507,7 @@ class Ecommerce {
                 this.loadAjaxCart()
             },
             error: (res) => {
-                NinicoApp.showError(res.message)
+                PixbyteApp.showError(res.message)
             },
             complete: () => {
                 $currentTarget.removeClass('loading')
@@ -530,9 +530,9 @@ class Ecommerce {
                 const { error, message, data } = response
 
                 if (error) {
-                    NinicoApp.showError(message)
+                    PixbyteApp.showError(message)
                 } else {
-                    NinicoApp.showSuccess(message)
+                    PixbyteApp.showSuccess(message)
                     $('.header-cart .tp-product-wishlist-count').text(data.count)
                     if (data.added) {
                         $currentTarget.find('i').removeClass('fal').addClass('fas')
@@ -542,7 +542,7 @@ class Ecommerce {
                 }
             },
             error: (error) => {
-                NinicoApp.handleError(error)
+                PixbyteApp.handleError(error)
             },
             complete: () => {
                 $currentTarget.removeClass('loading')
@@ -563,15 +563,15 @@ class Ecommerce {
             },
             success: (response) => {
                 if (response.error) {
-                    NinicoApp.showError(response.message)
+                    PixbyteApp.showError(response.message)
                 } else {
-                    NinicoApp.showSuccess(response.message)
+                    PixbyteApp.showSuccess(response.message)
                     $('.header-cart .tp-product-wishlist-count').text(response.data.count)
                     $('.wishlist-area').load(window.location.href + ' .wishlist-area > *')
                 }
             },
             error: (error) => {
-                NinicoApp.handleError(error)
+                PixbyteApp.handleError(error)
             },
         })
     }
@@ -612,14 +612,14 @@ class Ecommerce {
                 if (!response.error) {
                     $('.cart-area').load(window.location.href + '?applied_coupon=1 .cart-area > *', function() {
                         $currentTarget.prop('disabled', false).removeClass('loading')
-                        NinicoApp.showSuccess(response.message)
+                        PixbyteApp.showSuccess(response.message)
                     })
                 } else {
-                    NinicoApp.showError(response.message)
+                    PixbyteApp.showError(response.message)
                 }
             },
             error: (error) => {
-                NinicoApp.handleError(error)
+                PixbyteApp.handleError(error)
             },
             complete: (response) => {
                 if (!(response.status === 200 && !response?.responseJSON?.error)) {
@@ -646,11 +646,11 @@ class Ecommerce {
                         $currentTarget.text(buttonText)
                     })
                 } else {
-                    NinicoApp.showError(response.message)
+                    PixbyteApp.showError(response.message)
                 }
             },
             error: (error) => {
-                NinicoApp.handleError(error)
+                PixbyteApp.handleError(error)
             },
             complete: (response) => {
                 if (!(response.status === 200 && !response?.responseJSON?.error)) {
@@ -720,17 +720,17 @@ class Ecommerce {
                 const { error, message } = response
 
                 if (error) {
-                    NinicoApp.showError(message)
+                    PixbyteApp.showError(message)
                 } else {
                     $('.cart-area').load(window.siteConfig.cartUrl + ' .cart-area > *')
 
                     this.loadAjaxCart()
 
-                    NinicoApp.showSuccess(message)
+                    PixbyteApp.showSuccess(message)
                 }
             },
             error: (error) => {
-                NinicoApp.handleError(error)
+                PixbyteApp.handleError(error)
             },
         })
     }
@@ -805,11 +805,11 @@ class Ecommerce {
                 if (!error) {
                     window.history.pushState({}, '', `${window.location.pathname}?${$form.serialize()}`)
                 } else {
-                    NinicoApp.showError(message || 'Opp!')
+                    PixbyteApp.showError(message || 'Opp!')
                 }
             },
             error: (error) => {
-                NinicoApp.handleError(error)
+                PixbyteApp.handleError(error)
             },
             complete: () => {
                 this.$body.find('.loading-spinner').addClass('d-none')
@@ -997,7 +997,7 @@ class Ecommerce {
                         .data('max-size-message')
                         .replace('__attribute__', input.files[i].name)
                         .replace('__max__', maxSize)
-                    NinicoApp.showError(message)
+                    PixbyteApp.showError(message)
                 } else {
                     imagesReviewBuffer.push(input.files[i])
                 }
@@ -1045,16 +1045,16 @@ class Ecommerce {
                         $form.find('textarea').val('')
                         imagesReviewBuffer.splice(0, imagesReviewBuffer.length)
                         loadPreviewImage($form.find('input[type=file]')[0])
-                        NinicoApp.showSuccess(message)
+                        PixbyteApp.showSuccess(message)
                         fetchData($reviewListWrapper.data('url'))
 
                         return
                     }
 
-                    NinicoApp.showError(message)
+                    PixbyteApp.showError(message)
                 },
                 error: function(error) {
-                    NinicoApp.handleError(error)
+                    PixbyteApp.handleError(error)
                 },
                 complete: () => {
                     $button.prop('disabled', false).removeClass('button-loading')
@@ -1090,11 +1090,11 @@ class Ecommerce {
                     dots: true,
                     arrows: true,
                     adaptiveHeight: false,
-                    rtl: NinicoApp.isRtl(),
+                    rtl: PixbyteApp.isRtl(),
                 })
             },
             error: function(error) {
-                NinicoApp.handleError(error)
+                PixbyteApp.handleError(error)
             },
             complete: () => {
                 $this.removeClass('loading')
@@ -1124,7 +1124,7 @@ class Ecommerce {
                 })
             },
             error: function(error) {
-                NinicoApp.handleError(error)
+                PixbyteApp.handleError(error)
             },
             complete: () => {
                 $this.removeClass('loading')

@@ -1,4 +1,4 @@
-class NinicoApp {
+class PixbyteApp {
     static handleError(data) {
         if (typeof data.errors !== 'undefined' && data.errors.length) {
             this.handleValidationError(data.errors)
@@ -57,7 +57,7 @@ $(document).ready(() => {
         positionClass: 'toast-bottom-right',
     }
 
-    window.NinicoApp = NinicoApp
+    window.PixbyteApp = PixbyteApp
 
     let $categoryLabel = $('.product-category-label .text')
 

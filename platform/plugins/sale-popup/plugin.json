@@ -3,8 +3,8 @@
     "name": "Sale Popup",
     "namespace": "Botble\\SalePopup\\",
     "provider": "Botble\\SalePopup\\Providers\\SalePopupServiceProvider",
-    "author": "Botble Technologies",
-    "url": "https://botble.com",
+    "author": "PixbyteTechnologies",
+    "url": "http://pixbyte.co/",
     "version": "1.0.0",
     "description": "Fake Sales Notifications"
 }

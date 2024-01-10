@@ -25,7 +25,7 @@ class PageSeeder extends BaseSeeder
                         '[products style="wooden" title="Popular <span>Products</span>" limit="10"][/products]'
                     ) .
                     '[deal-product flash_sale_id="1" style="wooden"][/deal-product]' .
-                    '[gallery title="ninico-shop" limit="6" subtitle="Follow On"][/gallery]',
+                    '[gallery title="pixbyte-shop" limit="6" subtitle="Follow On"][/gallery]',
                 'template' => 'full-width',
                 'metadata' => [
                     'header_style' => 'collapsed',
@@ -150,7 +150,7 @@ class PageSeeder extends BaseSeeder
             [
                 'name' => 'Contact',
                 'content' =>
-                    '[contact-box title="Get In Touch" address="24/26 Strait Bargate, Boston, PE21, United Kingdom" phone=" +098 (905) 786 897 8" email="ninico@example.com" hours="10 am - 10 pm EST, 7 days a week" show_contact_form="1" button_label_1="Get Support On Call" button_url_1="#" button_icon_1="fa fa-headphones-alt" button_label_2="Get Direction" button_url_2="#" button_icon_2="fa fa-map-marker-alt"][/contact-box]' .
+                    '[contact-box title="Get In Touch" address="24/26 Strait Bargate, Boston, PE21, United Kingdom" phone=" +098 (905) 786 897 8" email="pixbyte@example.com" hours="10 am - 10 pm EST, 7 days a week" show_contact_form="1" button_label_1="Get Support On Call" button_url_1="#" button_icon_1="fa fa-headphones-alt" button_label_2="Get Direction" button_url_2="#" button_icon_2="fa fa-map-marker-alt"][/contact-box]' .
                     '[google-map]24/26 Strait Bargate, Boston, PE21, United Kingdom[/google-map]',
                 'template' => 'default',
                 'metadata' => [
@@ -180,7 +180,7 @@ class PageSeeder extends BaseSeeder
             [
                 'name' => 'Store Locator',
                 'content' =>
-                    '[shop-location quantity="4" name_1="Baldwin Hills Crenshaw Plaza" address_1="24/26 Strait Bargate, Boston, PE21, United Kingdom" phone_1="+098 (905) 786 897 8" hours_1="10 am - 10 pm EST, 7 days a week" image_1="shop/location-1.png" name_2="Ninico Hills Crenshaw Plaza" address_2=" 36/26 Strait Bargate, Boston, PE21, United Kingdom" phone_2="+098 112 786 897 8" hours_2="9 am - 10 pm EST, 5 days a week" image_2="shop/location-2.png" name_3="Vegas BGM Crenshaw Plaza" address_3="40/26 Strait Bargate, Vegas, PE21, United Kingdom" phone_3=" +098 (905) 786 897 8" hours_3="10 am - 10 pm EST, 7 days a week" image_3="shop/location-3.png" name_4="Bargate Cine Crenshaw Plaza" address_4="38/26 Strait Bargate, Point, PE21, United Kingdom" phone_4="6 - 146 - 389 - 5748" hours_4="10 am - 10 pm EST, 7 days a week" image_4="shop/location-4.png"][/shop-location]' .
+                    '[shop-location quantity="4" name_1="Baldwin Hills Crenshaw Plaza" address_1="24/26 Strait Bargate, Boston, PE21, United Kingdom" phone_1="+098 (905) 786 897 8" hours_1="10 am - 10 pm EST, 7 days a week" image_1="shop/location-1.png" name_2="pixbyte Hills Crenshaw Plaza" address_2=" 36/26 Strait Bargate, Boston, PE21, United Kingdom" phone_2="+098 112 786 897 8" hours_2="9 am - 10 pm EST, 5 days a week" image_2="shop/location-2.png" name_3="Vegas BGM Crenshaw Plaza" address_3="40/26 Strait Bargate, Vegas, PE21, United Kingdom" phone_3=" +098 (905) 786 897 8" hours_3="10 am - 10 pm EST, 7 days a week" image_3="shop/location-3.png" name_4="Bargate Cine Crenshaw Plaza" address_4="38/26 Strait Bargate, Point, PE21, United Kingdom" phone_4="6 - 146 - 389 - 5748" hours_4="10 am - 10 pm EST, 7 days a week" image_4="shop/location-4.png"][/shop-location]' .
                     '[google-map]New York, USA[/google-map]',
                 'template' => 'default',
                 'metadata' => [
