@@ -1,7 +1,7 @@
 {
     "id": "pixbyte/store",
     "name": "Pixbyte",
-    "namespace": "Theme\\Pixbyte\\",
+    "namespace": "Theme\\Ninico\\",
     "description": "Pixbyte - Store",
     "author": "PixbyteTechnologies",
     "url": "http://pixbyte.co/",
