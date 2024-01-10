@@ -44,6 +44,7 @@ class AnalyticsServiceProvider extends ServiceProvider
 
             $viewId = setting('analytics_view_id');
 
+            
             if (empty($viewId)) {
                 throw InvalidConfiguration::propertyIdNotSpecified();
             }

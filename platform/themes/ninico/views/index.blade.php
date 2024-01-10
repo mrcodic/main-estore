@@ -16,7 +16,7 @@
                 <div>[product-categories style="wooden" title="Top Categories" limit="6"][/product-categories]</div>
                 <div>[products style="wooden" title="Popular Products" limit="10"][/products]</div>
                 <div>[deal-product flash_sale_id="1"][/deal-product]</div>
-                <div>[gallery title="ninico-shop" limit="6" subtitle="Follow On" icon="fab fa-instagram"][/gallery]</div>
+                <div>[gallery title="Pixbyte-shop" limit="6" subtitle="Follow On" icon="fab fa-instagram"][/gallery]</div>
             </div>
             <br>
             <div>- Template: <strong>Full width</strong>.</div>

@@ -549,7 +549,7 @@
                     toastr.success(response.message)
                 },
                 error: (error) => {
-                    NinicoApp.handleError(error)
+                    PixbyteApp.handleError(error)
                 },
                 complete: () => {
                     if (typeof refreshRecaptcha !== 'undefined') {
@@ -576,7 +576,7 @@
                     $tabContent.html(response.data)
                 },
                 error: (error) => {
-                    NinicoApp.handleError(error)
+                    PixbyteApp.handleError(error)
                 },
                 complete: () => $loading.addClass('d-none'),
             })
@@ -607,7 +607,7 @@
                     }
                 },
                 error: (error) => {
-                    NinicoApp.handleError(error)
+                    PixbyteApp.handleError(error)
                 },
                 complete: () => {
                     if (typeof refreshRecaptcha !== 'undefined') {

@@ -11,10 +11,10 @@ return [
     'new_users' => 'الزوار الجدد',
     'visits' => 'الزيارات',
     'views' => 'الآراء',
-    'property_id_not_specified' => 'يجب عليك تقديم معرف عرض صالح. المستند هنا: <a href="https://docs.botble.com/cms/master/plugin-analytics" target="_blank">https://docs.botble.com/cms/master/plugin-analytics </أ>',
-    'credential_is_not_valid' => 'بيانات اعتماد التحليلات غير صالحة. المستند هنا: <a href="https://docs.botble.com/cms/master/plugin-analytics" target="_blank">https://docs.botble.com/cms/master/plugin-analytics </أ>',
+    'property_id_not_specified' => 'يجب عليك تقديم معرف عرض صالح. المستند هنا: ',
+    'credential_is_not_valid' => 'بيانات اعتماد التحليلات غير صالحة. المستند هنا: ',
     'start_date_can_not_before_end_date' => 'تاريخ البدء :start_date لا يمكن أن يكون بعد تاريخ الانتهاء :end_date',
-    'wrong_configuration' => 'لعرض التحليلات، ستحتاج إلى الحصول على معرف عميل Google Analytics وإضافته إلى إعداداتك. <br /> أنت بحاجة أيضًا إلى بيانات اعتماد JSON. <br /> المستند هنا: <a href="https://docs.botble.com/cms/master/plugin-analytics" target="_blank">https://docs.botble.com/cms/master / تحليلات البرنامج المساعد </a>',
+    'wrong_configuration' => 'لعرض التحليلات، ستحتاج إلى الحصول على معرف عميل Google Analytics وإضافته إلى إعداداتك. <br /> أنت بحاجة أيضًا إلى بيانات اعتماد JSON. <br /> ',
     'property_id_is_invalid' => 'معرف الخاصية غير صالح. تحقق من هذا: https://developers.google.com/analytics/devguides/reporting/data/v1/property-id',
 
     'settings' => [

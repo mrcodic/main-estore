@@ -3,8 +3,8 @@
     "name": "Stripe Payment Gateway",
     "namespace": "Botble\\Stripe\\",
     "provider": "Botble\\Stripe\\Providers\\StripeServiceProvider",
-    "author": "Botble Technologies",
-    "url": "https://botble.com",
+    "author": "PixbyteTechnologies",
+    "url": "http://pixbyte.co/",
     "version": "1.0.0",
     "description": "Stripe payment gateway integration",
     "require": ["botble/payment"]

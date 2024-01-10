@@ -1,10 +1,10 @@
 {
-    "id": "botble/ninico",
-    "name": "Ninico",
-    "namespace": "Theme\\Ninico\\",
-    "description": "Ninico - Minimal eCommerce",
-    "author": "Botble Technologies",
-    "url": "https://botble.com",
+    "id": "pixbyte/store",
+    "name": "Pixbyte",
+    "namespace": "Theme\\Pixbyte\\",
+    "description": "Pixbyte - Store",
+    "author": "PixbyteTechnologies",
+    "url": "http://pixbyte.co/",
     "version": "1.0.0",
     "required_plugins": []
 }

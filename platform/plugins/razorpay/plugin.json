@@ -3,8 +3,8 @@
     "name": "Razorpay Payment Gateway",
     "namespace": "Botble\\Razorpay\\",
     "provider": "Botble\\Razorpay\\Providers\\RazorpayServiceProvider",
-    "author": "Botble Technologies",
-    "url": "https://botble.com",
+    "author": "PixbyteTechnologies",
+    "url": "http://pixbyte.co/",
     "version": "1.0.0",
     "description": "Razorpay payment gateway integration",
     "require": ["botble/payment"]

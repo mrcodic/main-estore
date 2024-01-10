@@ -3,8 +3,8 @@
     "name": "Testimonial",
     "namespace": "Botble\\Testimonial\\",
     "provider": "Botble\\Testimonial\\Providers\\TestimonialServiceProvider",
-    "author": "Botble Technologies",
-    "url": "https://botble.com",
+    "author": "PixbyteTechnologies",
+    "url": "http://pixbyte.co/",
     "version": "2.1.0",
     "description": "Customer testimonials"
 }

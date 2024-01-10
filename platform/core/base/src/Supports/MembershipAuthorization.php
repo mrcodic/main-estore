@@ -72,16 +72,16 @@ class MembershipAuthorization
     protected function processAuthorize(): bool
     {
         try {
-            $response = Http::withoutVerifying()
-                ->asJson()
-                ->acceptJson()
-                ->post('https://botble.com/membership/authorize', [
-                    'website' => $this->url,
-                ]);
+            // $response = Http::withoutVerifying()
+            //     ->asJson()
+            //     ->acceptJson()
+            //     ->post('https://botble.com/membership/authorize', [
+            //         'website' => $this->url,
+            //     ]);
 
-            if (! $response->ok()) {
-                return true;
-            }
+            // if (! $response->ok()) {
+            //     return true;
+            // }
 
             setting()
                 ->set('membership_authorization_at', Carbon::now()->toDateTimeString())
