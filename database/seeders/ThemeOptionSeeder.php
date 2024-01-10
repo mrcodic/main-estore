@@ -15,7 +15,7 @@ class ThemeOptionSeeder extends BaseSeeder
         $this->uploadFiles('icons');
 
         $this->createThemeOptions([
-            'site_title' => 'Ninico - Minimal eCommerce',
+            'site_title' => 'Pixbyte-Store',
             'favicon' => $this->filePath('general/favicon.png'),
             'logo_light' => $this->filePath('general/logo-white.png'),
             'logo' => $this->filePath('general/logo.png'),
