@@ -16,11 +16,11 @@ class MenuSeeder extends BaseSeeder
     {
         $menus = [
             [
-                'name' => 'Main menu',
+                'name' => 'القائمة الرئيسية',
                 'location' => 'main-menu',
                 'items' => [
                     [
-                        'title' => 'Home',
+                        'title' => 'الرئيسيه',
                         'url' => '/',
                         'children' => [
                             [
@@ -82,7 +82,7 @@ class MenuSeeder extends BaseSeeder
                         ],
                     ],
                     [
-                        'title' => 'Pages',
+                        'title' => 'الصفحات',
                         'url' => '/',
                         'children' => [
                             [
@@ -132,11 +132,11 @@ class MenuSeeder extends BaseSeeder
                 ],
             ],
             [
-                'name' => 'Information',
+                'name' => 'معلومة',
                 'location' => 'information',
                 'items' => [
                     [
-                        'title' => 'Custom Service',
+                        'title' => 'خدمة مخصصة',
                         'reference_type' => Page::class,
                         'reference_id' => 1,
                     ],
@@ -146,59 +146,59 @@ class MenuSeeder extends BaseSeeder
                         'reference_id' => 1,
                     ],
                     [
-                        'title' => 'Ordering Tracking',
+                        'title' => 'تتبع الطلب',
                         'reference_type' => Page::class,
                         'reference_id' => 1,
                     ],
                     [
-                        'title' => 'Contacts',
+                        'title' => 'جهات الاتصال',
                         'reference_type' => Page::class,
                         'reference_id' => 1,
                     ],
                     [
-                        'title' => 'Events',
+                        'title' => 'الأحداث',
                         'reference_type' => Page::class,
                         'reference_id' => 1,
                     ],
                 ],
             ],
             [
-                'name' => 'My Account',
+                'name' => 'حسابي',
                 'location' => 'my-account',
                 'items' => [
                     [
-                        'title' => 'Delivery Information',
+                        'title' => 'معلومات التوصيل',
                         'reference_type' => Page::class,
                         'reference_id' => 1,
                     ],
                     [
-                        'title' => 'Privacy Policy',
+                        'title' => 'سياسة الخصوصية',
                         'reference_type' => Page::class,
                         'reference_id' => 1,
                     ],
                     [
-                        'title' => 'Discount',
+                        'title' => 'تخفيض',
                         'reference_type' => Page::class,
                         'reference_id' => 1,
                     ],
                     [
-                        'title' => 'Custom Service',
+                        'title' => 'خدمة مخصصة',
                         'reference_type' => Page::class,
                         'reference_id' => 1,
                     ],
                     [
-                        'title' => 'Terms & Condition',
+                        'title' => 'الشروط والأحكام',
                         'reference_type' => Page::class,
                         'reference_id' => 1,
                     ],
                 ],
             ],
             [
-                'name' => 'Social Network',
+                'name' => 'شبكة اجتماعية',
                 'location' => 'social-network',
                 'items' => [
                     [
-                        'title' => 'Facebook',
+                        'title' => 'فيسبوك',
                         'icon_font' => 'fab fa-facebook',
                         'url' => '#',
                     ],
@@ -208,7 +208,7 @@ class MenuSeeder extends BaseSeeder
                         'url' => '#',
                     ],
                     [
-                        'title' => 'Twitter',
+                        'title' => 'تويتر',
                         'icon_font' => 'fab fa-twitter',
                         'url' => '#',
                     ],
@@ -218,7 +218,7 @@ class MenuSeeder extends BaseSeeder
                         'url' => '#',
                     ],
                     [
-                        'title' => 'Youtube',
+                        'title' => 'يوتيوب',
                         'icon_font' => 'fab fa-youtube',
                         'url' => '#',
                     ],

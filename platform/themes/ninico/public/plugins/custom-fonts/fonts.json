@@ -1,0 +1,19 @@
+
+[
+
+    {
+        "name" : "LamaSans-Bold",
+        "src" : "/themes/ninico/plugins/custom-fonts/LamaSans-Bold.woff"
+    },
+
+    {
+        "name" : "LamaSans-ExtraBold",
+        "src" : "/themes/ninico/plugins/custom-fonts/LamaSans-ExtraBold.woff"
+    },
+
+    {
+        "name" : "LamaSans-Regular",
+        "src" : "/themes/ninico/plugins/custom-fonts/LamaSans-Regular.woff"
+    }
+]
+

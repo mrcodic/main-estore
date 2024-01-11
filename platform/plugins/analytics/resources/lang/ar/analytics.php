@@ -18,7 +18,7 @@ return [
     'property_id_is_invalid' => 'معرف الخاصية غير صالح. تحقق من هذا: https://developers.google.com/analytics/devguides/reporting/data/v1/property-id',
 
     'settings' => [
-        'title' => 'تحليلات كوكل',
+        'title' => 'تحليلات جوجل',
         'description' => 'بيانات اعتماد التكوين لبرنامج Google Analytics',
         'google_tag_id' => 'معرف علامة جوجل',
         'google_tag_id_placeholder' => 'مثال: G-76NX8HY29D',

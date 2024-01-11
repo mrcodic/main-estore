@@ -62,6 +62,9 @@ return [
             $theme->asset()->container('footer')->usePath()->add('theme-js', 'js/theme.js', ['countdown-js'], version: $version);
             $theme->asset()->container('footer')->usePath()->add('ecommerce-js', 'js/ecommerce.js', ['lightgallery-js'], version: $version);
 
+            $theme->asset()->usePath()->add('custom-fonts-json', 'plugins/custom-fonts/fonts.json');
+
+
             if (function_exists('shortcode')) {
                 $theme->composer([
                     'page',

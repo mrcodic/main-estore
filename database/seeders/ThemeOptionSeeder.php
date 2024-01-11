@@ -15,12 +15,12 @@ class ThemeOptionSeeder extends BaseSeeder
         $this->uploadFiles('icons');
 
         $this->createThemeOptions([
-            'site_title' => 'Ninico - Minimal eCommerce',
+            'site_title' => 'متجر - سلتنا',
             'favicon' => $this->filePath('general/favicon.png'),
             'logo_light' => $this->filePath('general/logo-white.png'),
             'logo' => $this->filePath('general/logo.png'),
-            'primary_font' => 'Jost',
-            'primary_color' => '#d51243',
+            'primary_font' => 'LamaSans-Bold',
+            'primary_color' => '#FF9900',
             'hotline' => '908. 408. 501. 89',
             'homepage_id' => 1,
             'blog_page_id' => 6,
@@ -31,7 +31,7 @@ class ThemeOptionSeeder extends BaseSeeder
             '404_not_found_icon' => $this->filePath('icons/error.png'),
             'default_product_list_layout' => 'grid',
             'number_of_products_per_page' => 30,
-            'footer_background_color' => '#F8F8F8',
+            'footer_background_color' => '#F1F1F2',
             'footer_text_color' => '#000000',
             'footer_text_muted_color' => '#777777',
             'footer_border_color' => '#E0E0E0',
@@ -41,15 +41,15 @@ class ThemeOptionSeeder extends BaseSeeder
                 [
                     [
                         'key' => 'message',
-                        'value' => 'Welcome to our international shop! Enjoy free shipping on orders $100 & up',
+                        'value' => 'مرحبا بكم في متجر سلتنا! ',
                     ],
                     ['key' => 'link', 'value' => '/'],
-                    ['key' => 'link_text', 'value' => 'Shop now'],
+                    ['key' => 'link_text', 'value' => 'تسوق الآن'],
                 ],
                 [
                     ['key' => 'message', 'value' => 'Trendy 25 silver jewelry, save up 35% off today'],
                     ['key' => 'link', 'value' => '/'],
-                    ['key' => 'link_text', 'value' => 'Shop now'],
+                    ['key' => 'link_text', 'value' => 'تسوق الآن'],
                 ],
             ],
             'social_links' => [

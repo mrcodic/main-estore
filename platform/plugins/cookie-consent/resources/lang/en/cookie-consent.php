@@ -16,6 +16,6 @@ return [
         'full_width' => 'Full width',
         'minimal' => 'Minimal',
     ],
-    'message' => 'Your experience on this site will be improved by allowing cookies.',
+    'message' => 'سيتم تحسين تجربتك على هذا الموقع من خلال السماح بملفات تعريف الارتباط.',
     'button_text' => 'Allow cookies',
 ];

@@ -6,7 +6,24 @@
         <meta content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=1" name="viewport"/>
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        {!! BaseHelper::googleFonts(sprintf('https://fonts.googleapis.com/css2?family=%s:wght@400;500;600', urlencode($primaryFont = theme_option('primary_font', 'Jost')))) !!}
+        {{-- {!! BaseHelper::googleFonts(sprintf('https://fondts.googleapis.com/css2?family=%s:wght@400;500;600', urlencode($primaryFont = theme_option('primary_font', 'Jost')))) !!} --}}
+
+
+        @php
+            $string = file_get_contents(base_path() . '/platform/themes/ninico/public/plugins/custom-fonts/fonts.json');
+            $json_file = json_decode($string, true);
+            $primaryFont = theme_option('primary_font', 'LamaSans-Bold');
+        @endphp
+
+        <style >
+            @font-face {
+                font-family:'{{$primaryFont}}';
+                font-style: normal;
+                font-weight: 400;
+                src: url("{{'/themes/ninico/plugins/custom-fonts/'. $primaryFont. '.woff'}}") format('woff');
+            }
+        </style>
+
 
         <style>
             :root {

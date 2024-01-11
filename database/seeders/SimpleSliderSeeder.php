@@ -146,7 +146,7 @@ class SimpleSliderSeeder extends BaseSeeder
                 ]));
 
                 MetaBox::saveMetaBoxData($sliderItem, 'subtitle', Arr::get($data, 'subtitle'));
-                MetaBox::saveMetaBoxData($sliderItem, 'action_label', 'Shop Now');
+                MetaBox::saveMetaBoxData($sliderItem, 'action_label', 'تسوق الآن');
             }
 
             LanguageMeta::saveMetaData($slider, 'en_US');
