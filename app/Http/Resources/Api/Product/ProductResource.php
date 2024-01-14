@@ -16,10 +16,11 @@ class ProductResource extends JsonResource
     {
         return [
             "id"            => $this->id,
-            "name"          => $this->name,
+            "name"          => $this->name(),
             "price"         => $this->price,
             "images"        => $this->imgs($this->images),
-            "description"   => $this->description,
+            "description"   => $this->trans('description'),
+            "content"       => $this->trans('content'),
             "attributes"    => AttributesResource::collection($this->productAttributeSets),
             "tags"          => TagsResource::collection($this->tags),
         ];

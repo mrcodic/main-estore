@@ -11,7 +11,7 @@ return new class () extends Migration {
         foreach ($products as $product) {
             Product::query()->whereIn('id', $product->variations->pluck('product_id')->all())
                 ->where('is_variation', 1)
-                ->update(['name' => $product->name]);
+                ->update(['name' => $product->name()]);
         }
     }
 };

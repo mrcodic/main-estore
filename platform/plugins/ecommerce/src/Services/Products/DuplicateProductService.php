@@ -128,7 +128,7 @@ class DuplicateProductService
         Slug::query()->create([
             'reference_type' => Product::class,
             'reference_id' => $product->getKey(),
-            'key' => Str::slug($product->name) . '-' . $product->getKey(),
+            'key' => Str::slug($product->name()) . '-' . $product->getKey(),
             'prefix' => SlugHelper::getPrefix(Product::class),
         ]);
 

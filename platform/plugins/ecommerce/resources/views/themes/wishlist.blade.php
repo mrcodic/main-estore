@@ -21,14 +21,14 @@
                             <img
                                 class="img-fluid"
                                 src="{{ RvMedia::getImageUrl($product->image, 'thumb', false, RvMedia::getDefaultImage()) }}"
-                                alt="{{ $product->original_product->name }}"
+                                alt="{{ $product->original_product->name() }}"
                                 style="max-height: 75px"
                                 width="50"
                                 height="70"
                             >
                         </td>
                         <td>
-                            <a href="{{ $product->original_product->url }}">{{ $product->original_product->name }}</a>
+                            <a href="{{ $product->original_product->url }}">{{ $product->original_product->name() }}</a>
 
                             @if (is_plugin_active('marketplace') && $product->original_product->store->id)
                                 <p class="d-block mb-0">

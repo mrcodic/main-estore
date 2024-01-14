@@ -85,13 +85,13 @@ class NinicoController extends PublicController
         if ($star) {
             $message = __(':total review(s) ":star star" for ":product"', [
                 'total' => $reviews->total(),
-                'product' => $product->name,
+                'product' => $product->name(),
                 'star' => $star,
             ]);
         } else {
             $message = __(':total review(s) for ":product"', [
                 'total' => $reviews->total(),
-                'product' => $product->name,
+                'product' => $product->name(),
             ]);
         }
 

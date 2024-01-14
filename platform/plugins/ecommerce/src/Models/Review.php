@@ -40,7 +40,7 @@ class Review extends BaseModel
     {
         return Attribute::make(
             get: function () {
-                return $this->product->name;
+                return $this->product->name();
             }
         );
     }

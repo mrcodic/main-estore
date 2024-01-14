@@ -109,7 +109,7 @@ class PublicCartController extends Controller
                 ->setMessage(
                     __(
                         'Product :product is out of stock!',
-                        ['product' => $product->original_product->name ?: $product->name]
+                        ['product' => $product->original_product->name() ?: $product->name()]
                     )
                 );
         }
@@ -181,7 +181,7 @@ class PublicCartController extends Controller
                 ->setMessage(
                     __(
                         'Product :product is out of stock!',
-                        ['product' => $product->original_product->name ?: $product->name]
+                        ['product' => $product->original_product->name() ?: $product->name()]
                     )
                 );
         }
@@ -192,7 +192,7 @@ class PublicCartController extends Controller
             ->setMessage(
                 __(
                     'Added product :product to cart successfully!',
-                    ['product' => $product->original_product->name ?: $product->name]
+                    ['product' => $product->original_product->name() ?: $product->name()]
                 )
             );
 

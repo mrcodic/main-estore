@@ -5,24 +5,24 @@
                 @foreach ($availableProducts as $availableProduct)
                     <li
                         class="@if (!$includeVariation) selectable-item @endif"
-                        @if (!$includeVariation) data-name="{{ $availableProduct->name }}"  data-image="{{ RvMedia::getImageUrl($availableProduct->image, 'thumb', false, RvMedia::getDefaultImage()) }}" data-id="{{ $availableProduct->id }}" data-url="{{ route('products.edit', $availableProduct->id) }}" data-price="{{ $availableProduct->price }}" @endif
+                        @if (!$includeVariation) data-name="{{ $availableproduct->name() }}"  data-image="{{ RvMedia::getImageUrl($availableProduct->image, 'thumb', false, RvMedia::getDefaultImage()) }}" data-id="{{ $availableProduct->id }}" data-url="{{ route('products.edit', $availableProduct->id) }}" data-price="{{ $availableProduct->price }}" @endif
                     >
                         <div class="wrap-img inline_block vertical-align-t float-start"><img
                                 class="thumb-image"
                                 src="{{ RvMedia::getImageUrl($availableProduct->image, 'thumb', false, RvMedia::getDefaultImage()) }}"
-                                alt="{{ $availableProduct->name }}"
+                                alt="{{ $availableproduct->name() }}"
                             ></div>
                         <label
                             class="inline_block ml10 mt10 ws-nm"
                             style="width:calc(100% - 50px);"
-                        >{{ $availableProduct->name }}</label>
+                        >{{ $availableproduct->name() }}</label>
                         @if ($includeVariation)
                             <div class="clear"></div>
                             <ul>
                                 @foreach ($availableProduct->variations as $variation)
                                     <li
                                         class="clearfix product-variant selectable-item"
-                                        data-name="{{ $availableProduct->name }}"
+                                        data-name="{{ $availableproduct->name() }}"
                                         data-image="{{ RvMedia::getImageUrl($variation->product->image, 'thumb', false, RvMedia::getDefaultImage()) }}"
                                         data-id="{{ $variation->product->id }}"
                                         data-url="{{ route('products.edit', $availableProduct->id) }}"

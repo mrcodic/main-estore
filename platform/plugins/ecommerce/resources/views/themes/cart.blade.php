@@ -77,7 +77,7 @@
                                                                             href="{{ $product->original_product->url }}">
                                                                             <img
                                                                                 src="{{ $cartItem->options['image'] }}"
-                                                                                alt="{{ $product->original_product->name }}"
+                                                                                alt="{{ $product->original_product->name() }}"
                                                                             />
                                                                         </a>
                                                                     </td>
@@ -87,7 +87,7 @@
                                                                         data-title="{{ __('Product Name') }}"
                                                                     >
                                                                         <a
-                                                                            href="{{ $product->original_product->url }}">{{ $product->original_product->name }}
+                                                                            href="{{ $product->original_product->url }}">{{ $product->original_product->name() }}
                                                                             @if ($product->isOutOfStock())
                                                                                 <span
                                                                                     class="stock-status-label">({!! $product->stock_status_html !!})</span>

@@ -28,7 +28,7 @@ class TrendingProductsTable extends TableAbstract
         $data = $this->table
             ->eloquent($this->query())
             ->editColumn('name', function (Product $product) {
-                return Html::link($product->url, $product->name, ['target' => '_blank']);
+                return Html::link($product->url, $product->name(), ['target' => '_blank']);
             })
             ->editColumn('views', function (Product $product) {
                 return Html::tag('i', '', ['class' => 'fa fa-eye'])->toHtml() . ' ' . number_format(

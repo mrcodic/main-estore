@@ -53,13 +53,13 @@
                             <img
                                 class="img-thumbnail"
                                 src="{{ RvMedia::getImageUrl($review->product->image, 'thumb', false, RvMedia::getDefaultImage()) }}"
-                                alt="{{ $review->product->name }}"
+                                alt="{{ $review->product->name() }}"
                                 style="width: 15%"
                             >
                             <div>
                                 <h5>
                                     <a href="{{ route('products.edit', $review->product) }}">
-                                        {{ $review->product->name }}
+                                        {{ $review->product->name() }}
                                     </a>
                                 </h5>
                                 <div>

@@ -28,7 +28,7 @@
                                                         <img
                                                             class="thumb-image thumb-image-cartorderlist"
                                                             src="{{ RvMedia::getImageUrl($returnRequestItem->product_image, 'thumb', false, RvMedia::getDefaultImage()) }}"
-                                                            alt="{{ $product->name }}"
+                                                            alt="{{ $product->name() }}"
                                                         >
                                                     </div>
                                                 </td>

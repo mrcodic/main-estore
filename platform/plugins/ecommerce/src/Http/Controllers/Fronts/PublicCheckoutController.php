@@ -93,7 +93,7 @@ class PublicCheckoutController
                     ->setError()
                     ->setNextUrl(route('public.cart'))
                     ->setMessage(
-                        __('Product :product is out of stock!', ['product' => $product->original_product->name])
+                        __('Product :product is out of stock!', ['product' => $product->original_product->name()])
                     );
             }
         }
@@ -614,7 +614,7 @@ class PublicCheckoutController
                 return $response
                     ->setError()
                     ->setMessage(
-                        __('Product :product is out of stock!', ['product' => $product->original_product->name])
+                        __('Product :product is out of stock!', ['product' => $product->original_product->name()])
                     );
             }
         }

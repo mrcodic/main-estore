@@ -125,7 +125,7 @@ if (! function_exists('get_discount_description')) {
 
                         $productLinks = [];
                         foreach ($products as $variant) {
-                            $productLinks[] = Html::link(route('products.edit', $variant->originalProduct->getKey()), $variant->originalProduct->name . ' ' . $variant->variation_attributes, ['target' => '_blank'])->toHtml();
+                            $productLinks[] = Html::link(route('products.edit', $variant->originalProduct->getKey()), $variant->originalproduct->name() . ' ' . $variant->variation_attributes, ['target' => '_blank'])->toHtml();
                         }
 
                         $description[] = __('for product variant(s) :variants', ['variants' => implode(', ', $productLinks)]);

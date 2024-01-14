@@ -59,8 +59,8 @@ class ProductController extends BaseController
         if ($product->is_variation) {
             abort(404);
         }
-        
-        PageTitle::setTitle(trans('plugins/ecommerce::products.edit', ['name' => $product->name]));
+
+        PageTitle::setTitle(trans('plugins/ecommerce::products.edit', ['name' => $product->name()]));
 
         event(new BeforeEditContentEvent($request, $product));
 

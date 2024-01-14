@@ -52,7 +52,7 @@
                 @endif
             </div>
             <div class="tpproduct-details__title-area d-flex align-items-center flex-wrap mb-5">
-                <h3 class="tpproduct-details__title">{!! BaseHelper::clean($product->name) !!}</h3>
+                <h3 class="tpproduct-details__title">{!! BaseHelper::clean($product->name()) !!}</h3>
                 @if (!$product->isOutOfStock())
                     <span class="tpproduct-details__stock">{{ __('In Stock') }}</span>
                 @endif
@@ -73,7 +73,7 @@
 
             {!! apply_filters('ecommerce_before_product_description', null, $product) !!}
             <div class="tpproduct-details__pera">
-                <p>{!! BaseHelper::clean($product->description) !!}</p>
+                <p>{!! BaseHelper::clean($product->trans('description')) !!}</p>
             </div>
             {!! apply_filters('ecommerce_after_product_description', null, $product) !!}
 
@@ -241,7 +241,7 @@
                     target="_blank"
                 ><i class="fab fa-facebook-f"></i></a>
                 <a
-                    href="https://twitter.com/intent/tweet?text={{ $product->name }}&url={{ $product->url }}"
+                    href="https://twitter.com/intent/tweet?text={{ $product->name() }}&url={{ $product->url }}"
                     target="_blank"
                 ><i class="fab fa-twitter"></i></a>
                 <a
@@ -249,7 +249,7 @@
                     target="_blank"
                 ><i class="fab fa-linkedin-in"></i></a>
                 <a
-                    href="https://www.pinterest.com/pin/create/button/?url={{ $product->url }}&media={{ $product->image }}&description={{ $product->name }}"
+                    href="https://www.pinterest.com/pin/create/button/?url={{ $product->url }}&media={{ $product->image }}&description={{ $product->name() }}"
                     target="_blank"
                 ><i class="fab fa-pinterest-p"></i></a>
             </div>
@@ -339,7 +339,7 @@
                             aria-labelledby="description-tab"
                         >
                             <div class="ck-content">
-                                {!! BaseHelper::clean($product->content) !!}
+                                {!! BaseHelper::clean($product->trans('content')) !!}
                             </div>
                             @if (theme_option('facebook_comment_enabled_in_product', 'no') === 'yes')
                                 <div class="postbox__comment mb-65">
@@ -371,7 +371,7 @@
                                                             <img
                                                                 class="img-fluid rounded h-100"
                                                                 src="{{ RvMedia::getImageUrl($img, 'thumb') }}"
-                                                                alt="{{ $product->name }}"
+                                                                alt="{{ $product->name() }}"
                                                             >
                                                             @if ($loop->iteration === 12 && count($product->review_images) - $loop->iteration > 0)
                                                                 <div
@@ -392,7 +392,7 @@
                                     <div class="row">
                                         <div class="col-md-8">
                                             <h5 class="tp-comments-title mb-35">
-                                                {{ __(':count review(s) for ":name"', ['count' => $product->reviews_count, 'name' => $product->name]) }}
+                                                {{ __(':count review(s) for ":name"', ['count' => $product->reviews_count, 'name' => $product->name()]) }}
                                             </h5>
 
                                             <div class="position-relative product-reviews-container">

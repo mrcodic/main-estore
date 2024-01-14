@@ -61,7 +61,7 @@ trait ProductActionsTrait
 
                 $productRelatedToVariation->fill($version);
 
-                $productRelatedToVariation->name = $product->name;
+                $productRelatedToVariation->name = $product->name();
                 $productRelatedToVariation->status = $product->status;
                 $productRelatedToVariation->brand_id = $product->brand_id;
                 $productRelatedToVariation->is_variation = 1;

@@ -15,6 +15,7 @@ use Botble\Ecommerce\Facades\Discount as DiscountFacade;
 use Botble\Ecommerce\Facades\EcommerceHelper;
 use Botble\Ecommerce\Facades\FlashSale as FlashSaleFacade;
 use Botble\Ecommerce\Services\Products\UpdateDefaultProductService;
+use Botble\Language\Facades\Language;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,6 +27,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /**
@@ -117,11 +119,37 @@ class Product extends BaseModel
                 Product::query()
                     ->whereIn('id', $product->variations()->pluck('product_id')->all())
                     ->where('is_variation', 1)
-                    ->update(['name' => $product->name]);
+                    ->update(['name' => $product->name()]);
             }
 
             EcommerceHelper::clearProductMaxPriceCache();
         });
+    }
+
+    public function name($lang_code=null)
+    {
+        if(! $lang_code){
+            $lang = Language::getActiveLanguage(['lang_code', 'lang_is_default'])->where('lang_is_default', true)->first();// as $language
+            $lang_code = $lang ? $lang->lang_code : $lang_code;
+        }
+
+        $trans = DB::table('ec_products_translations')->where('ec_products_id', $this->id)->where('lang_code', $lang_code)->first();
+        if($trans) return $trans->name;
+
+        return $this->name;
+    }
+
+    public function trans($attribute ,$lang_code=null)
+    {
+        if(! $lang_code){
+            $lang = Language::getActiveLanguage(['lang_code', 'lang_is_default'])->where('lang_is_default', true)->first();// as $language
+            $lang_code = $lang ? $lang->lang_code : $lang_code;
+        }
+
+        $trans = DB::table('ec_products_translations')->where('ec_products_id', $this->id)->where('lang_code', $lang_code);
+        if($trans) return $trans->value($attribute);
+
+        return $this->attributes[$attribute];
     }
 
     public function categories(): BelongsToMany

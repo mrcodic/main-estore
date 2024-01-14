@@ -121,15 +121,15 @@ class PublicProductController
             return redirect()->to($product->url);
         }
 
-        SeoHelper::setTitle($product->name)->setDescription($product->description);
+        SeoHelper::setTitle($product->name())->setDescription($product->trans('description'));
 
         $meta = new SeoOpenGraph();
         if ($product->image) {
             $meta->setImage(RvMedia::getImageUrl($product->image));
         }
-        $meta->setDescription($product->description);
+        $meta->setDescription($product->trans('description'));
         $meta->setUrl($product->url);
-        $meta->setTitle($product->name);
+        $meta->setTitle($product->name());
 
         SeoHelper::setSeoOpenGraph($meta);
 
@@ -170,7 +170,7 @@ class PublicProductController
             Theme::breadcrumb()->add($category->name, $category->url);
         }
 
-        Theme::breadcrumb()->add($product->name, $product->url);
+        Theme::breadcrumb()->add($product->name(), $product->url);
 
         if (function_exists('admin_bar')) {
             admin_bar()

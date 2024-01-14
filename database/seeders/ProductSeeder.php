@@ -244,7 +244,7 @@ class ProductSeeder extends BaseSeeder
 
             for ($j = 0; $j < $faker->numberBetween(1, 5); $j++) {
                 $variation = Product::query()->create([
-                    'name' => $product->name,
+                    'name' => $product->name(),
                     'status' => BaseStatusEnum::PUBLISHED,
                     'sku' => $product->sku . '-A' . $j,
                     'quantity' => $product->quantity,

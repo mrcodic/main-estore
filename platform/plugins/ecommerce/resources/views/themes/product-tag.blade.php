@@ -14,9 +14,9 @@
                                 <img
                                     class="product-item-thumb"
                                     src="{{ RvMedia::getImageUrl($product->image, 'thumb', false, RvMedia::getDefaultImage()) }}"
-                                    alt="{{ $product->name }}"
+                                    alt="{{ $product->name() }}"
                                 >
-                                <h3>{{ $product->name }}</h3>
+                                <h3>{{ $product->name() }}</h3>
                                 <span class="price">
                                     {!! the_product_price($product) !!}
                                 </span>

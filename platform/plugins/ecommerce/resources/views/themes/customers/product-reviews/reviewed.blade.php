@@ -18,12 +18,12 @@
                             <img
                                 class="img-thumb"
                                 src="{{ RvMedia::getImageUrl($item->product->image, 'thumb', false, RvMedia::getDefaultImage()) }}"
-                                alt="{{ $item->product->name }}"
+                                alt="{{ $item->product->name() }}"
                                 style="max-width: 70px"
                             >
                         </th>
                         <th scope="row">
-                            <a href="{{ $item->product->url }}">{{ $item->product->name }}</a>
+                            <a href="{{ $item->product->url }}">{{ $item->product->name() }}</a>
                         </th>
                         <td>{{ $item->created_at->translatedFormat('M d, Y h:m') }}</td>
                         <td>

@@ -64,8 +64,8 @@ class CsvProductExport implements FromCollection, WithHeadings
             }
 
             $result = [
-                'name' => $product->name,
-                'description' => $product->description,
+                'name' => $product->name(),
+                'description' => $product->trans('description'),
                 'slug' => $product->slug,
                 'sku' => $product->sku,
                 'categories' => implode(',', $product->categories->pluck('name')->all()),
@@ -93,7 +93,7 @@ class CsvProductExport implements FromCollection, WithHeadings
                 'height' => $product->height,
                 'cost_per_item' => $product->cost_per_item,
                 'barcode' => $product->barcode,
-                'content' => $product->content,
+                'content' => $product->trans('content'),
                 'tags' => implode(',', $product->tags->pluck('name')->all()),
             ];
 
@@ -113,7 +113,7 @@ class CsvProductExport implements FromCollection, WithHeadings
 
                     $results[] = array_merge(
                         [
-                            'name' => $variation->product->name,
+                            'name' => $variation->product->name(),
                             'description' => '',
                             'slug' => '',
                             'sku' => $variation->product->sku,

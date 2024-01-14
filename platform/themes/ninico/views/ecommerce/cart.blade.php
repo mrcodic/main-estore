@@ -38,7 +38,7 @@
                                                 <a href="{{ $product->original_product->url }}">
                                                     <img
                                                         src="{{ RvMedia::getImageUrl($item->options['image'], 'thumb', false, RvMedia::getDefaultImage()) }}"
-                                                        alt="{{ $product->original_product->name }}"
+                                                        alt="{{ $product->original_product->name() }}"
                                                     >
                                                 </a>
 
@@ -46,7 +46,7 @@
                                                     <a
                                                         class="product-name"
                                                         href="{{ $product->original_product->url }}"
-                                                    >{{ $product->original_product->name }}</a>
+                                                    >{{ $product->original_product->name() }}</a>
 
                                                     @if (is_plugin_active('marketplace') && $product->original_product->store->id)
                                                         <div class="variation-group">

@@ -13,8 +13,8 @@
                         </div>
                     @endif
                     <a href="{{ $product->url }}">
-                        <img src="{{ RvMedia::getImageUrl($product->image, 'small', false, RvMedia::getDefaultImage()) }}" alt="{{ $product->name }}">
-                        <img class="thumbitem-secondary" src="{{ RvMedia::getImageUrl(Arr::get($product->images, 2, $product->image), 'small', false, RvMedia::getDefaultImage()) }}" alt="{{ $product->name }}">
+                        <img src="{{ RvMedia::getImageUrl($product->image, 'small', false, RvMedia::getDefaultImage()) }}" alt="{{ $product->name() }}">
+                        <img class="thumbitem-secondary" src="{{ RvMedia::getImageUrl(Arr::get($product->images, 2, $product->image), 'small', false, RvMedia::getDefaultImage()) }}" alt="{{ $product->name() }}">
                     </a>
                 </div>
             </div>
@@ -22,7 +22,7 @@
         <div class="col-lg-8 col-md-12">
             <div class="filter-product ml-20 pt-30">
                 <h3 class="filter-product-title">
-                    <a href="{{ $product->url }}">{{ $product->name }}</a>
+                    <a href="{{ $product->url }}">{{ $product->name() }}</a>
                 </h3>
                 <div class="tpproduct__amount">
                     <span>{{ format_price($product->front_sale_price_with_taxes) }}</span>
@@ -38,7 +38,7 @@
                         <span>({{ $product->reviews_count }})</span>
                     </div>
                 @endif
-                <p>{!! BaseHelper::clean(Str::limit($product->description, 200)) !!}</p>
+                <p>{!! BaseHelper::clean(Str::limit($product->trans('description'), 200)) !!}</p>
                 <div class="tpproduct__action">
                     @if (EcommerceHelper::isCompareEnabled())
                         <a class="add-to-compare" href="{{ route('public.compare.add', $product->id) }}">

@@ -5,7 +5,7 @@
                 <div class="thumbnail">
                     <img
                         src="{{ RvMedia::getImageUrl($image, 'medium') }}"
-                        alt="{{ $product->name }}"
+                        alt="{{ $product->name() }}"
                         loading="lazy"
                     />
                 </div>
@@ -38,7 +38,7 @@
             </div>
             <div class="tpproduct-details__title-area d-flex align-items-center flex-wrap mb-5">
                 <h3 class="tpproduct-details__title">
-                    <a href="{{ $product->url }}">{!! BaseHelper::clean($product->name) !!}</a>
+                    <a href="{{ $product->url }}">{!! BaseHelper::clean($product->name()) !!}</a>
                 </h3>
                 @if (!$product->isOutOfStock())
                     <span class="tpproduct-details__stock">{{ __('In Stock') }}</span>
@@ -60,7 +60,7 @@
 
             {!! apply_filters('ecommerce_before_product_description', null, $product) !!}
             <div class="tpproduct-details__pera">
-                <p>{!! BaseHelper::clean($product->description) !!}</p>
+                <p>{!! BaseHelper::clean($product->trans('description')) !!}</p>
             </div>
             {!! apply_filters('ecommerce_after_product_description', null, $product) !!}
             <form

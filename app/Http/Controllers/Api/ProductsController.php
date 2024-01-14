@@ -12,6 +12,7 @@ use Botble\Ecommerce\Models\ProductCategory;
 use Botble\Ecommerce\Models\ProductTag;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
 class ProductsController extends Controller
 {
@@ -91,7 +92,15 @@ class ProductsController extends Controller
         $limit = $request->integer('limit', 10) ?: 10;
 
 
-        $query = Product::where('stock_status', 'in_stock')->where('name', 'LIKE', '%' . $request->name . '%');
+        $query = Product::where('stock_status', 'in_stock');
+
+        $trans = DB::table('ec_products_translations')->where('name', 'LIKE', '%' . $request->name . '%')->pluck('ec_products_id')->toArray();
+
+        if ( count($trans) >= 1) {
+            $query->whereIn('id', $trans);
+        }
+
+        $query->orWhere('name', 'LIKE', '%' . $request->name . '%');
 
         $categories = 0;
         $tags = 0;
