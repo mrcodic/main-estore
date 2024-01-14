@@ -4,13 +4,13 @@
             <img
                 class="item-thumb img-thumbnail img-rounded"
                 src="{{ RvMedia::getImageUrl(Arr::get($cartItem->options, 'image'), default: RvMedia::getDefaultImage()) }}"
-                alt="{{ $product->original_product->name }}"
+                alt="{{ $product->original_product->name() }}"
             >
             <span class="checkout-quantity">{{ $cartItem->qty }}</span>
         </div>
     </div>
     <div class="col">
-        <p class="mb-0">{{ $product->original_product->name }} @if ($product->isOutOfStock())
+        <p class="mb-0">{{ $product->original_product->name() }} @if ($product->isOutOfStock())
                 <span class="stock-status-label">({!! $product->stock_status_html !!})</span>
             @endif
         </p>

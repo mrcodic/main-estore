@@ -71,22 +71,22 @@ class WishlistController extends Controller
 
         if (! $duplicates->isEmpty()) {
             return $response
-                ->setMessage(__(':product is already in your wishlist!', ['product' => $product->name]))
+                ->setMessage(__(':product is already in your wishlist!', ['product' => $product->name()]))
                 ->setError();
         }
 
         if (! auth('customer')->check()) {
-            Cart::instance('wishlist')->add($productId, $product->name, 1, $product->front_sale_price)
+            Cart::instance('wishlist')->add($productId, $product->name(), 1, $product->front_sale_price)
                 ->associate(Product::class);
 
             return $response
-                ->setMessage(__('Added product :product successfully!', ['product' => $product->name]))
+                ->setMessage(__('Added product :product successfully!', ['product' => $product->name()]))
                 ->setData(['count' => Cart::instance('wishlist')->count()]);
         }
 
         if (is_added_to_wishlist($productId)) {
             return $response
-                ->setMessage(__(':product is already in your wishlist!', ['product' => $product->name]))
+                ->setMessage(__(':product is already in your wishlist!', ['product' => $product->name()]))
                 ->setError();
         }
 
@@ -96,7 +96,7 @@ class WishlistController extends Controller
         ]);
 
         return $response
-            ->setMessage(__('Added product :product successfully!', ['product' => $product->name]))
+            ->setMessage(__('Added product :product successfully!', ['product' => $product->name()]))
             ->setData(['count' => auth('customer')->user()->wishlist()->count()]);
     }
 
@@ -120,7 +120,7 @@ class WishlistController extends Controller
             });
 
             return $response
-                ->setMessage(__('Removed product :product from wishlist successfully!', ['product' => $product->name]))
+                ->setMessage(__('Removed product :product from wishlist successfully!', ['product' => $product->name()]))
                 ->setData(['count' => Cart::instance('wishlist')->count()]);
         }
 
@@ -132,7 +132,7 @@ class WishlistController extends Controller
             ->delete();
 
         return $response
-            ->setMessage(__('Removed product :product from wishlist successfully!', ['product' => $product->name]))
+            ->setMessage(__('Removed product :product from wishlist successfully!', ['product' => $product->name()]))
             ->setData(['count' => auth('customer')->user()->wishlist()->count()]);
     }
 }

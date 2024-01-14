@@ -22,13 +22,13 @@
                         <div class="whiteproduct">
                             <div class="whiteproduct__thumb">
                                 <a href="{{ $product->url }}">
-                                    <img src="{{ RvMedia::getImageUrl($product->image, 'small', default: RvMedia::getDefaultImage()) }}" alt="{{ $product->name }}">
+                                    <img src="{{ RvMedia::getImageUrl($product->image, 'small', default: RvMedia::getDefaultImage()) }}" alt="{{ $product->name() }}">
                                 </a>
                             </div>
                             <div class="mt-3 whiteproduct__content d-flex justify-content-between align-items-center">
                                 <div class="whiteproduct__text text-truncate">
                                     <h5 class="whiteproduct__title">
-                                        <a href="{{ $product->url }}">{{ $product->name }}</a>
+                                        <a href="{{ $product->url }}">{{ $product->name() }}</a>
                                     </h5>
                                     <span>{{ format_price($product->front_sale_price_with_taxes) }}</span>
                                     @if($product->isOnSale())

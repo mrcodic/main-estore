@@ -16,7 +16,7 @@
                                         <td>
                                             <img
                                                 src="{{ RvMedia::getImageUrl($product->image, 'thumb', false, RvMedia::getDefaultImage()) }}"
-                                                alt="{{ $product->name }}"
+                                                alt="{{ $product->name() }}"
                                             >
                                         </td>
                                     @endforeach
@@ -28,7 +28,7 @@
                                             <a
                                                 class="product-name"
                                                 href="{{ $product->url }}"
-                                            >{{ $product->name }}</a>
+                                            >{{ $product->name() }}</a>
                                             <a
                                                 class="remove-compare-item"
                                                 href="{{ route('public.compare.remove', $product->id) }}"
@@ -56,7 +56,7 @@
                                     <th>{{ __('Description') }}</th>
                                     @foreach ($products as $product)
                                         <td>
-                                            {!! BaseHelper::clean($product->description) !!}
+                                            {!! BaseHelper::clean($product->trans('description')) !!}
                                         </td>
                                     @endforeach
                                 </tr>

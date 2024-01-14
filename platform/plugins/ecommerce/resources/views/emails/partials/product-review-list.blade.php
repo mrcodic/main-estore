@@ -14,12 +14,12 @@
                 <td>
                     <img
                         src="{{ RvMedia::getImageUrl($product->image, 'thumb') }}"
-                        alt="{{ $product->name }}"
+                        alt="{{ $product->name() }}"
                         width="50"
                     >
                 </td>
                 <td>
-                    <a href="{{ route('public.product.review', $product->slug) }}">{{ $product->name }}</a>
+                    <a href="{{ route('public.product.review', $product->slug) }}">{{ $product->name() }}</a>
                 </td>
             </tr>
         @endforeach

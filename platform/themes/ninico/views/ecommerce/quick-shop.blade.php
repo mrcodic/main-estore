@@ -3,7 +3,7 @@
         <div class="tpproduct-details__content">
             <div class="tpproduct-details__title-area d-flex align-items-center flex-wrap mb-5">
                 <h3 class="tpproduct-details__title">
-                    <a href="{{ $product->url }}">{!! BaseHelper::clean($product->name) !!}</a>
+                    <a href="{{ $product->url }}">{!! BaseHelper::clean($product->name()) !!}</a>
                 </h3>
             </div>
             <div class="tpproduct-details__price mb-10">

@@ -21,7 +21,7 @@
         <h2
             class="modal-title fs-5 ecommerce-product-name"
             id="product-review-modal-label"
-        >{{ $product ? $product->name : '' }}</h2>
+        >{{ $product ? $product->name() : '' }}</h2>
         <div class="col-12 mb-3 d-flex mt-2">
             <div class="ecommerce-form-rating-stars ms-1">
                 @for ($i = 5; $i >= 1; $i--)

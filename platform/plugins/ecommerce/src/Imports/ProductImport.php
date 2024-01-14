@@ -218,7 +218,7 @@ class ProductImport implements
         $product->productAttributeSets()->sync($attributeSets);
 
         $collect = collect([
-            'name' => $product->name,
+            'name' => $product->name(),
             'slug' => $this->request->input('slug'),
             'import_type' => 'product',
             'attribute_sets' => $attributeSets,
@@ -317,7 +317,7 @@ class ProductImport implements
         $productRelatedToVariation = new Product();
         $productRelatedToVariation->fill($version);
 
-        $productRelatedToVariation->name = $product->name;
+        $productRelatedToVariation->name = $product->name();
         $productRelatedToVariation->status = $product->status;
         $productRelatedToVariation->brand_id = $product->brand_id;
         $productRelatedToVariation->is_variation = 1;

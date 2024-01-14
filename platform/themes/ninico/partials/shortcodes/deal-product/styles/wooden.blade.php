@@ -5,7 +5,7 @@
                 <div class="col-lg-6 col-md-12">
                     <div class="tpdealproduct">
                         <div class="tpdealproduct__thumb p-relative text-center">
-                            <img src="{{ RvMedia::getImageUrl($product->image, 'small', false, RvMedia::getDefaultImage()) }}" alt="{{ $product->name }}">
+                            <img src="{{ RvMedia::getImageUrl($product->image, 'small', false, RvMedia::getDefaultImage()) }}" alt="{{ $product->name() }}">
                             <div class="tpdealproductd__offer">
                                 <h5 class="tpdealproduct__offer-price">
                                     <span>{{ __('From') }}</span>{{ format_price($product->front_sale_price_with_taxes) }}
@@ -24,9 +24,9 @@
                         </div>
                         <div class="tpdealcontact__text mb-30">
                             <h4 class="tpdealcontact__title mb-10">
-                                <a href="{{ $product->url }}">{{ $product->name }}</a>
+                                <a href="{{ $product->url }}">{{ $product->name() }}</a>
                             </h4>
-                            <p>{!! BaseHelper::clean($product->description) !!}</p>
+                            <p>{!! BaseHelper::clean($product->trans('description')) !!}</p>
                         </div>
                         <div class="tpdealcontact__progress mb-30">
                             <div class="progress">

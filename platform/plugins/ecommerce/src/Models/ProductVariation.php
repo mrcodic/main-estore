@@ -57,7 +57,7 @@ class ProductVariation extends BaseModel
     protected function name(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->product->name,
+            get: fn () => $this->product->name(),
         );
     }
 

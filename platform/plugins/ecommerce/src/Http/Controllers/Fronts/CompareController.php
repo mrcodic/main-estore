@@ -72,15 +72,15 @@ class CompareController extends Controller
 
         if (! $duplicates->isEmpty()) {
             return $response
-                ->setMessage(__(':product is already in your compare list!', ['product' => $product->name]))
+                ->setMessage(__(':product is already in your compare list!', ['product' => $product->name()]))
                 ->setError();
         }
 
-        Cart::instance('compare')->add($productId, $product->name, 1, $product->front_sale_price)
+        Cart::instance('compare')->add($productId, $product->name(), 1, $product->front_sale_price)
             ->associate(Product::class);
 
         return $response
-            ->setMessage(__('Added product :product to compare list successfully!', ['product' => $product->name]))
+            ->setMessage(__('Added product :product to compare list successfully!', ['product' => $product->name()]))
             ->setData(['count' => Cart::instance('compare')->count()]);
     }
 
@@ -103,7 +103,7 @@ class CompareController extends Controller
         });
 
         return $response
-            ->setMessage(__('Removed product :product from compare list successfully!', ['product' => $product->name]))
+            ->setMessage(__('Removed product :product from compare list successfully!', ['product' => $product->name()]))
             ->setData(['count' => Cart::instance('compare')->count()]);
     }
 }

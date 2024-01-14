@@ -76,7 +76,7 @@ class WidgetSeeder extends Seeder
                 'sidebar_id' => 'footer_bottom_sidebar',
                 'position' => 0,
                 'data' => [
-                    'description' => sprintf('Copyright %s © Pixbyte. All rights reserved. Powered by Botble.', Carbon::now()->year),
+                    'description' => sprintf('Copyright %s © Pixbyte. All rights reserved. Powered by Pixbyte.', Carbon::now()->year),
                 ],
             ],
             [

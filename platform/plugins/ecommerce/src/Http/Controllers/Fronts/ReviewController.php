@@ -111,12 +111,12 @@ class ReviewController extends Controller
         Theme::asset()->container('footer')
             ->add('ecommerce-review-js', 'vendor/core/plugins/ecommerce/js/review.js', ['jquery']);
 
-        SeoHelper::setTitle(__('Review product ":product"', ['product' => $product->name]))->setDescription($product->description);
+        SeoHelper::setTitle(__('Review product ":product"', ['product' => $product->name()]))->setDescription($product->trans('description'));
 
         Theme::breadcrumb()
             ->add(__('Home'), route('public.index'))
             ->add(__('Products'), route('public.products'))
-            ->add($product->name, $product->url)
+            ->add($product->name(), $product->url)
             ->add(__('Review'));
 
         do_action(BASE_ACTION_PUBLIC_RENDER_SINGLE, PRODUCT_MODULE_SCREEN_NAME, $product);

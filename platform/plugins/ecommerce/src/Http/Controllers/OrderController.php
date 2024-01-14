@@ -1002,7 +1002,7 @@ class OrderController extends BaseController
             if (! $product) {
                 continue;
             }
-            $productName = $product->original_product->name ?: $product->name;
+            $productName = $product->original_product->name() ?: $product->name();
 
             if ($product->isOutOfStock()) {
                 $isError = true;
@@ -1096,7 +1096,7 @@ class OrderController extends BaseController
 
             $cartItem = CartItem::fromAttributes(
                 $product->id,
-                BaseHelper::clean($parentProduct->name ?: $product->name),
+                BaseHelper::clean($parentproduct->name() ?: $product->name()),
                 $price,
                 $options
             );
@@ -1161,8 +1161,8 @@ class OrderController extends BaseController
                         'length' => $product->length,
                         'wide' => $product->wide,
                         'height' => $product->height,
-                        'name' => $product->name,
-                        'description' => $product->description,
+                        'name' => $product->name(),
+                        'description' => $product->trans('description'),
                         'qty' => $cartItem->qty,
                         'price' => $product->original_price,
                     ];

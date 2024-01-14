@@ -123,7 +123,7 @@ class OrderEcommerceSeeder extends BaseSeeder
                     $data = [
                         'order_id' => $order->id,
                         'product_id' => $groupedProduct->id,
-                        'product_name' => $groupedProduct->name,
+                        'product_name' => $groupedproduct->name(),
                         'product_image' => $groupedProduct->image,
                         'qty' => $groupedProduct->qty,
                         'weight' => $groupedProduct->weight * $groupedProduct->qty,

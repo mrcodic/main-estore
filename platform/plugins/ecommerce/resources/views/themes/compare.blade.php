@@ -12,7 +12,7 @@
                                         <td class="row_img">
                                             <a href="{{ $product->original_product->url }}"><img
                                                     src="{{ RvMedia::getImageUrl($product->image, 'thumb', false, RvMedia::getDefaultImage()) }}"
-                                                    alt="{{ $product->name }}"
+                                                    alt="{{ $product->name() }}"
                                                 ></a>
                                         </td>
                                     @endforeach
@@ -23,7 +23,7 @@
                                     @foreach ($products as $product)
                                         <td class="product_name">
                                             <h5>
-                                                <a href="{{ $product->original_product->url }}">{{ $product->name }}</a>
+                                                <a href="{{ $product->original_product->url }}">{{ $product->name() }}</a>
                                             </h5>
 
                                             @if (is_plugin_active('marketplace') && $product->original_product->store->id)
@@ -75,7 +75,7 @@
                                     @foreach ($products as $product)
                                         <td class="row_text font-xs">
                                             <p>
-                                                {!! BaseHelper::clean($product->description) !!}
+                                                {!! BaseHelper::clean($product->trans('description')) !!}
                                             </p>
                                         </td>
                                     @endforeach

@@ -10,8 +10,8 @@
             </div>
         @endif
         <a href="{{ $product->url }}">
-            <img src="{{ RvMedia::getImageUrl($product->image, 'small', false, RvMedia::getDefaultImage()) }}" alt="{{ $product->name }}">
-            <img class="product-thumb-secondary" src="{{ RvMedia::getImageUrl(Arr::get($product->images, 2, $product->image), 'small', false, RvMedia::getDefaultImage()) }}" alt="{{ $product->name }}">
+            <img src="{{ RvMedia::getImageUrl($product->image, 'small', false, RvMedia::getDefaultImage()) }}" alt="{{ $product->name() }}">
+            <img class="product-thumb-secondary" src="{{ RvMedia::getImageUrl(Arr::get($product->images, 2, $product->image), 'small', false, RvMedia::getDefaultImage()) }}" alt="{{ $product->name() }}">
         </a>
         <div class="tpproduct__thumb-action">
             @if (EcommerceHelper::isCompareEnabled())
@@ -25,7 +25,7 @@
     </div>
     <div class="tpproduct__content">
         <h3 class="tpproduct__title">
-            <a href="{{ $product->url }}">{{ $product->name }}</a>
+            <a href="{{ $product->url }}">{{ $product->name() }}</a>
         </h3>
         <div class="tpproduct__priceinfo p-relative">
             <div class="tpproduct__priceinfo-list">

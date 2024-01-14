@@ -7,14 +7,14 @@
                 <li>
                     <div class="tpcart__item">
                         <div class="tpcart__img">
-                            <img src="{{ RvMedia::getImageUrl($cartItem->options['image'], 'thumb', false, RvMedia::getDefaultImage()) }}" alt="{{ $product->original_product->name }}">
+                            <img src="{{ RvMedia::getImageUrl($cartItem->options['image'], 'thumb', false, RvMedia::getDefaultImage()) }}" alt="{{ $product->original_product->name() }}">
                             <div class="tpcart__del">
                                 <a href="#" data-url="{{ route('public.cart.remove', $cartItem->rowId) }}" class="remove-cart-item"><i class="far fa-times-circle"></i></a>
                             </div>
                         </div>
                         <div class="tpcart__content">
                            <span class="tpcart__content-title">
-                               <a href="{{ $product->original_product->url }}">{{ $product->original_product->name }}</a>
+                               <a href="{{ $product->original_product->url }}">{{ $product->original_product->name() }}</a>
                            </span>
                             <div class="tpcart__cart-price">
                                 <span class="quantity">{{ __(':qty x', ['qty' => $cartItem->qty]) }}</span>

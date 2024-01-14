@@ -33,9 +33,9 @@
                         </div>
                         <div class="tpdealcontact__text mb-30">
                             <h4 class="tpdealcontact__title mb-10">
-                                <a href="{{ $product->url }}">{{ $product->name }}</a>
+                                <a href="{{ $product->url }}">{{ $product->name() }}</a>
                             </h4>
-                            <p>{!! BaseHelper::clean($product->description) !!}</p>
+                            <p>{!! BaseHelper::clean($product->trans('description')) !!}</p>
                         </div>
                         <div class="tpdealcontact__progress mb-30">
                             <div class="progress">
@@ -51,7 +51,7 @@
                 <div class="col-xxl-7 col-xl-6 col-lg-6 col-md-12">
                     <div class="tpdealproduct mb-30">
                         <div class="tpdealproduct__thumb">
-                            <img src="{{ RvMedia::getImageUrl($product->image, 'small', false, RvMedia::getDefaultImage()) }}" alt="{{ $product->name }}">
+                            <img src="{{ RvMedia::getImageUrl($product->image, 'small', false, RvMedia::getDefaultImage()) }}" alt="{{ $product->name() }}">
                         </div>
                     </div>
                 </div>

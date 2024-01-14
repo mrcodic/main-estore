@@ -44,7 +44,7 @@ class TopSellingProductsTable extends TableAbstract
 
                 return Html::link(
                     $item->original_product->url,
-                    BaseHelper::clean($item->original_product->name),
+                    BaseHelper::clean($item->original_product->name()),
                     ['target' => '_blank']
                 )
                         ->toHtml() . ' ' . Html::tag('small', $attributeText);

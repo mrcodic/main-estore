@@ -635,7 +635,7 @@ class EcommerceHelper
             if ($first) {
                 $instance->update($first->rowId, 1);
             } else {
-                $instance->add($product->id, $product->name, 1, $product->front_sale_price)->associate(Product::class);
+                $instance->add($product->id, $product->name(), 1, $product->front_sale_price)->associate(Product::class);
             }
 
             if ($max) {
@@ -928,8 +928,8 @@ class EcommerceHelper
                     'length' => $product->length,
                     'wide' => $product->wide,
                     'height' => $product->height,
-                    'name' => $product->name,
-                    'description' => $product->description,
+                    'name' => $product->name(),
+                    'description' => $product->trans('description'),
                     'qty' => $cartItem->qty,
                     'price' => $product->price,
                 ];

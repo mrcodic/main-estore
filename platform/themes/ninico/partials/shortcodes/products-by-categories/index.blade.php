@@ -8,7 +8,7 @@
                         @foreach($category->products as $product)
                             <div class="tpselectproduct__item d-flex align-items-center mb-25">
                                 <div class="tpselectproduct__thumb mr-25">
-                                    <img src="{{ RvMedia::getImageUrl($product->image, 'small') }}" alt="{{ $product->name }}">
+                                    <img src="{{ RvMedia::getImageUrl($product->image, 'small') }}" alt="{{ $product->name() }}">
                                 </div>
                                 <div class="tpselectproduct__content">
                                     <div class="tpproduct-details__rating">
@@ -17,7 +17,7 @@
                                         </div>
                                     </div>
                                     <h4 class="tpselectproduct__title">
-                                        <a href="{{ $product->url }}">{{ $product->name }}</a>
+                                        <a href="{{ $product->url }}">{{ $product->name() }}</a>
                                     </h4>
                                     <div class="tpselectproduct__price">
                                         <span>{{ format_price($product->front_sale_price_with_taxes) }}</span>

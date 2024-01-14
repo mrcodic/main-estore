@@ -488,7 +488,7 @@ class OrderHelper
          */
         Cart::instance('cart')->add(
             $product->getKey(),
-            BaseHelper::clean($parentProduct->name ?: $product->name),
+            BaseHelper::clean($parentproduct->name() ?: $product->name()),
             $request->input('qty', 1),
             $product->front_sale_price,
             [

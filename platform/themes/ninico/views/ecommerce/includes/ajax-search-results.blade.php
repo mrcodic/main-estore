@@ -5,13 +5,13 @@
                 <div class="product-item row mb-3">
                     <div class="col-3 col-xl-2">
                         <a href="{{ $product->url }}">
-                            <img src="{{ RvMedia::getImageUrl($product->image, 'medium', false, RvMedia::getDefaultImage()) }}" alt="{{ $product->name }}" class="w-100 rounded">
+                            <img src="{{ RvMedia::getImageUrl($product->image, 'medium', false, RvMedia::getDefaultImage()) }}" alt="{{ $product->name() }}" class="w-100 rounded">
                         </a>
                     </div>
                     <div class="col-9 col-xl-10">
                         <div class="text-start px-1">
                             <div>
-                                <a href="{{ $product->url }}" class="product-name">{!! BaseHelper::clean($product->name) !!}</a>
+                                <a href="{{ $product->url }}" class="product-name">{!! BaseHelper::clean($product->name()) !!}</a>
                             </div>
                             @if (EcommerceHelper::isReviewEnabled() && $product->reviews_count)
                                 <div class="product-rating">

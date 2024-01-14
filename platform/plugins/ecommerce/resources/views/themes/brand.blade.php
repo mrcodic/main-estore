@@ -10,7 +10,7 @@
             'ec_products.order' => 'ASC',
             'ec_products.created_at' => 'DESC',
         ],
-    
+
         'paginate' => [
             'per_page' => 20,
             'current_paged' => 1,
@@ -84,7 +84,7 @@
 
                                 </div>
                                 <div class="product-info">
-                                    <h3 class="product-title"><a href="{{ $product->url }}">{{ $product->name }}</a>
+                                    <h3 class="product-title"><a href="{{ $product->url }}">{{ $product->name() }}</a>
                                     </h3>
                                     <div class="product-price">
                                         @if ($product->front_sale_price)

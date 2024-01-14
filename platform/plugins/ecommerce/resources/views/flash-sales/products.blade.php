@@ -34,7 +34,7 @@
                                     <img
                                         class="thumb-image"
                                         src="{{ RvMedia::getImageUrl($product->image, 'thumb', false, RvMedia::getDefaultImage()) }}"
-                                        alt="{{ $product->name }}"
+                                        alt="{{ $product->name() }}"
                                     >
                                 </div>
                             </td>
@@ -46,7 +46,7 @@
                                     class="hover-underline pre-line"
                                     href="{{ route('products.edit', $product->id) }}"
                                     target="_blank"
-                                >{{ $product->name }} ({{ format_price($product->sale_price ?: $product->price) }})</a>
+                                >{{ $product->name() }} ({{ format_price($product->sale_price ?: $product->price) }})</a>
                             </td>
                             <td
                                 class="pl5 p-r5 text-end width-20-px min-width-20-px"

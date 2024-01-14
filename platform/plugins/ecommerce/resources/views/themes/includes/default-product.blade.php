@@ -8,7 +8,7 @@
         @if ($product->front_sale_price != $product->price) block2-labelsale @endif">
         <img
             src="{{ RvMedia::getImageUrl($product->image, 'product-thumbnail', false, RvMedia::getDefaultImage()) }}"
-            alt="{{ $product->name }}"
+            alt="{{ $product->name() }}"
         >
 
         <div class="block2-overlay trans-0-4">
@@ -57,7 +57,7 @@
             class="block2-name dis-block s-text3 p-b-5"
             href="{{ $product->url }}"
         >
-            {{ $product->name }}
+            {{ $product->name() }}
         </a>
 
         <span class="block2-price m-text6 p-r-5">

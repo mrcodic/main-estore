@@ -66,12 +66,12 @@
                                             <img
                                                 class="img-fluid rounded-start ecommerce-product-image"
                                                 src="{{ RvMedia::getImageUrl($product->order_product_image ?: $product->image, 'thumb', false, RvMedia::getDefaultImage()) }}"
-                                                alt="{{ $product->name }}"
+                                                alt="{{ $product->name() }}"
                                             >
                                         </div>
                                         <div class="col-md-8">
                                             <h6 class="card-title ecommerce-product-name">
-                                                {{ $product->order_product_name ?: $product->name }}</h6>
+                                                {{ $product->order_product_name ?: $product->name() }}</h6>
                                             @if ($product->order_completed_at)
                                                 <div class="text-secondary">
                                                     <span class="d-inline-block me-1">{{ __('Order completed at') }}:</span>

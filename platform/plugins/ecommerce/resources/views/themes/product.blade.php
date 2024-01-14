@@ -21,7 +21,7 @@
                                     <img
                                         data-zoom-image="{{ RvMedia::getImageUrl($img, 'product_detail') }}"
                                         src="{{ RvMedia::getImageUrl($img, 'product_detail') }}"
-                                        alt="{{ $product->name }}"
+                                        alt="{{ $product->name() }}"
                                     />
                                 </div>
                             @endforeach
@@ -33,7 +33,7 @@
                             <div class="item">
                                 <img
                                     src="{{ RvMedia::getImageUrl($thumb, 'product') }}"
-                                    alt="{{ $product->name }}"
+                                    alt="{{ $product->name() }}"
                                 />
                             </div>
                         @endforeach
@@ -41,7 +41,8 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 mb-30">
                     <div class="product-page-content">
-                        <h2 class="product-title">{{ $product->name }}</h2>
+                        @dd('lklk')
+                        <h2 class="product-title">{{ $product->name()() }}</h2>
                         @if (EcommerceHelper::isReviewEnabled())
                             <div class="product-rating">
                                 <div
@@ -78,7 +79,7 @@
                             class="product-description"
                             id="detail-description"
                         >
-                            {!! $product->description !!}
+                            {!! $product->trans('description') !!}
                         </p>
                         {!! apply_filters('ecommerce_after_product_description', null, $product) !!}
 
@@ -226,7 +227,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="ck-content">
-                                    {!! BaseHelper::clean($product->content) !!}
+                                    {!! BaseHelper::clean($product->trans('content')) !!}
                                 </div>
                             </div>
                         </div>
