@@ -85,7 +85,7 @@ trait AuthenticatesUsers
         $request->session()->regenerate();
 
         $this->clearLoginAttempts($request);
-
+        
         $this->authenticated($request, $this->guard()->user());
 
         return $request->wantsJson()

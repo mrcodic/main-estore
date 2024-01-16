@@ -23,16 +23,6 @@ class UserSeeder extends BaseSeeder
 
         $faker = $this->fake();
 
-        $this->createUser([
-            'first_name' => $faker->firstName(),
-            'last_name' => $faker->lastName(),
-            'email' => $faker->companyEmail(),
-            'username' => 'botble',
-            'password' => Hash::make('159357'),
-            'super_user' => 1,
-            'manage_supers' => 1,
-        ]);
-
         $superuser = $this->createUser([
             'first_name' => $faker->firstName(),
             'last_name' => $faker->lastName(),

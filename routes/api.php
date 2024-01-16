@@ -11,6 +11,8 @@
 |
 */
 
+use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductsController;
 use Illuminate\Support\Facades\Route;
@@ -21,14 +23,12 @@ Route::get('/product/show/{id}',    [ProductsController::class, 'show']  );
 Route::post('/search',              [ProductsController::class, 'search']);
 Route::get('/categories/index',     [CategoryController::class, 'index'] );
 
-// Route::post('/auth/login', [AuthController::class, 'loginUser']);
-// Route::post('/auth/parent/login', [ParentAuthController::class, 'loginUser']);
-
-// Route::middleware(['auth:sanctum'])->group(function () {
-
-//     Route::prefix('students')->group(function (){
-//         Route::post('markAllRead',[HomePageController::class,'markAllRead']);
-//     });
+Route::post('/customers/login',     [LoginController::class,    'login'   ]);
+Route::post('/customers/register',  [RegisterController::class, 'register']);
 
 
-// });
+Route::middleware(['auth:sanctum'])->group(function () {
+
+    Route::post('/customers/logout', [LoginController::class, 'logout']);
+
+});

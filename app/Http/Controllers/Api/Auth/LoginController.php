@@ -1,19 +1,22 @@
 <?php
 
-namespace Botble\Ecommerce\Http\Controllers\Customers;
+namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\Customer\UserResource;
 use Botble\ACL\Traits\AuthenticatesUsers;
 use Botble\ACL\Traits\LogoutGuardTrait;
+use Botble\Base\Enums\Http;
+use Botble\Base\Helpers\MessageResponse;
 use Botble\Ecommerce\Enums\CustomerStatusEnum;
 use Botble\Ecommerce\Facades\EcommerceHelper;
 use Botble\Ecommerce\Http\Requests\LoginRequest;
-use Botble\JsValidation\Facades\JsValidator;
-use Botble\SeoHelper\Facades\SeoHelper;
-use Botble\Theme\Facades\Theme;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+
+use function Laravel\Prompts\error;
 
 class LoginController extends Controller
 {
@@ -28,29 +31,6 @@ class LoginController extends Controller
         $this->middleware('customer.guest', ['except' => 'logout']);
     }
 
-    public function showLoginForm()
-    {
-        SeoHelper::setTitle(__('Login'));
-
-        Theme::breadcrumb()->add(__('Home'), route('public.index'))->add(__('Login'), route('customer.login'));
-
-        if (! session()->has('url.intended') &&
-            ! in_array(url()->previous(), [route('customer.login'), route('customer.register')])
-        ) {
-            session(['url.intended' => url()->previous()]);
-        }
-
-        Theme::asset()
-            ->container('footer')
-            ->usePath(false)
-            ->add('js-validation', 'vendor/core/core/js-validation/js/js-validation.js', ['jquery']);
-
-        add_filter(THEME_FRONT_FOOTER, function ($html) {
-            return $html . JsValidator::formRequest(LoginRequest::class)->render();
-        });
-
-        return Theme::scope('ecommerce.customers.login', [], 'plugins/ecommerce::themes.customers.login')->render();
-    }
 
     protected function guard()
     {
@@ -66,7 +46,6 @@ class LoginController extends Controller
     {
         $this->validateLogin($request);
 
-        // dd($request->request);
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
@@ -78,7 +57,18 @@ class LoginController extends Controller
         }
 
         if ($this->attemptLogin($request)) {
-            return $this->sendLoginResponse($request);
+
+            $customer = $this->guard()->getLastAttempted();
+            $token = $customer->createToken('authToken', ['login-token'])->plainTextToken;
+
+            return new MessageResponse(
+                message: 'Get Token',
+                code: Http::OK,
+                body: [
+                    'user' => new UserResource($customer),
+                    'access_token' => $token,
+                ]
+            );
         }
 
         // If the login attempt was unsuccessful we will increment the number of attempts
@@ -86,16 +76,17 @@ class LoginController extends Controller
         // user surpasses their maximum number of attempts they will get locked out.
         $this->incrementLoginAttempts($request);
 
-        $this->sendFailedLoginResponse();
+        return $this->sendFailedLoginApiResponse();
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request):Responsable
     {
-        $this->guard()->logout();
+        $request->user()->currentAccessToken()->delete();
 
-        $this->loggedOut($request);
-
-        return redirect()->to(route('public.index'));
+        return new MessageResponse(
+            message: 'Logout Successfully',
+            code: Http::OK,
+        );
     }
 
     protected function attemptLogin(Request $request)
@@ -129,4 +120,18 @@ class LoginController extends Controller
 
         return false;
     }
+
+    protected function sendFailedLoginApiResponse()
+    {
+
+        return new MessageResponse(
+            message: 'Login Error',
+            code: Http::NOT_FOUND,
+            errors:[
+                $this->username() => [trans('auth.failed')]
+            ]
+
+        );
+    }
+
 }
