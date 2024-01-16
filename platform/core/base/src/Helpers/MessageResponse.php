@@ -15,7 +15,7 @@ class MessageResponse implements Responsable
         public readonly Http $code = Http::OK,
         public readonly string $message = 'Request completed successfully',
         public readonly array|object $body = [],
-        public readonly ?string $errors = null,
+        public readonly ?array $errors = null,
     ) {
     }
 }
