@@ -12,7 +12,7 @@
         @php
             $string = file_get_contents(base_path() . '/platform/themes/ninico/public/plugins/custom-fonts/fonts.json');
             $json_file = json_decode($string, true);
-            $primaryFont = theme_option('primary_font', 'LamaSans-Bold');
+            $primaryFont = theme_option('primary_font', 'LamaSans-Regular');
         @endphp
 
         <style >

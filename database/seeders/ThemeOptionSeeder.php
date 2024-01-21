@@ -19,7 +19,7 @@ class ThemeOptionSeeder extends BaseSeeder
             'favicon' => $this->filePath('general/favicon.png'),
             'logo_light' => $this->filePath('general/logo-white.png'),
             'logo' => $this->filePath('general/logo.png'),
-            'primary_font' => 'LamaSans-Bold',
+            'primary_font' => 'LamaSans-Regular',
             'primary_color' => '#FF9900',
             'hotline' => '908. 408. 501. 89',
             'homepage_id' => 1,
