@@ -27,6 +27,7 @@ class SettingSeeder extends BaseSeeder
             'ecommerce_is_enabled_support_digital_products' => 1,
             'ecommerce_load_countries_states_cities_from_location_plugin' => 0,
             'ecommerce_product_sku_format' => 'NN-2443-[%S]',
+            'admin_locale_direction' => 'rtl',
         ]);
 
         Slug::query()->where('reference_type', Post::class)->update(['prefix' => 'blog']);

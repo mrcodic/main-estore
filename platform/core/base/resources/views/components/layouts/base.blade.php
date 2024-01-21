@@ -37,14 +37,15 @@
         content="{{ $copyright }}"
     >
 
-    <link
+    {{-- <link
         href="{{ BaseHelper::getGoogleFontsURL() }}"
         rel="preconnect"
     >
     <link
         href="{{ BaseHelper::getGoogleFontsURL('css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap') }}"
         rel="stylesheet"
-    >
+    > --}}
+
 
     {!! Assets::renderHeader(['core']) !!}
 
@@ -65,6 +66,26 @@
     {{ $header ?? null }}
 
     @stack('header')
+
+    @php
+        $string = file_get_contents(base_path() . '/platform/themes/ninico/public/plugins/custom-fonts/fonts.json');
+        $json_file = json_decode($string, true);
+        $primaryFont = theme_option('primary_font', 'LamaSans-Bold');
+    @endphp
+
+    <style >
+        @font-face {
+            font-family:'{{$primaryFont}}';
+            font-style: normal;
+            font-weight: 400;
+            src: url("{{asset('vendor/core/core/base/fonts/'.$primaryFont.'.woff')}}") format('woff') ;
+        }
+
+        body{
+            font-family:'{{$primaryFont}}';
+        }
+    </style>
+
 </head>
 
 <body

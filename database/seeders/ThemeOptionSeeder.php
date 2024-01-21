@@ -24,7 +24,7 @@ class ThemeOptionSeeder extends BaseSeeder
             'hotline' => '908. 408. 501. 89',
             'homepage_id' => 1,
             'blog_page_id' => 6,
-            'cart_footer_description' => 'Free shipping for orders <b>under 10km</b>',
+            'cart_footer_description' => 'شحن مجاني للطلبات <b>التي تقل عن 10 كيلومترات</b>',
             'breadcrumb_background' => $this->filePath('banners/breadcrumb-01.jpg'),
             'login_background' => $this->filePath('banners/login-bg.jpg'),
             'register_background' => $this->filePath('banners/sign-bg.jpg'),
