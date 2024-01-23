@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductsController;
+use App\Http\Controllers\Api\OrderController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -30,5 +31,8 @@ Route::post('/customers/register',  [RegisterController::class, 'register']);
 Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/customers/logout', [LoginController::class, 'logout']);
+
+    Route::post('/order/add-to-cart',       [OrderController::class, 'addToCart']);
+    Route::post('/order/checkout',     [OrderController::class, 'postCheckout']);
 
 });
