@@ -286,6 +286,7 @@ class PublicCheckoutController
         Request $request,
         bool $finished = false
     ): array {
+        // dd($sessionData);
         if ($request->has('billing_address_same_as_shipping_address')) {
             $sessionData['billing_address_same_as_shipping_address'] = $request->input(
                 'billing_address_same_as_shipping_address'
@@ -515,6 +516,7 @@ class PublicCheckoutController
         HandleApplyCouponService $applyCouponService,
         HandleRemoveCouponService $removeCouponService
     ) {
+        dd($request);
         if (! EcommerceHelper::isCartEnabled()) {
             abort(404);
         }
@@ -590,6 +592,7 @@ class PublicCheckoutController
                 ->setNextUrl(route('customer.login'))
                 ->setMessage(__('Your shopping cart has digital product(s), so you need to sign in to continue!'));
         }
+
 
         if (EcommerceHelper::getMinimumOrderAmount() > Cart::instance('cart')->rawSubTotal()) {
             return $response
@@ -682,8 +685,8 @@ class PublicCheckoutController
             }
         }
 
+
         if (session()->has('applied_coupon_code')) {
-            $discount = $applyCouponService->getCouponData(session('applied_coupon_code'), $sessionData);
             if (empty($discount)) {
                 $removeCouponService->execute();
             } else {

@@ -116,6 +116,8 @@ class HandleApplyCouponService
     {
         $couponCode = trim($couponCode);
 
+        dd(Arr::get($sessionData, 'raw_total', 0));
+
         return Discount::query()
             ->where('code', $couponCode)
             ->where('type', DiscountTypeEnum::COUPON)
