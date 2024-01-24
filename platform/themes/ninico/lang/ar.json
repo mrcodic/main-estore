@@ -748,5 +748,8 @@
     "products": "المنتجات",
     "version :version required": "الإصدار :version مطلوب",
     "when shipping fee less than or equal :amount": "عندما تكون رسوم الشحن أقل من أو تساوي: المبلغ",
-    "✅ Purchased :time": "✅ تم الشراء :time"
+    "✅ Purchased :time": "✅ تم الشراء :time",
+    "You can add to cart" : "يمكنك الاضافه الي السله",
+
+    "":""
 }

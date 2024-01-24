@@ -41,7 +41,6 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 mb-30">
                     <div class="product-page-content">
-                        @dd('lklk')
                         <h2 class="product-title">{{ $product->name()() }}</h2>
                         @if (EcommerceHelper::isReviewEnabled())
                             <div class="product-rating">

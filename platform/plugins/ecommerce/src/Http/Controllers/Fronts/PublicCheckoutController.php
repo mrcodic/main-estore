@@ -286,7 +286,6 @@ class PublicCheckoutController
         Request $request,
         bool $finished = false
     ): array {
-        // dd($sessionData);
         if ($request->has('billing_address_same_as_shipping_address')) {
             $sessionData['billing_address_same_as_shipping_address'] = $request->input(
                 'billing_address_same_as_shipping_address'
@@ -516,7 +515,6 @@ class PublicCheckoutController
         HandleApplyCouponService $applyCouponService,
         HandleRemoveCouponService $removeCouponService
     ) {
-        dd($request);
         if (! EcommerceHelper::isCartEnabled()) {
             abort(404);
         }
@@ -687,6 +685,7 @@ class PublicCheckoutController
 
 
         if (session()->has('applied_coupon_code')) {
+            $discount = $applyCouponService->getCouponData(session('applied_coupon_code'), $sessionData);
             if (empty($discount)) {
                 $removeCouponService->execute();
             } else {

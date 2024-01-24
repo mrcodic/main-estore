@@ -33,6 +33,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/customers/logout', [LoginController::class, 'logout']);
 
     Route::post('/order/add-to-cart',       [OrderController::class, 'addToCart']);
-    Route::post('/order/checkout',     [OrderController::class, 'postCheckout']);
+    Route::post('/order/checkout',          [OrderController::class, 'postCheckout']);
+    Route::post('/order/check-coupon',      [OrderController::class, 'postApplyCoupon']);
 
 });
