@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\CheckoutRequest;
 use Botble\Base\Enums\Http;
 use Botble\Base\Helpers\MessageResponse;
-use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\Ecommerce\Cart\CartItem;
 use Botble\Ecommerce\Enums\OrderStatusEnum;
 use Botble\Ecommerce\Enums\ShippingCodStatusEnum;
@@ -16,6 +15,7 @@ use Botble\Ecommerce\Facades\Cart;
 use Botble\Ecommerce\Facades\Discount;
 use Botble\Ecommerce\Facades\EcommerceHelper;
 use Botble\Ecommerce\Facades\OrderHelper;
+use Botble\Ecommerce\Http\Requests\ApplyCouponRequest;
 use Botble\Ecommerce\Http\Requests\CartRequest;
 use Botble\Ecommerce\Models\Order;
 use Botble\Ecommerce\Models\OrderHistory;
@@ -25,6 +25,7 @@ use Botble\Ecommerce\Models\Shipment;
 use Botble\Ecommerce\Services\Footprints\FootprinterInterface;
 use Botble\Ecommerce\Services\HandleApplyCouponService;
 use Botble\Ecommerce\Services\HandleApplyPromotionsService;
+use Botble\Ecommerce\Services\HandleRemoveCouponService;
 use Botble\Ecommerce\Services\HandleShippingFeeService;
 use Botble\Payment\Enums\PaymentStatusEnum;
 use Illuminate\Http\Request;
@@ -165,7 +166,7 @@ class OrderController extends Controller
         endif;
 
         return new MessageResponse(
-            message: 'Get can add to cart',
+            message: __('You can add to cart'),
             code: Http::OK,
             body: $body
         );
@@ -175,10 +176,9 @@ class OrderController extends Controller
 
     public function postCheckout(
         CheckoutRequest $request,
-        // BaseHttpResponse $response,
         HandleShippingFeeService $shippingFeeService,
         HandleApplyCouponService $applyCouponService,
-        // HandleRemoveCouponService $removeCouponService,
+        HandleRemoveCouponService $removeCouponService,
         HandleApplyPromotionsService $handleApplyPromotionsService
     ) {
         // dd($request->products);
@@ -191,8 +191,9 @@ class OrderController extends Controller
             );
         }
 
+        $productsId = array_column($request->products, 'id');
 
-        $products = Product::whereIn('id' , $request->productsId)->get();
+        $products = Product::whereIn('id' , $productsId)->get();
 
         if (! count($products)) {
             return new MessageResponse(
@@ -334,18 +335,18 @@ class OrderController extends Controller
             }
         }
 
-        // if (session()->has('applied_coupon_code')) {
-        //     $discount = $applyCouponService->getCouponData(session('applied_coupon_code'), ['raw_total'=> $endTotal]);
-        //     if (empty($discount)) {
-        //         $removeCouponService->execute();
-        //     } else {
-        //         $shippingAmount = Arr::get($sessionData, 'is_free_shipping') ? 0 : $shippingAmount;
-        //     }
-        // }
+        if ($request->applied_coupon_code) {
+            $discount = $applyCouponService->getCouponData($request->applied_coupon_code, ['raw_total'=> $endTotal]);
+            if (empty($discount)) {
+                $removeCouponService->execute();
+            } else {
+                $shippingAmount = $request->is_free_shipping ? 0 : $shippingAmount;
+            }
+        }
 
         $currentUserId = 0;
-        if (auth('customer')->check()) {
-            $currentUserId = auth('customer')->id();
+        if (auth()->check()) {
+            $currentUserId = auth()->id();
         }
 
         $orderAmount += (float)$shippingAmount;
@@ -514,4 +515,44 @@ class OrderController extends Controller
 
         return $order;
     }
+
+
+    public function postApplyCoupon(
+        ApplyCouponRequest $request,
+        HandleApplyCouponService $handleApplyCouponService,
+    ) {
+        if (! EcommerceHelper::isCartEnabled()) {
+            return new MessageResponse(
+                message: __('No products in cart'),
+                code: Http::NOT_ACCEPTABLE
+            );
+        }
+        $result = [
+            'error' => false,
+            'message' => '',
+        ];
+        if (is_plugin_active('marketplace')) {
+            $result = apply_filters(HANDLE_POST_APPLY_COUPON_CODE_ECOMMERCE, $result, $request);
+        } else {
+            $result = $handleApplyCouponService->execute($request->input('coupon_code'), [], ['rawTotal' => (float)$request->total]);
+        }
+
+        if ($result['error']) {
+            return new MessageResponse(
+                message: $result['message'],
+                code: Http::NOT_ACCEPTABLE
+            );
+        }
+
+        $couponCode = $request->input('coupon_code');
+
+        return new MessageResponse(
+            message: __('Applied coupon ":code" successfully!', ['code' => $couponCode]),
+            code: Http::OK,
+            body: [
+                'discount_amount' => $result['data']['discount_amount']
+            ]
+        );
+    }
+
 }

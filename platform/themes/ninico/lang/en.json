@@ -748,5 +748,8 @@
     "products": "products",
     "version :version required": "version :version required",
     "when shipping fee less than or equal :amount": "when shipping fee less than or equal :amount",
-    "✅ Purchased :time": "✅ Purchased :time"
+    "✅ Purchased :time": "✅ Purchased :time",
+    "You can add to cart" : "You can add to cart",
+
+    "":""
 }
