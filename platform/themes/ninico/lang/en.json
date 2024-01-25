@@ -460,7 +460,7 @@
     "Proceed to Checkout": "Proceed to Checkout",
     "Processing. Please wait...": "Processing. Please wait...",
     "Product": "Product",
-    "Product :product is out of stock!": "Product :product is out of stock!",
+    "Product :product is out of stock!": "Product ':product' is out of stock!",
     "Product :product limited quantity allowed is :quantity": "Product :product limited quantity allowed is :quantity",
     "Product Categories": "Product Categories",
     "Product Collections": "Product Collections",
@@ -750,6 +750,8 @@
     "when shipping fee less than or equal :amount": "when shipping fee less than or equal :amount",
     "✅ Purchased :time": "✅ Purchased :time",
     "You can add to cart" : "You can add to cart",
+    "Cannot add to card" : "Cannot add to card",
+    "Show Details Order" : "Show Details Order",
 
     "":""
 }

@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\CheckoutRequest;
+use App\Http\Resources\Api\Order\OrderIndexResource;
+use App\Http\Resources\Api\Order\OrderShowResource;
+use App\Http\Resources\Api\Order\ProductsOrderResource;
 use Botble\Base\Enums\Http;
 use Botble\Base\Helpers\MessageResponse;
 use Botble\Ecommerce\Cart\CartItem;
@@ -30,7 +33,6 @@ use Botble\Ecommerce\Services\HandleShippingFeeService;
 use Botble\Payment\Enums\PaymentStatusEnum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Env;
 use Illuminate\Validation\ValidationException;
 
 class OrderController extends Controller
@@ -40,7 +42,23 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Auth()->user()->orders()->paginate(9);
+
+        if (! $orders) {
+            return new MessageResponse(
+                message: __('Not Found Order'),
+                code: Http::NOT_FOUND
+            );
+        }
+
+        return new MessageResponse(
+            message: __('Show Details Order'),
+            code: Http::OK,
+            body:[
+                'orders'=> OrderIndexResource::collection($orders),
+                'pagination' => apiGetPagination($orders)
+            ]
+        );
     }
 
     /**
@@ -50,17 +68,19 @@ class OrderController extends Controller
     {
         if (! EcommerceHelper::isCartEnabled()) {
             return new MessageResponse(
-                message: 'Cannot add to card',
+                message: __('Cannot add to card'),
                 code: Http::METHOD_NOT_ALLOWED
             );
         }
 
         $product = Product::query()->find($request->input('id'));
+        $bodySession = $session ? [ 'id' => $request->input('id') ] : [];
 
         if (! $product) {
             return new MessageResponse(
                 message: __('This product is out of stock or not exists!'),
-                code: Http::NOT_ACCEPTABLE
+                code: Http::NOT_ACCEPTABLE,
+                body: $bodySession
             );
         }
 
@@ -74,7 +94,8 @@ class OrderController extends Controller
                     'Product :product is out of stock!',
                     ['product' => $product->original_product->name() ?: $product->name()]
                 ),
-                code: Http::NOT_ACCEPTABLE
+                code: Http::NOT_ACCEPTABLE,
+                body: $bodySession
             );
         }
 
@@ -83,7 +104,8 @@ class OrderController extends Controller
         if (! $product->canAddToCart($request->input('qty', 1))) {
             return new MessageResponse(
                 message: __('Maximum quantity is :max!', ['max' => $maxQuantity]),
-                code: Http::NOT_ACCEPTABLE
+                code: Http::NOT_ACCEPTABLE,
+                body: $bodySession
             );
         }
 
@@ -116,7 +138,8 @@ class OrderController extends Controller
             if (! $request->input('options')) {
                 return new MessageResponse(
                     message: __('Please select product options!'),
-                    code: Http::NOT_ACCEPTABLE
+                    code: Http::NOT_ACCEPTABLE,
+                    body: $bodySession
                 );
             }
 
@@ -136,7 +159,8 @@ class OrderController extends Controller
             if ($message) {
                 return new MessageResponse(
                     message: __('Please select product options!'),
-                    code: Http::NOT_ACCEPTABLE
+                    code: Http::NOT_ACCEPTABLE,
+                    body: $bodySession
                 );
             }
         }
@@ -147,7 +171,8 @@ class OrderController extends Controller
                     'Product :product is out of stock!',
                     ['product' => $product->original_product->name() ?: $product->name()]
                 ),
-                code: Http::NOT_ACCEPTABLE
+                code: Http::NOT_ACCEPTABLE,
+                body: $bodySession
             );
         }
 
@@ -181,9 +206,7 @@ class OrderController extends Controller
         HandleRemoveCouponService $removeCouponService,
         HandleApplyPromotionsService $handleApplyPromotionsService
     ) {
-        // dd($request->products);
 
-        // dd($products->count());
         if (! EcommerceHelper::isCartEnabled()) {
             return new MessageResponse(
                 message: 'Cannot add to card',
@@ -230,15 +253,10 @@ class OrderController extends Controller
             $allTax += ($totalP * $product->original_product->total_taxes_percentage)/100;
             $endTotal =  $subTotal + $allTax;
 
-            //check if in stock
-            if ($product->isOutOfStock()) {
-                return new MessageResponse(
-                    message: __('Product :product is out of stock!', ['product' => $product->original_product->name()]),
-                    code: Http::NOT_FOUND
-                );
-            }
 
             $addToCartSession = $this->addToCart(new CartRequest(['id'=> $product->id,'qty'=> $qty]), true);
+
+            if(isset($addToCartSession->message)) return $addToCartSession;
 
             array_push( $cartItems, reset($addToCartSession));
             $thisCartItem = new CartItem(reset($addToCartSession)['id'], reset($addToCartSession)['name'], reset($addToCartSession)['price'], reset($addToCartSession)['options']);
@@ -289,17 +307,25 @@ class OrderController extends Controller
 
         $shippingData = [];
 
-        $address = auth()->user()->addresses;
+        $addresses = auth()->user()->addresses;
+        $address = $addresses->where('id', $request->address_id )->first() ?? $addresses->where('is_default', true)->first();
+
+        if(!$address && !($request->country || $request->city || $request->zip_code)):
+            return new MessageResponse(
+                message: __('Should add address!'),
+                code: Http::NOT_FOUND
+            );
+        endif;
 
         $userData = [
-            "name"      => auth()->user()->name,
-            "email"     => auth()->user()->email,
-            "phone"     => $request->phone ?? auth()->user()->phone,
-            "country"   => $request->addresses ?? $address->first() ? $address->first()->country :null,
-            "state"     => $request->state ?? $address->first() ? $address->first()->state :null,
-            "city"      => $request->city ?? $address->first() ? $address->first()->city :null,
-            "address"   => $request->address ?? $address->first() ? $address->first()->address :null,
-            "zip_code"  => $request->zip_code ?? $address->first() ? $address->first()->zip_code :null
+            "name"      => $request->name     ?? $address ? $address->name  :auth()->user()->name,
+            "email"     => $request->email    ?? $address ? $address->email :auth()->user()->email,
+            "phone"     => $request->phone    ?? $address ? $address->phone :auth()->user()->phone,
+            "country"   => $request->country  ?? $address ? $address->country :null,
+            "state"     => $request->state    ?? $address ? $address->state :null,
+            "city"      => $request->city     ?? $address ? $address->city :null,
+            "address"   => $request->address  ?? $address ? $address->address :null,
+            "zip_code"  => $request->zip_code ?? $address ? $address->zip_code :null
         ];
 
         if ($isAvailableShipping) {
@@ -554,5 +580,85 @@ class OrderController extends Controller
             ]
         );
     }
+
+
+
+
+    public function getCheckoutSuccess(Request $request)
+    {
+        if (! EcommerceHelper::isCartEnabled()) {
+            return new MessageResponse(
+                message: __('No products in cart'),
+                code: Http::NOT_ACCEPTABLE
+            );
+        }
+
+        $order = Order::query()
+            ->where('token', $request->token)
+            ->with(['address', 'products', 'taxInformation'])
+            ->orderByDesc('id')
+            ->first();
+
+
+        if (! $order) {
+            return new MessageResponse(
+                message: __('Not Found Order'),
+                code: Http::NOT_FOUND
+            );
+        }
+
+        if (is_plugin_active('payment') && (float)$order->amount && ! $order->payment_id) {
+            return new MessageResponse(
+                message: __('Payment failed!'),
+                code: Http::NOT_ACCEPTABLE
+            );
+        }
+
+        if (is_plugin_active('marketplace')) {
+            return apply_filters(PROCESS_GET_CHECKOUT_SUCCESS_IN_ORDER, $request->token);
+        }
+
+        OrderHelper::clearSessions($request->token);
+
+        // $products = collect();
+
+        // $productsIds = $order->products->pluck('product_id')->all();
+
+        // if (! empty($productsIds)) {
+        //     $products = get_products([
+        //         'condition' => [
+        //             ['ec_products.id', 'IN', $productsIds],
+        //         ],
+        //         'select' => [
+        //             'ec_products.id',
+        //             'ec_products.images',
+        //             'ec_products.name',
+        //             'ec_products.price',
+        //             'ec_products.sale_price',
+        //             'ec_products.sale_type',
+        //             'ec_products.start_date',
+        //             'ec_products.end_date',
+        //             'ec_products.sku',
+        //             'ec_products.order',
+        //             'ec_products.created_at',
+        //             'ec_products.is_variation',
+        //         ],
+        //         'with' => [
+        //             'variationProductAttributes',
+        //         ],
+        //     ]);
+        // }
+
+        // dd($products);
+        return new MessageResponse(
+            message: __('Show Details Order'),
+            code: Http::OK,
+            body:[
+                'order'=> new OrderShowResource($order),
+                'productes'=> ProductsOrderResource::collection($order->products) ,
+            ]
+        );
+    }
+
 
 }
