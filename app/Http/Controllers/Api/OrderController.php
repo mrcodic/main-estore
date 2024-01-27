@@ -494,7 +494,7 @@ class OrderController extends Controller
                 message: $paymentData['message'],
                 code: Http::NOT_ACCEPTABLE,
                 body: [
-                    'tocken' => $token
+                    'order_token' => $token
                 ]
             );
         }
@@ -504,7 +504,7 @@ class OrderController extends Controller
                 message: __('Checkout error!'),
                 code: Http::NOT_ACCEPTABLE,
                 body: [
-                    'tocken' => $token
+                    'order_token' => $token
                 ]
             );
         }
@@ -513,7 +513,7 @@ class OrderController extends Controller
             message: __('Checkout successfully!'),
             code: Http::OK,
             body: [
-                'tocken' => $token
+                'order_token' => $token
             ]
         );
     }

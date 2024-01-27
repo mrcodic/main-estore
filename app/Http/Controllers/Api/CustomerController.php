@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\Customer\AddressesResource;
+use App\Models\User;
 use Botble\Base\Enums\Http;
 use Botble\Base\Helpers\MessageResponse;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class CustomerController extends Controller
                 message: __('Not Found Addresses'),
                 code: Http::NOT_FOUND
             );
-            
+
         }
 
         return new MessageResponse(
@@ -71,9 +72,12 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $user = User::find(auth()->id());
+
+        
+
     }
 
     /**
