@@ -17,9 +17,9 @@ class OrderIndexResource extends JsonResource
         return [
             "id"            => $this->id,
             "code"          => $this->code,
+            "order_token"   => $this->token,
             "status"        => $this->status,
             "amount"        => $this->amount,
-            "token"         => $this->token,
             "is_finished"   => $this->is_finished,
             "completed_at"  => $this->completed_at ? $this->completed_at->format('H:i d/m/Y') :null,
             "created_at"    => $this->created_at->format('H:i d/m/Y'),
