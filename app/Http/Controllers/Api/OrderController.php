@@ -594,7 +594,7 @@ class OrderController extends Controller
         }
 
         $order = Order::query()
-            ->where('token', $request->token)
+            ->where('token', $request->order_token)
             ->with(['address', 'products', 'taxInformation'])
             ->orderByDesc('id')
             ->first();
@@ -615,10 +615,10 @@ class OrderController extends Controller
         }
 
         if (is_plugin_active('marketplace')) {
-            return apply_filters(PROCESS_GET_CHECKOUT_SUCCESS_IN_ORDER, $request->token);
+            return apply_filters(PROCESS_GET_CHECKOUT_SUCCESS_IN_ORDER, $request->order_token);
         }
 
-        OrderHelper::clearSessions($request->token);
+        OrderHelper::clearSessions($request->order_token);
 
         // $products = collect();
 
