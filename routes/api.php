@@ -28,6 +28,7 @@ Route::get('/categories/index',     [CategoryController::class, 'index'] );
 Route::post('/customers/login',     [LoginController::class,    'login'   ]);
 Route::post('/customers/register',  [RegisterController::class, 'register']);
 
+Route::post('/order/add-to-cart',   [OrderController::class, 'addToCart']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
@@ -35,7 +36,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/customers/addresses', [CustomerController::class, 'addresses']);
 
     Route::get('/order/index',          [OrderController::class, 'index']);
-    Route::post('/order/add-to-cart',   [OrderController::class, 'addToCart']);
     Route::post('/order/checkout',      [OrderController::class, 'postCheckout']);
     Route::post('/order/check-coupon',  [OrderController::class, 'postApplyCoupon']);
     Route::get('/order/show',           [OrderController::class, 'getCheckoutSuccess']);
