@@ -339,7 +339,7 @@ class PublicCheckoutController
                 }
             }
 
-            if ($finished && auth('customer')->check()) {
+            if ($finished && auth('customer')->check() && $request->address["save_new_address"]) {
                 $customer = auth('customer')->user();
                 if ($customer->addresses->count() == 0 || $request->input('address.address_id') == 'new') {
                     $address = Address::query()
@@ -613,10 +613,10 @@ class PublicCheckoutController
         foreach ($products as $product) {
             if ($product->isOutOfStock()) {
                 return $response
-                    ->setError()
-                    ->setMessage(
-                        __('Product :product is out of stock!', ['product' => $product->original_product->name()])
-                    );
+                ->setError()
+                ->setMessage(
+                    __('Product :product is out of stock!', ['product' => $product->original_product->name()])
+                );
             }
         }
 

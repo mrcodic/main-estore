@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\CheckoutRequest;
+use App\Http\Resources\Api\Order\AddressOrderResource;
 use App\Http\Resources\Api\Order\OrderIndexResource;
 use App\Http\Resources\Api\Order\OrderShowResource;
 use App\Http\Resources\Api\Order\ProductsOrderResource;
 use Botble\Base\Enums\Http;
+use Botble\Base\Facades\BaseHelper;
 use Botble\Base\Helpers\MessageResponse;
 use Botble\Ecommerce\Cart\CartItem;
 use Botble\Ecommerce\Enums\OrderStatusEnum;
@@ -20,6 +22,8 @@ use Botble\Ecommerce\Facades\EcommerceHelper;
 use Botble\Ecommerce\Facades\OrderHelper;
 use Botble\Ecommerce\Http\Requests\ApplyCouponRequest;
 use Botble\Ecommerce\Http\Requests\CartRequest;
+use Botble\Ecommerce\Models\Address;
+use Botble\Ecommerce\Models\Customer;
 use Botble\Ecommerce\Models\Order;
 use Botble\Ecommerce\Models\OrderHistory;
 use Botble\Ecommerce\Models\OrderProduct;
@@ -31,8 +35,11 @@ use Botble\Ecommerce\Services\HandleApplyPromotionsService;
 use Botble\Ecommerce\Services\HandleRemoveCouponService;
 use Botble\Ecommerce\Services\HandleShippingFeeService;
 use Botble\Payment\Enums\PaymentStatusEnum;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class OrderController extends Controller
@@ -280,12 +287,30 @@ class OrderController extends Controller
             );
         }
 
+        $token = OrderHelper::getOrderSessionToken();
+        $sessionData = OrderHelper::getOrderSessionData($token);
+
+        $sessionData = $this->processOrderData($token, $sessionData, $request, true);
+        // dd('sessionData');
+
         $countCart = 0;
         foreach($request->products as $value){
             $countCart += $value['qty'];
         }
 
         $paymentMethod = $request->input('payment_method');
+        do_action('ecommerce_post_checkout', $products, $request, $token, $sessionData);
+
+        if (is_plugin_active('marketplace')) {
+            return apply_filters(
+                HANDLE_PROCESS_POST_CHECKOUT_ORDER_DATA_ECOMMERCE,
+                $products,
+                $request,
+                $token,
+                $sessionData,
+                null
+            );
+        }
 
         $isAvailableShipping = EcommerceHelper::isAvailableShipping($products);
 
@@ -298,10 +323,10 @@ class OrderController extends Controller
                                         'productItems' => $products,
                                     ]);
 
-        // $couponDiscountAmount = Arr::get($sessionData, 'coupon_discount_amount');
+        $couponDiscountAmount = Arr::get($sessionData, 'coupon_discount_amount');
         $rawTotal = $endTotal;
-        // $orderAmount = max($rawTotal - $promotionDiscountAmount - $couponDiscountAmount, 0);
-        $orderAmount = max($rawTotal - $promotionDiscountAmount , 0);
+        $orderAmount = max($rawTotal - $promotionDiscountAmount - $couponDiscountAmount, 0);
+        // $orderAmount = max($rawTotal - $promotionDiscountAmount , 0);
 
         $shippingAmount = 0;
 
@@ -317,22 +342,30 @@ class OrderController extends Controller
             );
         endif;
 
-        $userData = [
-            "name"      => $request->name     ?? $address ? $address->name  :auth()->user()->name,
-            "email"     => $request->email    ?? $address ? $address->email :auth()->user()->email,
-            "phone"     => $request->phone    ?? $address ? $address->phone :auth()->user()->phone,
-            "country"   => $request->country  ?? $address ? $address->country :null,
-            "state"     => $request->state    ?? $address ? $address->state :null,
-            "city"      => $request->city     ?? $address ? $address->city :null,
-            "address"   => $request->address  ?? $address ? $address->address :null,
-            "zip_code"  => $request->zip_code ?? $address ? $address->zip_code :null
-        ];
+        // $userData = [
+        //     "address_id"=> $request->address->address_id?? $address ? $address->name  :auth()->user()->name,
+        //     "name"      => $request->address->name      ?? $address ? $address->name  :auth()->user()->name,
+        //     "email"     => $request->address->email     ?? $address ? $address->email :auth()->user()->email,
+        //     "phone"     => $request->address->phone     ?? $address ? $address->phone :auth()->user()->phone,
+        //     "country"   => $request->address->country   ?? $address ? $address->country :null,
+        //     "state"     => $request->address->state     ?? $address ? $address->state :null,
+        //     "city"      => $request->address->city      ?? $address ? $address->city :null,
+        //     "address"   => $request->address->address   ?? $address ? $address->address :null,
+        //     "zip_code"  => $request->address->zip_code  ?? $address ? $address->zip_code :null
+        // ];
+
+        // if (!$userData['email'] && !!$userData['country'] &&!$userData['address'] &&!$userData['phone']) {
+        //     return new MessageResponse(
+        //         message: __('Should add address & phone & email & country!'),
+        //         code: Http::NOT_FOUND
+        //     );
+        // }
 
         if ($isAvailableShipping) {
             $origin = EcommerceHelper::getOriginAddress();
             $shippingData = EcommerceHelper::getShippingData(
                 $products,
-                $userData,
+                $sessionData,
                 $origin,
                 $orderAmount,
                 $paymentMethod
@@ -377,7 +410,6 @@ class OrderController extends Controller
 
         $orderAmount += (float)$shippingAmount;
 
-        $token = OrderHelper::getOrderSessionToken();
         $request->merge([
             'amount' => $orderAmount ?: 0,
             'currency' => $request->input('currency', strtoupper(get_application_currency()->title)),
@@ -646,6 +678,7 @@ class OrderController extends Controller
         //         'with' => [
         //             'variationProductAttributes',
         //         ],
+
         //     ]);
         // }
 
@@ -655,10 +688,242 @@ class OrderController extends Controller
             code: Http::OK,
             body:[
                 'order'=> new OrderShowResource($order),
+                'address'=> new AddressOrderResource($order->address),
                 'productes'=> ProductsOrderResource::collection($order->products) ,
             ]
         );
     }
 
+
+
+
+    protected function processOrderData(
+        string $token,
+        array $sessionData,
+        Request $request,
+        bool $finished = false
+    ): array {
+        if ($request->has('billing_address_same_as_shipping_address')) {
+            $sessionData['billing_address_same_as_shipping_address'] = $request->input(
+                'billing_address_same_as_shipping_address'
+            );
+        }
+
+        if ($request->has('billing_address')) {
+            $sessionData['billing_address'] = $request->input('billing_address');
+        }
+
+        if ($request->has('address.address_id')) {
+            $sessionData['is_new_address'] = $request->input('address.address_id') == 'new';
+        }
+
+        if ($request->input('address', [])) {
+
+            if (! isset($sessionData['created_account']) && $request->input('create_account') == 1) {
+                $validator = Validator::make($request->input(), [
+                    'password' => 'required|min:6',
+                    'password_confirmation' => 'required|same:password',
+                    'address.email' => 'required|max:60|min:6|email|unique:ec_customers,email',
+                    'address.name' => 'required|min:3|max:120',
+                ]);
+
+                if (! $validator->fails()) {
+                    $customer = Customer::query()->create([
+                        'name' => BaseHelper::clean($request->input('address.name')),
+                        'email' => BaseHelper::clean($request->input('address.email')),
+                        'phone' => BaseHelper::clean($request->input('address.phone')),
+                        'password' => Hash::make($request->input('password')),
+                    ]);
+
+                    auth('customer')->attempt([
+                        'email' => $request->input('address.email'),
+                        'password' => $request->input('password'),
+                    ], true);
+
+                    event(new Registered($customer));
+
+                    $sessionData['created_account'] = true;
+
+                    $address = Address::query()
+                        ->create(
+                            array_merge($request->input('address'), [
+                                'customer_id' => $customer->id,
+                                'is_default' => true,
+                            ])
+                        );
+
+                    $request->merge(['address.address_id' => $address->id]);
+                    $sessionData['address_id'] = $address->id;
+                }
+            }
+
+            if ($finished && auth()->check() && $request->address["save_new_address"]) {
+                $customer = auth()->user();
+                if ($customer->addresses->count() == 0 || $request->input('address.address_id') == 'new') {
+                    $address = Address::query()
+                        ->create(
+                            array_merge($request->input('address', []), [
+                                'customer_id' => auth()->id(),
+                                'is_default' => $customer->addresses->count() == 0,
+                            ])
+                        );
+
+                    $request->merge(['address.address_id' => $address->id]);
+                    $sessionData['address_id'] = $address->id;
+                }
+            }
+        }
+
+        $address = null;
+
+        if (($addressId = $request->input('address.address_id')) && $addressId !== 'new') {
+            $address = Address::query()->find($addressId);
+            if ($address) {
+                $sessionData['address_id'] = $address->getKey();
+            }
+        } elseif (auth()->check() && ! Arr::get($sessionData, 'address_id')) {
+            $address = Address::query()->where([
+                'customer_id' => auth()->id(),
+                'is_default' => true,
+            ])->first();
+
+            if ($address) {
+                $sessionData['address_id'] = $address->id;
+            }
+        }
+
+        $addressData = [
+            'billing_address_same_as_shipping_address' => Arr::get(
+                $sessionData,
+                'billing_address_same_as_shipping_address',
+                true
+            ),
+            'billing_address' => Arr::get($sessionData, 'billing_address', []),
+        ];
+
+        if (! empty($address)) {
+            $addressData = [
+                'name' => $address->name,
+                'phone' => $address->phone,
+                'email' => $address->email,
+                'country' => $address->country,
+                'state' => $address->state,
+                'city' => $address->city,
+                'address' => $address->address,
+                'zip_code' => $address->zip_code,
+                'address_id' => $address->id,
+            ];
+        } elseif ($addressFromInput = (array)$request->input('address', [])) {
+            $addressData = $addressFromInput;
+        }
+
+        $addressData = OrderHelper::cleanData($addressData);
+
+        $sessionData = array_merge($sessionData, $addressData);
+
+        $products = Cart::instance('cart')->products();
+        if (is_plugin_active('marketplace')) {
+            $sessionData = apply_filters(
+                HANDLE_PROCESS_ORDER_DATA_ECOMMERCE,
+                $products,
+                $token,
+                $sessionData,
+                $request
+            );
+
+            OrderHelper::setOrderSessionData($token, $sessionData);
+
+            return $sessionData;
+        }
+
+        if (! isset($sessionData['created_order'])) {
+            $currentUserId = 0;
+            if (auth()->check()) {
+                $currentUserId = auth()->id();
+            }
+
+            $request->merge([
+                'amount' => Cart::instance('cart')->rawTotal(),
+                'user_id' => $currentUserId,
+                'shipping_method' => $request->input('shipping_method', ShippingMethodEnum::DEFAULT),
+                'shipping_option' => $request->input('shipping_option'),
+                'shipping_amount' => 0,
+                'tax_amount' => Cart::instance('cart')->rawTax(),
+                'sub_total' => Cart::instance('cart')->rawSubTotal(),
+                'coupon_code' => session('applied_coupon_code'),
+                'discount_amount' => 0,
+                'status' => OrderStatusEnum::PENDING,
+                'is_finished' => false,
+                'token' => $token,
+            ]);
+
+            $order = Order::query()->where(compact('token'))->first();
+
+            $order = $this->createOrderFromData($request->input(), $order);
+
+            $sessionData['created_order'] = true;
+            $sessionData['created_order_id'] = $order->getKey();
+        }
+
+        if (! empty($address)) {
+            $addressData['order_id'] = $sessionData['created_order_id'];
+        } elseif ((array)$request->input('address', [])) {
+            $addressData = array_merge(
+                ['order_id' => $sessionData['created_order_id']],
+                (array)$request->input('address', [])
+            );
+        }
+
+        $sessionData['is_save_order_shipping_address'] = $request->save_new_address ?? EcommerceHelper::isSaveOrderShippingAddress($products);
+
+        $sessionData = OrderHelper::checkAndCreateOrderAddress($addressData, $sessionData);
+
+        if (! isset($sessionData['created_order_product'])) {
+            $weight = 0;
+            foreach (Cart::instance('cart')->content() as $cartItem) {
+                $product = Product::query()->find($cartItem->id);
+                if ($product && $product->weight) {
+                    $weight += $product->weight * $cartItem->qty;
+                }
+            }
+
+            $weight = EcommerceHelper::validateOrderWeight($weight);
+
+            OrderProduct::query()->where(['order_id' => $sessionData['created_order_id']])->delete();
+
+            foreach (Cart::instance('cart')->content() as $cartItem) {
+                $product = Product::query()->find($cartItem->id);
+
+                if (! $product) {
+                    continue;
+                }
+
+                $data = [
+                    'order_id' => $sessionData['created_order_id'],
+                    'product_id' => $cartItem->id,
+                    'product_name' => $cartItem->name,
+                    'product_image' => $product->original_product->image,
+                    'qty' => $cartItem->qty,
+                    'weight' => $weight,
+                    'price' => $cartItem->price,
+                    'tax_amount' => $cartItem->tax,
+                    'options' => $cartItem->options,
+                    'product_type' => $product?->product_type,
+                ];
+
+                if ($cartItem->options['options']) {
+                    $data['product_options'] = $cartItem->options['options'];
+                }
+
+                OrderProduct::query()->create($data);
+            }
+
+            $sessionData['created_order_product'] = Cart::instance('cart')->getLastUpdatedAt();
+        }
+
+        OrderHelper::setOrderSessionData($token, $sessionData);
+
+        return $sessionData;
+    }
 
 }
