@@ -32,8 +32,14 @@ Route::post('/order/add-to-cart',   [OrderController::class, 'addToCart']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
-    Route::post('/customers/logout', [LoginController::class, 'logout']);
-    Route::get('/customers/addresses', [CustomerController::class, 'addresses']);
+    Route::prefix('customers')->group(function(){
+        Route::post('/logout', [LoginController::class, 'logout']);
+        Route::post('/edit',            [CustomerController::class, 'update']);
+        Route::get('/addresses',        [CustomerController::class, 'addresses']);
+        Route::post('/addresses/add',   [CustomerController::class, 'addAddress']);
+        Route::post('/addresses/edit',  [CustomerController::class, 'editAddress']);
+    });
+
 
     Route::get('/order/index',          [OrderController::class, 'index']);
     Route::post('/order/checkout',      [OrderController::class, 'postCheckout']);

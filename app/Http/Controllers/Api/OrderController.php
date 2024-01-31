@@ -735,7 +735,7 @@ class OrderController extends Controller
                         'password' => Hash::make($request->input('password')),
                     ]);
 
-                    auth('customer')->attempt([
+                    auth()->attempt([
                         'email' => $request->input('address.email'),
                         'password' => $request->input('password'),
                     ], true);
