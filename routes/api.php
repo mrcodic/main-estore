@@ -38,6 +38,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/addresses',        [CustomerController::class, 'addresses']);
         Route::post('/addresses/add',   [CustomerController::class, 'addAddress']);
         Route::post('/addresses/edit',  [CustomerController::class, 'editAddress']);
+        Route::post('/avatar/edit',     [CustomerController::class, 'postAvatar']);
     });
 
 
