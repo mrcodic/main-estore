@@ -5,14 +5,19 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\Customer\AddressesResource;
 use App\Models\User;
+use App\Http\Requests\Api\Customer\AvatarRequest;
 use Botble\Base\Enums\Http;
 use Botble\Base\Helpers\MessageResponse;
 use Botble\Ecommerce\Http\Requests\AddressRequest;
 use Botble\Ecommerce\Http\Requests\EditAccountRequest;
 use Botble\Ecommerce\Models\Address;
 use Botble\Ecommerce\Models\Customer;
+use Botble\Media\Facades\RvMedia;
+use Botble\Media\Services\ThumbnailService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Exception;
 
 class CustomerController extends Controller
 {
@@ -50,12 +55,48 @@ class CustomerController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function postAvatar(AvatarRequest $request, ThumbnailService $thumbnailService, )
     {
-        //
+        try {
+            $account = auth()->user();
+
+            $result = RvMedia::handleUpload($request->file('avatar_file'), 0, $account->upload_folder);
+
+            if ($result['error']) {
+                return new MessageResponse(
+                    message: $result['message'],
+                    code: Http::NOT_FOUND
+                );
+            }
+
+            $avatarData = json_decode($request->input('avatar_data'));
+
+            $file = $result['data'];
+
+            $thumbnailService
+                ->setImage(RvMedia::getRealPath($file->url))
+                ->setSize((int)$avatarData->width, (int)$avatarData->height)
+                ->setCoordinates((int)$avatarData->x, (int)$avatarData->y)
+                ->setDestinationPath(File::dirname($file->url))
+                ->setFileName(File::name($file->url) . '.' . File::extension($file->url))
+                ->save('crop');
+
+            $account->avatar = $file->url;
+            $account->save();
+
+            return new MessageResponse(
+                message: trans('plugins/customer::dashboard.update_avatar_success'),
+                code: Http::OK,
+                body:[
+                    'url' => RvMedia::url($file->url)
+                ]
+            );
+        } catch (Exception $exception) {
+            return new MessageResponse(
+                message: $exception->getMessage(),
+                code: Http::NOT_FOUND
+            );
+        }
     }
 
     /**
