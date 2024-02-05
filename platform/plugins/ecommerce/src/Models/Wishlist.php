@@ -4,6 +4,7 @@ namespace Botble\Ecommerce\Models;
 
 use Botble\Base\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\DB;
 
 class Wishlist extends BaseModel
 {
@@ -18,4 +19,9 @@ class Wishlist extends BaseModel
     {
         return $this->hasOne(Product::class, 'id', 'product_id')->withDefault();
     }
+
+    // public function delete()
+    // {
+    //     return DB::table($this->table)->delete();
+    // }
 }
