@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\Customer\AddressesResource;
 use App\Models\User;
 use App\Http\Requests\Api\Customer\AvatarRequest;
+use App\Http\Resources\Api\Customer\UserResource;
 use Botble\Base\Enums\Http;
 use Botble\Base\Helpers\MessageResponse;
 use Botble\Ecommerce\Http\Requests\AddressRequest;
@@ -45,14 +46,6 @@ class CustomerController extends Controller
                 'pagination' => apiGetPagination($addresses)
             ]
         );
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     public function postAvatar(AvatarRequest $request, ThumbnailService $thumbnailService, )
@@ -102,17 +95,26 @@ class CustomerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request)
     {
-        //
-    }
+        $id = $request->id ?? auth()->id();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        $customer = Customer::find($id);
+
+        if (!$customer):
+            return new MessageResponse(
+                message: __('Not Found Profile'),
+                code: Http::NOT_FOUND
+            );
+        endif;
+
+        return new MessageResponse(
+            message: 'Get Token',
+            code: Http::OK,
+            body: [
+                'user' => new UserResource($customer)
+            ]
+        );
     }
 
     /**
@@ -195,11 +197,4 @@ class CustomerController extends Controller
     }
 
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

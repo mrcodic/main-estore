@@ -14,15 +14,17 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $address = $this->addresses->where('is_default', true)->first() ?? null;
+
         return [
             "id"     => $this->id,
             "name"   => $this->name,
             "email"  => $this->email,
             "avatar" => $this->avatar,
-            "dob"    => $this->dob,
+            "dob"    => $this->dob->format('d/m/Y'),
             "phone"  => $this->phone,
             "status" => $this->status,
-            "address"=> $this->addresses->where('is_default', true)->first() ?? null,
+            "address"=> $address ? new AddressesResource($address) : null,
         ];
     }
 }
