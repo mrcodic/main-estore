@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\Product\DiscountsResource;
 use App\Http\Resources\Api\Product\ProductResource;
 use App\Http\Resources\Api\Product\ProductsResource;
 use Botble\Base\Enums\Http;
 use Botble\Base\Helpers\MessageResponse;
+use Botble\Ecommerce\Models\Discount;
 use Botble\Ecommerce\Models\Product;
 use Botble\Ecommerce\Models\ProductCategory;
 use Botble\Ecommerce\Models\ProductTag;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
@@ -40,11 +43,13 @@ class ProductsController extends Controller
             );
         }
 
+        $authCustomer = $request->user('sanctum') ?? null;
+
         return new MessageResponse(
             message: 'Get Products',
             code: Http::OK,
             body: [
-                'products'   => ProductsResource::collection($products),
+                'products'   => ProductsResource::collection($products)->user($authCustomer),
                 'pagination' => apiGetPagination($products)
             ]
         );
@@ -127,6 +132,33 @@ class ProductsController extends Controller
             body: [
                 'products'   => ProductsResource::collection($products),
                 'pagination' => apiGetPagination($products)
+            ]
+        );
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function discount(Request $request)
+    {
+        $limit = $request->integer('limit', 5) ?: 5;
+
+        $now = Carbon::now();
+        $discounts = Discount::where('type', 'promotion')->where(fn($query) => $query->where('end_date' ,'>', $now )->orWhere('end_date' ,null))->paginate($limit);
+
+        if (! $discounts instanceof LengthAwarePaginator) {
+            return new MessageResponse(
+                message: __('Not found discounts'),
+                code: Http::NOT_FOUND
+            );
+        }
+
+        return new MessageResponse(
+            message: __('Get Discounts'),
+            code: Http::OK,
+            body: [
+                'discounts'   => DiscountsResource::collection($discounts),
+                'pagination' => apiGetPagination($discounts)
             ]
         );
     }
