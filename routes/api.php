@@ -21,7 +21,6 @@ use App\Http\Controllers\Api\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/products/index',       [ProductsController::class, 'index'] );
 Route::get('/product/show/{id}',    [ProductsController::class, 'show']  );
 Route::post('/search',              [ProductsController::class, 'search']);
 Route::get('/categories/index',     [CategoryController::class, 'index'] );
@@ -32,6 +31,8 @@ Route::post('/customers/register',  [RegisterController::class, 'register']);
 Route::post('/order/add-to-cart',   [OrderController::class, 'addToCart']);
 
 // Route::get('/customers/show',      [CustomerController::class, 'show']);
+Route::get('/products/index',       [ProductsController::class, 'index'] );
+Route::get('/discounts',            [ProductsController::class, 'discount'] );
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
