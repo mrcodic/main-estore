@@ -13,6 +13,7 @@
 
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\ProductsController;
@@ -28,7 +29,11 @@ Route::get('/categories/index',     [CategoryController::class, 'index'] );
 Route::post('/customers/login',     [LoginController::class,    'login'   ]);
 Route::post('/customers/register',  [RegisterController::class, 'register']);
 
-Route::post('/order/add-to-cart',   [OrderController::class, 'addToCart']);
+Route::post('/order/add-to-cart',   [CartController::class, 'addToCart']);
+Route::get('/cart',                 [CartController::class, 'show']);
+Route::post('/cart/restore',        [CartController::class, 'restoreCart']);
+Route::post('/cart/remove/row',     [CartController::class, 'removeRow']);
+Route::post('/cart/edit/row',       [CartController::class, 'EditRow']);
 
 // Route::get('/customers/show',      [CustomerController::class, 'show']);
 Route::get('/products/index',       [ProductsController::class, 'index'] );
@@ -58,4 +63,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/remove',  [WishlistController::class,'remove']);
     });
 
+    Route::post('/cart/link-customer', [CartController::class, 'linkCartToCustomer']);
 });

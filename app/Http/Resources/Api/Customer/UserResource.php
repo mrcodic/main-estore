@@ -21,7 +21,7 @@ class UserResource extends JsonResource
             "name"   => $this->name,
             "email"  => $this->email,
             "avatar" => $this->avatar,
-            "dob"    => $this->dob->format('d/m/Y'),
+            "dob"    => $this->dob ? $this->dob->format('d/m/Y') : null,
             "phone"  => $this->phone,
             "status" => $this->status,
             "address"=> $address ? new AddressesResource($address) : null,

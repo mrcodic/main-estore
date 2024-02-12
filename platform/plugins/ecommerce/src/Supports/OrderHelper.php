@@ -16,6 +16,7 @@ use Botble\Ecommerce\Events\OrderPaymentConfirmedEvent;
 use Botble\Ecommerce\Events\OrderPlacedEvent;
 use Botble\Ecommerce\Events\ProductQuantityUpdatedEvent;
 use Botble\Ecommerce\Facades\Cart;
+use Botble\Ecommerce\Facades\CartApi;
 use Botble\Ecommerce\Facades\Discount;
 use Botble\Ecommerce\Facades\EcommerceHelper;
 use Botble\Ecommerce\Facades\EcommerceHelper as EcommerceHelperFacade;
@@ -503,6 +504,110 @@ class OrderHelper
         );
 
         return Cart::instance('cart')->content()->toArray();
+    }
+
+    public function handleAddCartApi($token ,Product $product, Request $request): array
+    {
+        $parentProduct = $product->original_product;
+
+        $image = $product->image ?: $parentProduct->image;
+        $options = [];
+        if ($requestOption = $request->input('options')) {
+            $options = $this->getProductOptionData($requestOption);
+        }
+
+        /**
+         * Add cart to DB
+         */
+        $cart = CartApi::instance('cart')->add(
+            $product->getKey(),
+            BaseHelper::clean($parentProduct->name() ?: $product->name()),
+            $request->input('qty', 1),
+            $product->front_sale_price,
+            [
+                'image' => $image,
+                'attributes' => $product->is_variation ? $product->variation_attributes : '',
+                'taxRate' => $parentProduct->total_taxes_percentage,
+                'options' => $options,
+                'extras' => $request->input('extras', []),
+                'sku' => $product->sku,
+                'weight' => $product->weight,
+            ],
+            $token,
+            $request->user('sanctum')?->id ??null
+        );
+
+        return $cart;
+    }
+
+    public function handleRetakeCartApi($token ,Product $product, $options=[] , $qty=1, $customer=null)
+    {
+        $parentProduct = $product->original_product;
+
+        /**
+         * Add cart to DB
+         */
+        CartApi::instance('cart')->reAdd(
+            $product->getKey(),
+            BaseHelper::clean($parentProduct->name() ?: $product->name()),
+            $qty,
+            $product->front_sale_price,
+            $options,
+            $token,
+            $customer
+        );
+
+    }
+
+
+    public function getCartFromUserOrToken( $token_cart, $customer)
+    {
+
+        $cart = CartApi::getCartExists($token_cart, $customer)->first();
+
+        if(! $cart):
+            return null;
+        endif;
+
+        $content = unserialize($cart->content);
+
+        foreach ($content as $item) {
+
+            $product = Product::find($item->id);
+
+            if($product->price != $item->price){
+                $content->get($item->rowId)->price = $product->price;
+            };
+            // $this->handleRetakeCartApi($cart->identifier ,$product, (array)json_decode($item->options), $item->qty, $request->user('sanctum')?->id ??null);
+        }
+
+        CartApi::store($cart->identifier ,$content, $customer);
+        $cart = CartApi::getCartExists($token_cart, $customer)->first();
+
+        return [
+            'token_cart' => $cart->identifier,
+            'items'      => unserialize($cart->content)
+        ];
+    }
+
+    public function restoreCart($token_cart=null ,$customer=null)
+    {
+        $cart = CartApi::getCartExists($token_cart, $customer)->first();
+
+        if(! $cart):
+            return false;
+        endif;
+
+        CartApi::instance('cart')->restore($cart->identifier);
+
+        return true;
+    }
+
+    public function addItemToCartWithContent($identifier=null ,$content ,$customer=null)
+    {
+        CartApi::instance('cart')->store($identifier ,$content, $customer);
+
+        return true;
     }
 
     public function getProductOptionData(array $data): array
