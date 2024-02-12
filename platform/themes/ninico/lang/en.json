@@ -749,7 +749,7 @@
     "version :version required": "version :version required",
     "when shipping fee less than or equal :amount": "when shipping fee less than or equal :amount",
     "✅ Purchased :time": "✅ Purchased :time",
-    "You can add to cart" : "You can add to cart",
+    "Product added to cart" : "Product added to cart",
     "Cannot add to card" : "Cannot add to card",
     "Show Details Order" : "Show Details Order",
 

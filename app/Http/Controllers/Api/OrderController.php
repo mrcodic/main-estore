@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\CheckoutRequest;
 use App\Http\Resources\Api\Order\AddressOrderResource;
+use App\Http\Resources\Api\Order\ItemsCartResource;
 use App\Http\Resources\Api\Order\OrderIndexResource;
 use App\Http\Resources\Api\Order\OrderShowResource;
 use App\Http\Resources\Api\Order\ProductsOrderResource;
@@ -16,7 +17,7 @@ use Botble\Ecommerce\Enums\OrderStatusEnum;
 use Botble\Ecommerce\Enums\ShippingCodStatusEnum;
 use Botble\Ecommerce\Enums\ShippingMethodEnum;
 use Botble\Ecommerce\Enums\ShippingStatusEnum;
-use Botble\Ecommerce\Facades\Cart;
+use Botble\Ecommerce\Facades\CartApi;
 use Botble\Ecommerce\Facades\Discount;
 use Botble\Ecommerce\Facades\EcommerceHelper;
 use Botble\Ecommerce\Facades\OrderHelper;
@@ -119,7 +120,7 @@ class OrderController extends Controller
         $product->quantity -= $request->input('qty', 1);
 
         $outOfQuantity = false;
-        foreach (Cart::instance('cart')->content() as $item) {
+        foreach (CartApi::instance('cart')->content() as $item) {
             if ($item->id == $product->id) {
                 $originalQuantity = $product->quantity;
                 $product->quantity = (int)$product->quantity - $item->qty;
@@ -183,14 +184,12 @@ class OrderController extends Controller
             );
         }
 
-        // $cartItems = OrderHelper::handleAddCart($product, $request);
 
-        $taxRate = $product->original_product->total_taxes_percentage;
-        $price = $product->price * $request->input('qty');
+        $cartItems = OrderHelper::handleAddCartApi($request->token_cart ,$product, $request);
 
         $body = [
-            'tax'   =>  ($price *  $taxRate)/100 ,
-            'total' => $price
+            'token_cart'  =>  $cartItems['token_cart'],
+            'items' => ItemsCartResource::collection($cartItems['items'])
         ];
 
         if($session):
@@ -198,7 +197,7 @@ class OrderController extends Controller
         endif;
 
         return new MessageResponse(
-            message: __('You can add to cart'),
+            message: __('Product added to cart'),
             code: Http::OK,
             body: $body
         );
@@ -279,7 +278,7 @@ class OrderController extends Controller
                 message: __('Minimum order amount is :amount, you need to buy more :more to place an order!', [
                     'amount' => format_price(EcommerceHelper::getMinimumOrderAmount()),
                     'more' => format_price(
-                        EcommerceHelper::getMinimumOrderAmount() - Cart::instance('cart')
+                        EcommerceHelper::getMinimumOrderAmount() - CartApi::instance('cart')
                             ->rawSubTotal()
                     ),
                 ]),
@@ -417,8 +416,8 @@ class OrderController extends Controller
             'shipping_method' => $isAvailableShipping ? $shippingMethodInput : '',
             'shipping_option' => $isAvailableShipping ? $request->input('shipping_option') : null,
             'shipping_amount' => (float)$shippingAmount,
-            'tax_amount' => Cart::instance('cart')->rawTax(),
-            'sub_total' => Cart::instance('cart')->rawSubTotal(),
+            'tax_amount' => CartApi::instance('cart')->rawTax(),
+            'sub_total' => CartApi::instance('cart')->rawSubTotal(),
             'coupon_code' => session('applied_coupon_code'),
             'discount_amount' => $promotionDiscountAmount ,//+ $couponDiscountAmount,
             'status' => OrderStatusEnum::PENDING,
@@ -466,7 +465,7 @@ class OrderController extends Controller
 
         OrderProduct::query()->where(['order_id' => $order->getKey()])->delete();
 
-        foreach (Cart::instance('cart')->content() as $cartItem) {
+        foreach (CartApi::instance('cart')->content() as $cartItem) {
             $product = Product::query()->find($cartItem->id);
 
             if (! $product) {
@@ -821,7 +820,7 @@ class OrderController extends Controller
 
         $sessionData = array_merge($sessionData, $addressData);
 
-        $products = Cart::instance('cart')->products();
+        $products = CartApi::instance('cart')->products();
         if (is_plugin_active('marketplace')) {
             $sessionData = apply_filters(
                 HANDLE_PROCESS_ORDER_DATA_ECOMMERCE,
@@ -843,13 +842,13 @@ class OrderController extends Controller
             }
 
             $request->merge([
-                'amount' => Cart::instance('cart')->rawTotal(),
+                'amount' => CartApi::instance('cart')->rawTotal(),
                 'user_id' => $currentUserId,
                 'shipping_method' => $request->input('shipping_method', ShippingMethodEnum::DEFAULT),
                 'shipping_option' => $request->input('shipping_option'),
                 'shipping_amount' => 0,
-                'tax_amount' => Cart::instance('cart')->rawTax(),
-                'sub_total' => Cart::instance('cart')->rawSubTotal(),
+                'tax_amount' => CartApi::instance('cart')->rawTax(),
+                'sub_total' => CartApi::instance('cart')->rawSubTotal(),
                 'coupon_code' => session('applied_coupon_code'),
                 'discount_amount' => 0,
                 'status' => OrderStatusEnum::PENDING,
@@ -880,7 +879,7 @@ class OrderController extends Controller
 
         if (! isset($sessionData['created_order_product'])) {
             $weight = 0;
-            foreach (Cart::instance('cart')->content() as $cartItem) {
+            foreach (CartApi::instance('cart')->content() as $cartItem) {
                 $product = Product::query()->find($cartItem->id);
                 if ($product && $product->weight) {
                     $weight += $product->weight * $cartItem->qty;
@@ -891,7 +890,7 @@ class OrderController extends Controller
 
             OrderProduct::query()->where(['order_id' => $sessionData['created_order_id']])->delete();
 
-            foreach (Cart::instance('cart')->content() as $cartItem) {
+            foreach (CartApi::instance('cart')->content() as $cartItem) {
                 $product = Product::query()->find($cartItem->id);
 
                 if (! $product) {
@@ -918,7 +917,7 @@ class OrderController extends Controller
                 OrderProduct::query()->create($data);
             }
 
-            $sessionData['created_order_product'] = Cart::instance('cart')->getLastUpdatedAt();
+            $sessionData['created_order_product'] = CartApi::instance('cart')->getLastUpdatedAt();
         }
 
         OrderHelper::setOrderSessionData($token, $sessionData);
