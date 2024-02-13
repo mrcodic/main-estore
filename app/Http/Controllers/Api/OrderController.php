@@ -220,9 +220,9 @@ class OrderController extends Controller
             );
         }
 
-        $productsId = array_column($request->products, 'id');
+        $cart = OrderHelper::getCartFromUserOrToken($request->token_cart, $request->user()->id);
 
-        $products = Product::whereIn('id' , $productsId)->get();
+        $products = CartApi::instance('cart')->products($cart['items']);
 
         if (! count($products)) {
             return new MessageResponse(
@@ -241,60 +241,65 @@ class OrderController extends Controller
                 );
         }
 
+
         $subTotal = 0;
         $allTax = 0;
         $endTotal = 0;
-        $cartItems = [];
-
-        foreach ($products as $product) {
-
-            foreach($request->products as $value){
-                $qty = $value['id'] == $product->id ?$value['qty']: 1;
-                if($value['id'] == $product->id)
-                    break;
-            }
-            $totalP = $product->price * $qty;
-
-            $subTotal += $totalP;
-            $allTax += ($totalP * $product->original_product->total_taxes_percentage)/100;
-            $endTotal =  $subTotal + $allTax;
-
-
-            $addToCartSession = $this->addToCart(new CartRequest(['id'=> $product->id,'qty'=> $qty]), true);
-
-            if(isset($addToCartSession->message)) return $addToCartSession;
-
-            array_push( $cartItems, reset($addToCartSession));
-            $thisCartItem = new CartItem(reset($addToCartSession)['id'], reset($addToCartSession)['name'], reset($addToCartSession)['price'], reset($addToCartSession)['options']);
-            $thisCartItem->setQuantity(reset($addToCartSession)['qty']);
-            $product->setAttribute('cartItem', $thisCartItem);
-        }
+        $cartItems = $cart['items'];
 
         // dd($cartItems);
-        // dd($subTotal, $allTax, $endTotal);
+        // foreach ($products as $product) {
 
-        if (EcommerceHelper::getMinimumOrderAmount() > $subTotal) {
+        //     foreach($request->products as $value){
+        //         $qty = $value['id'] == $product->id ?$value['qty']: 1;
+        //         if($value['id'] == $product->id)
+        //             break;
+        //     }
+        //     $totalP = $product->price * $qty;
+
+        //     $subTotal += $totalP;
+        //     $allTax += ($totalP * $product->original_product->total_taxes_percentage)/100;
+        //     $endTotal =  $subTotal + $allTax;
+
+
+        //     $addToCartSession = $this->addToCart(new CartRequest(['id'=> $product->id,'qty'=> $qty]), true);
+
+        //     if(isset($addToCartSession->message)) return $addToCartSession;
+
+        //     array_push( $cartItems, reset($addToCartSession));
+        //     $thisCartItem = new CartItem(reset($addToCartSession)['id'], reset($addToCartSession)['name'], reset($addToCartSession)['price'], reset($addToCartSession)['options']);
+        //     $thisCartItem->setQuantity(reset($addToCartSession)['qty']);
+        //     $product->setAttribute('cartItem', $thisCartItem);
+        // }
+
+        if (EcommerceHelper::getMinimumOrderAmount() > CartApi::instance('cart')->rawSubTotal($cartItems)) {
             return new MessageResponse(
                 message: __('Minimum order amount is :amount, you need to buy more :more to place an order!', [
                     'amount' => format_price(EcommerceHelper::getMinimumOrderAmount()),
                     'more' => format_price(
                         EcommerceHelper::getMinimumOrderAmount() - CartApi::instance('cart')
-                            ->rawSubTotal()
+                            ->rawSubTotal($cartItems)
                     ),
                 ]),
                 code: Http::NOT_FOUND
             );
         }
 
-        $token = OrderHelper::getOrderSessionToken();
+        $token = $cart['token_cart'];
+
         $sessionData = OrderHelper::getOrderSessionData($token);
 
-        $sessionData = $this->processOrderData($token, $sessionData, $request, true);
-        // dd('sessionData');
+        $sessionData = $this->processOrderData($token, $sessionData, $cartItems, $request, true);
 
         $countCart = 0;
-        foreach($request->products as $value){
-            $countCart += $value['qty'];
+
+        foreach ($products as $product) {
+            if ($product->isOutOfStock()) {
+                return new MessageResponse(
+                    message: __('Product :product is out of stock!', ['product' => $product->original_product->name()]),
+                    code: Http::NOT_FOUND
+                );
+            }
         }
 
         $paymentMethod = $request->input('payment_method');
@@ -315,19 +320,20 @@ class OrderController extends Controller
 
         $shippingMethodInput = $request->input('shipping_method', ShippingMethodEnum::DEFAULT);
 
-        $promotionDiscountAmount = $handleApplyPromotionsService->getPromotionDiscountAmount([
-                                        'rawTotal' => $endTotal,
-                                        'cartItems' => $cartItems,
-                                        'countCart' => $countCart,
-                                        'productItems' => $products,
-                                    ]);
+        $promotionDiscountAmount = $handleApplyPromotionsService->execute($token);
+        // $promotionDiscountAmount = $handleApplyPromotionsService->getPromotionDiscountAmount([
+        //                                 'rawTotal' => $endTotal,
+        //                                 'cartItems' => $cartItems,
+        //                                 'countCart' => $countCart,
+        //                                 'productItems' => $products,
+        //                             ]);
 
         $couponDiscountAmount = Arr::get($sessionData, 'coupon_discount_amount');
-        $rawTotal = $endTotal;
+        $rawTotal = CartApi::instance('cart')->rawTotal($cartItems);
         $orderAmount = max($rawTotal - $promotionDiscountAmount - $couponDiscountAmount, 0);
-        // $orderAmount = max($rawTotal - $promotionDiscountAmount , 0);
 
         $shippingAmount = 0;
+
 
         $shippingData = [];
 
@@ -340,25 +346,6 @@ class OrderController extends Controller
                 code: Http::NOT_FOUND
             );
         endif;
-
-        // $userData = [
-        //     "address_id"=> $request->address->address_id?? $address ? $address->name  :auth()->user()->name,
-        //     "name"      => $request->address->name      ?? $address ? $address->name  :auth()->user()->name,
-        //     "email"     => $request->address->email     ?? $address ? $address->email :auth()->user()->email,
-        //     "phone"     => $request->address->phone     ?? $address ? $address->phone :auth()->user()->phone,
-        //     "country"   => $request->address->country   ?? $address ? $address->country :null,
-        //     "state"     => $request->address->state     ?? $address ? $address->state :null,
-        //     "city"      => $request->address->city      ?? $address ? $address->city :null,
-        //     "address"   => $request->address->address   ?? $address ? $address->address :null,
-        //     "zip_code"  => $request->address->zip_code  ?? $address ? $address->zip_code :null
-        // ];
-
-        // if (!$userData['email'] && !!$userData['country'] &&!$userData['address'] &&!$userData['phone']) {
-        //     return new MessageResponse(
-        //         message: __('Should add address & phone & email & country!'),
-        //         code: Http::NOT_FOUND
-        //     );
-        // }
 
         if ($isAvailableShipping) {
             $origin = EcommerceHelper::getOriginAddress();
@@ -416,8 +403,8 @@ class OrderController extends Controller
             'shipping_method' => $isAvailableShipping ? $shippingMethodInput : '',
             'shipping_option' => $isAvailableShipping ? $request->input('shipping_option') : null,
             'shipping_amount' => (float)$shippingAmount,
-            'tax_amount' => CartApi::instance('cart')->rawTax(),
-            'sub_total' => CartApi::instance('cart')->rawSubTotal(),
+            'tax_amount' => CartApi::instance('cart')->rawTax($cartItems),
+            'sub_total' => CartApi::instance('cart')->rawSubTotal($cartItems),
             'coupon_code' => session('applied_coupon_code'),
             'discount_amount' => $promotionDiscountAmount ,//+ $couponDiscountAmount,
             'status' => OrderStatusEnum::PENDING,
@@ -465,7 +452,7 @@ class OrderController extends Controller
 
         OrderProduct::query()->where(['order_id' => $order->getKey()])->delete();
 
-        foreach (CartApi::instance('cart')->content() as $cartItem) {
+        foreach ($cartItems as $cartItem) {
             $product = Product::query()->find($cartItem->id);
 
             if (! $product) {
@@ -500,7 +487,13 @@ class OrderController extends Controller
         if (! is_plugin_active('payment') || ! $orderAmount) {
             OrderHelper::processOrder($order->getKey());
 
-            return redirect()->to(route('public.checkout.success', OrderHelper::getOrderSessionToken()));
+            return new MessageResponse(
+                message: __('Checkout successfully!'),
+                code: Http::OK,
+                body: [
+                    'order_token' => $token
+                ]
+            );
         }
 
         $paymentData = [
@@ -513,22 +506,6 @@ class OrderController extends Controller
         ];
 
         $paymentData = apply_filters(FILTER_ECOMMERCE_PROCESS_PAYMENT, $paymentData, $request);
-
-        if ($checkoutUrl = Arr::get($paymentData, 'checkoutUrl')) {
-            // return $response
-            //     ->setError($paymentData['error'])
-            //     ->setNextUrl($checkoutUrl)
-            //     ->setData(['checkoutUrl' => $checkoutUrl])
-            //     ->withInput()
-            //     ->setMessage($paymentData['message']);
-            return new MessageResponse(
-                message: $paymentData['message'],
-                code: Http::NOT_ACCEPTABLE,
-                body: [
-                    'order_token' => $token
-                ]
-            );
-        }
 
         if ($paymentData['error'] || ! $paymentData['charge_id']) {
             return new MessageResponse(
@@ -699,6 +676,7 @@ class OrderController extends Controller
     protected function processOrderData(
         string $token,
         array $sessionData,
+        $content,
         Request $request,
         bool $finished = false
     ): array {
@@ -820,7 +798,7 @@ class OrderController extends Controller
 
         $sessionData = array_merge($sessionData, $addressData);
 
-        $products = CartApi::instance('cart')->products();
+        $products = CartApi::instance('cart')->products($content);
         if (is_plugin_active('marketplace')) {
             $sessionData = apply_filters(
                 HANDLE_PROCESS_ORDER_DATA_ECOMMERCE,
@@ -847,8 +825,8 @@ class OrderController extends Controller
                 'shipping_method' => $request->input('shipping_method', ShippingMethodEnum::DEFAULT),
                 'shipping_option' => $request->input('shipping_option'),
                 'shipping_amount' => 0,
-                'tax_amount' => CartApi::instance('cart')->rawTax(),
-                'sub_total' => CartApi::instance('cart')->rawSubTotal(),
+                'tax_amount' => CartApi::instance('cart')->rawTax($content),
+                'sub_total' => CartApi::instance('cart')->rawSubTotal($content),
                 'coupon_code' => session('applied_coupon_code'),
                 'discount_amount' => 0,
                 'status' => OrderStatusEnum::PENDING,

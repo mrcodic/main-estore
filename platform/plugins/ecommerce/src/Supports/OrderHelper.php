@@ -570,15 +570,114 @@ class OrderHelper
         endif;
 
         $content = unserialize($cart->content);
+        $err = [];
 
         foreach ($content as $item) {
 
             $product = Product::find($item->id);
 
+            if (! $product) {
+                array_push($err , [
+                    'rowId'   => $item->rowId,
+                    'message' => __('This product is out of stock or not exists!'),
+                ]);
+                continue;
+            }
+
+            if ($product->variations->count() > 0 && ! $product->is_variation) {
+                $product = $product->defaultVariation->product;
+            }
+
+            if ($product->isOutOfStock()) {
+                array_push($err , [
+                    'rowId'   => $item->rowId,
+                    'message' =>  __(
+                        'Product :product is out of stock!',
+                        ['product' => $product->original_product->name() ?: $product->name()]
+                    ),
+                ]);
+                continue;
+            }
+
+            $maxQuantity = $product->quantity;
+
+            if (! $product->canAddToCart($item->qty)) {
+                array_push($err , [
+                    'rowId'   => $item->rowId,
+                    'message' =>  __('Maximum quantity is :max!', ['max' => $maxQuantity])
+                ]);
+                continue;
+            }
+
+            $product->quantity -= $item->qty;
+
+            $outOfQuantity = false;
+
+            foreach ($content as $item) {
+                if ($item->id == $product->id) {
+                    $originalQuantity = $product->quantity;
+                    $product->quantity = (int)$product->quantity - $item->qty;
+
+                    if ($product->quantity < 0) {
+                        $product->quantity = 0;
+                    }
+                    if ($product->isOutOfStock()) {
+                        $outOfQuantity = true;
+
+                        break;
+                    }
+                    $product->quantity = $originalQuantity;
+                }
+            }
+
+            if (
+                EcommerceHelper::isEnabledProductOptions() &&
+                $product->original_product->options()->where('required', true)->exists()
+            ) {
+                if (! $item->options) {
+                    array_push($err , [
+                        'rowId'   => $item->rowId,
+                        'message' =>  __('Please select product options!')
+                    ]);
+                    continue;
+                }
+
+                $requiredOptions = $product->original_product->options()->where('required', true)->get();
+
+                $message = null;
+
+                foreach ($requiredOptions as $requiredOption) {
+                    if (! $item->input('options.' . $requiredOption->id . '.values')) {
+                        $message .= trans(
+                            'plugins/ecommerce::product-option.add_to_cart_value_required',
+                            ['value' => $requiredOption->name]
+                        );
+                    }
+                }
+
+                if ($message) {
+                    array_push($err , [
+                        'rowId'   => $item->rowId,
+                        'message' =>  __('Please select product options!')
+                    ]);
+                    continue;
+                }
+            }
+
+            if ($outOfQuantity) {
+                array_push($err , [
+                    'rowId'   => $item->rowId,
+                    'message' => __(
+                        'Product :product is out of stock!',
+                        ['product' => $product->original_product->name() ?: $product->name()]
+                    )
+                ]);
+                continue;
+            }
+
             if($product->price != $item->price){
                 $content->get($item->rowId)->price = $product->price;
             };
-            // $this->handleRetakeCartApi($cart->identifier ,$product, (array)json_decode($item->options), $item->qty, $request->user('sanctum')?->id ??null);
         }
 
         CartApi::store($cart->identifier ,$content, $customer);
@@ -586,7 +685,8 @@ class OrderHelper
 
         return [
             'token_cart' => $cart->identifier,
-            'items'      => unserialize($cart->content)
+            'items'      => unserialize($cart->content),
+            'error'      => $err
         ];
     }
 

@@ -391,10 +391,8 @@ class CartApi extends Cart
     /**
      * @return float
      */
-    public function rawSubTotal()
+    public function rawSubTotal($content)
     {
-        $content = $this->getContent();
-
         return $content->reduce(function ($subTotal, CartItem $cartItem) {
             return $subTotal + ($cartItem->qty * $cartItem->price);
         }, 0);
@@ -659,13 +657,11 @@ class CartApi extends Cart
      *
      * @return float
      */
-    public function rawTax()
+    public function rawTax($content)
     {
         if (! EcommerceHelper::isTaxEnabled()) {
             return 0;
         }
-
-        $content = $this->getContent();
 
         return $content->reduce(function ($tax, CartItem $cartItem) {
             return $tax + ($cartItem->qty * $cartItem->tax);
@@ -693,13 +689,13 @@ class CartApi extends Cart
      *
      * @return \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Collection
      */
-    public function products()
+    public function products($cartContent)
     {
         if ($this->products) {
             return $this->products;
         }
 
-        $cartContent = $this->instance('cart')->content();
+        // $cartContent = $this->instance('cart')->content();
         $productIds = $cartContent->pluck('id')->toArray();
         $products = collect();
         $weight = 0;
