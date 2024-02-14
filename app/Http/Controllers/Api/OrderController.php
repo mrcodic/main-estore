@@ -189,7 +189,7 @@ class OrderController extends Controller
 
         $body = [
             'token_cart'  =>  $cartItems['token_cart'],
-            'items' => ItemsCartResource::collection($cartItems['items'])
+            'items' => array_values(ItemsCartResource::collection($cartItems['items'])->resolve())
         ];
 
         if($session):

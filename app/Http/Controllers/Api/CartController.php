@@ -3,45 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\CheckoutRequest;
-use App\Http\Resources\Api\Order\AddressOrderResource;
 use App\Http\Resources\Api\Order\ItemsCartResource;
-use App\Http\Resources\Api\Order\OrderIndexResource;
-use App\Http\Resources\Api\Order\OrderShowResource;
-use App\Http\Resources\Api\Order\ProductsOrderResource;
 use Botble\Base\Enums\Http;
-use Botble\Base\Facades\BaseHelper;
 use Botble\Base\Helpers\MessageResponse;
-use Botble\Ecommerce\Cart\CartItem;
-use Botble\Ecommerce\Enums\OrderStatusEnum;
-use Botble\Ecommerce\Enums\ShippingCodStatusEnum;
-use Botble\Ecommerce\Enums\ShippingMethodEnum;
-use Botble\Ecommerce\Enums\ShippingStatusEnum;
 use Botble\Ecommerce\Facades\CartApi;
-use Botble\Ecommerce\Facades\Discount;
 use Botble\Ecommerce\Facades\EcommerceHelper;
 use Botble\Ecommerce\Facades\OrderHelper;
-use Botble\Ecommerce\Http\Requests\ApplyCouponRequest;
 use Botble\Ecommerce\Http\Requests\CartRequest;
-use Botble\Ecommerce\Models\Address;
-use Botble\Ecommerce\Models\Customer;
-use Botble\Ecommerce\Models\Order;
-use Botble\Ecommerce\Models\OrderHistory;
-use Botble\Ecommerce\Models\OrderProduct;
 use Botble\Ecommerce\Models\Product;
-use Botble\Ecommerce\Models\Shipment;
-use Botble\Ecommerce\Services\Footprints\FootprinterInterface;
-use Botble\Ecommerce\Services\HandleApplyCouponService;
-use Botble\Ecommerce\Services\HandleApplyPromotionsService;
-use Botble\Ecommerce\Services\HandleRemoveCouponService;
-use Botble\Ecommerce\Services\HandleShippingFeeService;
-use Botble\Payment\Enums\PaymentStatusEnum;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class CartController extends Controller
 {
@@ -161,12 +131,11 @@ class CartController extends Controller
             );
         }
 
-
         $cartItems = OrderHelper::handleAddCartApi($request->token_cart ,$product, $request);
 
         $body = [
             'token_cart'  =>  $cartItems['token_cart'],
-            'items' => ItemsCartResource::collection($cartItems['items'])
+            'items' => array_values(ItemsCartResource::collection($cartItems['items'])->resolve())
         ];
 
         if($session):
@@ -199,7 +168,7 @@ class CartController extends Controller
 
         $body = [
             'token_cart'  =>  $cartItems['token_cart'],
-            'items' => ItemsCartResource::collection($cartItems['items'])->resolve()
+            'items' => array_values(ItemsCartResource::collection($cartItems['items'])->resolve())
         ];
 
         return new MessageResponse(
