@@ -30,7 +30,7 @@ class ProductsController extends Controller
         $category_id = $request->category;
         $tag_id = $request->tag;
 
-        $query = Product::where('stock_status', 'in_stock');
+        $query = Product::where('stock_status', 'in_stock')->where('is_variation', 0);
         $category_id ? $query->whereHas('categories', fn($q) => $q->where('id',$category_id)): null;
         $tag_id ? $query->whereHas('tags', fn($q) => $q->where('id',$tag_id)): null;
         $products = $query->paginate($limit);
