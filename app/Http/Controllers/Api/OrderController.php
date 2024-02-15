@@ -486,6 +486,7 @@ class OrderController extends Controller
 
         if (! is_plugin_active('payment') || ! $orderAmount) {
             OrderHelper::processOrder($order->getKey());
+            OrderHelper::restoreCart($token);
 
             return new MessageResponse(
                 message: __('Checkout successfully!'),
@@ -516,6 +517,8 @@ class OrderController extends Controller
                 ]
             );
         }
+
+        OrderHelper::restoreCart($token);
 
         return new MessageResponse(
             message: __('Checkout successfully!'),
