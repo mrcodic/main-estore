@@ -281,7 +281,7 @@
 
                         {!! apply_filters('ecommerce_checkout_form_after_payment_form', null, $products) !!}
 
-                        <div class="form-group mb-3 @if ($errors->has('description')) has-error @endif">
+                        {{-- <div class="form-group mb-3 @if ($errors->has('description')) has-error @endif">
                             <label
                                 class="control-label mb-2"
                                 for="description"
@@ -295,7 +295,7 @@
                                 placeholder="{{ __('Notes about your order, e.g. special notes for delivery.') }}"
                             >{{ old('description') }}</textarea>
                             {!! Form::error('description', $errors) !!}
-                        </div>
+                        </div> --}}
 
                         @if (EcommerceHelper::getMinimumOrderAmount() > Cart::instance('cart')->rawSubTotal())
                             <div class="alert alert-warning">
