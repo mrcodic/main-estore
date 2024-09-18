@@ -299,7 +299,11 @@ class MainCheckout {
                 _self.closest('.form-group').find('.text-danger').remove()
                 let $form = _self.closest('form')
 
+                // console.log(
+                //     validatedFormFields() , $form.valid , $form.valid()
+                // );
                 if (validatedFormFields() && $form.valid && $form.valid()) {
+
                     $.ajax({
                         type: 'POST',
                         cache: false,

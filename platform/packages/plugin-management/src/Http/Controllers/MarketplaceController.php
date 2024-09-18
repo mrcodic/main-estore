@@ -5,7 +5,7 @@ namespace Botble\PluginManagement\Http\Controllers;
 use Botble\Base\Facades\Assets;
 use Botble\Base\Facades\PageTitle;
 use Botble\Base\Http\Responses\BaseHttpResponse;
-// use Botble\PluginManagement\Services\MarketplaceService;
+use Botble\PluginManagement\Services\MarketplaceService;
 use Botble\PluginManagement\Services\PluginService;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
@@ -18,7 +18,7 @@ use Throwable;
 class MarketplaceController extends Controller
 {
     public function __construct(
-        // protected MarketplaceService $marketplaceService,
+        protected MarketplaceService $marketplaceService,
         protected PluginService $pluginService,
     ) {
     }

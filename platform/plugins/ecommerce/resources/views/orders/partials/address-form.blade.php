@@ -299,59 +299,61 @@
                 {!! Form::error('address.zip_code', $errors) !!}
             </div>
         @endif
-    </div>
 
-    @if (!auth('customer')->check())
-        <div class="mb-3 form-group">
-            <input
-                id="create_account"
-                name="create_account"
-                type="checkbox"
-                value="1"
-                @if (old('create_account') == 1) checked @endif
-            >
-            <label
-                class="control-label"
-                for="create_account"
-            >{{ __('Register an account with above information?') }}</label>
-        </div>
+        
+        @if (!auth('customer')->check())
+            <div class="mb-3 form-group">
+                <input
+                    id="create_account"
+                    name="create_account"
+                    type="checkbox"
+                    value="1"
+                    @if (old('create_account') == 1) checked @endif
+                >
+                <label
+                    class="control-label"
+                    for="create_account"
+                >{{ __('Register an account with above information?') }}</label>
+            </div>
 
-        <div class="password-group @if (!$errors->has('password') && !$errors->has('password_confirmation')) d-none @endif">
-            <div class="row">
-                <div class="col-md-6 col-12">
-                    <div class="form-group  @error('password') has-error @enderror">
-                        <div class="form-input-wrapper">
-                            <input
-                                class="form-control"
-                                id="password"
-                                name="password"
-                                type="password"
-                                autocomplete="password"
-                            >
-                            <label for="password">{{ __('Password') }}</label>
+            <div class="password-group @if (!$errors->has('password') && !$errors->has('password_confirmation')) d-none @endif">
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <div class="form-group  @error('password') has-error @enderror">
+                            <div class="form-input-wrapper">
+                                <input
+                                    class="form-control"
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    autocomplete="password"
+                                >
+                                <label for="password">{{ __('Password') }}</label>
+                            </div>
+                            {!! Form::error('password', $errors) !!}
                         </div>
-                        {!! Form::error('password', $errors) !!}
                     </div>
-                </div>
 
-                <div class="col-md-6 col-12">
-                    <div class="form-group @error('password_confirmation') has-error @enderror">
-                        <div class="form-input-wrapper">
-                            <input
-                                class="form-control"
-                                id="password-confirm"
-                                name="password_confirmation"
-                                type="password"
-                                autocomplete="password-confirmation"
-                            >
-                            <label for="password-confirm">{{ __('Password confirmation') }}</label>
+                    <div class="col-md-6 col-12">
+                        <div class="form-group @error('password_confirmation') has-error @enderror">
+                            <div class="form-input-wrapper">
+                                <input
+                                    class="form-control"
+                                    id="password-confirm"
+                                    name="password_confirmation"
+                                    type="password"
+                                    autocomplete="password-confirmation"
+                                >
+                                <label for="password-confirm">{{ __('Password confirmation') }}</label>
+                            </div>
+                            {!! Form::error('password_confirmation', $errors) !!}
                         </div>
-                        {!! Form::error('password_confirmation', $errors) !!}
                     </div>
                 </div>
             </div>
-        </div>
-    @endif
+        @endif
+    </div>
+
 
     {!! apply_filters('ecommerce_checkout_address_form_after', null, $sessionCheckoutData) !!}
 </div>

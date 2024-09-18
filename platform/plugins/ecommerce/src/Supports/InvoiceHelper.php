@@ -299,7 +299,8 @@ class InvoiceHelper
             'store_address' => '701 Norman Street Los Angeles California 90008',
             'customer_email' => 'contact@example.com',
             'customer_phone' => '+0123456789',
-            'customer_address' => '14059 Triton Crossroad South Lillie, NH 84777-1634',
+            'customer_address' => '10 مدينه نصر , القاهره , مصر',
+            // 'customer_address' => '14059 Triton Crossroad South Lillie, NH 84777-1634',
             'status' => InvoiceStatusEnum::PENDING,
             'created_at' => Carbon::now()->toDateTimeString(),
         ]);

@@ -11,7 +11,7 @@
                                 <img
                                     class="thumb-image"
                                     src="{{ RvMedia::getImageUrl($relatedProduct->image, 'thumb', false, RvMedia::getDefaultImage()) }}"
-                                    alt="{{ $relatedproduct->name() }}"
+                                    alt="{{ $relatedProduct->name() }}"
                                 >
                             </div>
                         </td>
@@ -19,7 +19,7 @@
                             <a
                                 class="hover-underline pre-line"
                                 href="{{ route('products.edit', $relatedProduct->id) }}"
-                            >{{ $relatedproduct->name() }}</a>
+                            >{{ $relatedProduct->name() }}</a>
                             @if ($includeVariation)
                                 <p class="type-subdued">
                                     @if ($relatedProduct->variationInfo->id)
