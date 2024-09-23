@@ -29,6 +29,7 @@
     'team' => 'Botble\\Team\\',
     'testimonial' => 'Botble\\Testimonial\\',
     'translation' => 'Botble\\Translation\\',
+    'bosta' => 'Botble\\Bosta\\',
   ),
   'providers' => 
   array (
@@ -60,5 +61,6 @@
     25 => 'Botble\\Team\\Providers\\TeamServiceProvider',
     26 => 'Botble\\Testimonial\\Providers\\TestimonialServiceProvider',
     27 => 'Botble\\Translation\\Providers\\TranslationServiceProvider',
+    28 => 'Botble\\Bosta\\Providers\\BostaServiceProvider',
   ),
 );

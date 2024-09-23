@@ -1096,7 +1096,7 @@ class OrderController extends BaseController
 
             $cartItem = CartItem::fromAttributes(
                 $product->id,
-                BaseHelper::clean($parentproduct->name() ?: $product->name()),
+                BaseHelper::clean($parentProduct->name() ?: $product->name()),
                 $price,
                 $options
             );

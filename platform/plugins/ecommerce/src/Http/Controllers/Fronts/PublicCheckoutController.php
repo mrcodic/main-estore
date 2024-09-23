@@ -28,6 +28,7 @@ use Botble\Ecommerce\Services\HandleApplyPromotionsService;
 use Botble\Ecommerce\Services\HandleRemoveCouponService;
 use Botble\Ecommerce\Services\HandleShippingFeeService;
 use Botble\Ecommerce\Services\HandleTaxService;
+use Botble\Ecommerce\Traits\BostaTrait;
 use Botble\Optimize\Facades\OptimizerHelper;
 use Botble\Payment\Enums\PaymentStatusEnum;
 use Botble\Payment\Supports\PaymentHelper;
@@ -41,6 +42,8 @@ use Illuminate\Validation\ValidationException;
 
 class PublicCheckoutController
 {
+    use BostaTrait;
+
     public function __construct()
     {
         OptimizerHelper::disable();
@@ -591,6 +594,7 @@ class PublicCheckoutController
                 ->setMessage(__('Your shopping cart has digital product(s), so you need to sign in to continue!'));
         }
 
+        $this->createDelivery();
 
         if (EcommerceHelper::getMinimumOrderAmount() > Cart::instance('cart')->rawSubTotal()) {
             return $response
