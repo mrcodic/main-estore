@@ -1,1 +1,96 @@
-(()=>{function e(t){return e="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e(t)}function t(t,n){for(var o=0;o<n.length;o++){var a=n[o];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(t,(r=a.key,i=void 0,i=function(t,n){if("object"!==e(t)||null===t)return t;var o=t[Symbol.toPrimitive];if(void 0!==o){var a=o.call(t,n||"default");if("object"!==e(a))return a;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===n?String:Number)(t)}(r,"string"),"symbol"===e(i)?i:String(i)),a)}var r,i}var n=function(){function e(){!function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,e)}var n,o,a;return n=e,(o=[{key:"init",value:function(){var e=$("#table-backups");e.on("click",".deleteDialog",(function(e){e.preventDefault(),$(".delete-crud-entry").data("section",$(e.currentTarget).data("section")),$(".modal-confirm-delete").modal("show")})),e.on("click",".restoreBackup",(function(e){e.preventDefault(),$("#restore-backup-button").data("section",$(e.currentTarget).data("section")),$("#restore-backup-modal").modal("show")})),$(".delete-crud-entry").on("click",(function(t){t.preventDefault(),$(".modal-confirm-delete").modal("hide");var n=$(t.currentTarget).data("section");$httpClient.make().delete(n).then((function(t){var o=t.data;e.find("tbody tr").length<=1&&e.load(window.location.href+" #table-backups > *"),e.find('a[data-section="'+n+'"]').closest("tr").remove(),Botble.showSuccess(o.message)}))})),$("#restore-backup-button").on("click",(function(e){e.preventDefault();var t=$(e.currentTarget);t.addClass("button-loading"),$httpClient.make().get(t.data("section")).then((function(e){var n=e.data;t.closest(".modal").modal("hide"),Botble.showSuccess(n.message),window.location.reload()})).finally((function(){t.removeClass("button-loading")}))})),$(document).on("click","#generate_backup",(function(e){e.preventDefault(),$("#name").val(""),$("#description").val(""),$("#create-backup-modal").modal("show")})),$("#create-backup-modal").on("click","#create-backup-button",(function(t){t.preventDefault();var n=$(t.currentTarget);n.addClass("button-loading");var o=$("#name").val(),a=$("#description").val(),r=!1;""!==o&&null!==o||(r=!0,Botble.showError("Backup name is required!")),r?n.removeClass("button-loading"):$httpClient.make().post($("div[data-route-create]").data("route-create"),{name:o,description:a}).then((function(t){var n=t.data;e.find(".no-backup-row").remove(),e.find("tbody").append(n.data),Botble.showSuccess(n.message)})).finally((function(){n.removeClass("button-loading"),n.closest(".modal").modal("hide")}))}))}}])&&t(n.prototype,o),a&&t(n,a),Object.defineProperty(n,"prototype",{writable:!1}),e}();$(document).ready((function(){(new n).init()}))})();
+/******/ (() => { // webpackBootstrap
+/*!***************************************************************!*\
+  !*** ./platform/plugins/backup/resources/assets/js/backup.js ***!
+  \***************************************************************/
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+var BackupManagement = /*#__PURE__*/function () {
+  function BackupManagement() {
+    _classCallCheck(this, BackupManagement);
+  }
+  return _createClass(BackupManagement, [{
+    key: "init",
+    value: function init() {
+      var backupTable = $('#table-backups');
+      backupTable.on('click', '.deleteDialog', function (event) {
+        event.preventDefault();
+        $('.delete-crud-entry').data('section', $(event.currentTarget).data('section'));
+        $('.modal-confirm-delete').modal('show');
+      });
+      backupTable.on('click', '.restoreBackup', function (event) {
+        event.preventDefault();
+        $('#restore-backup-button').data('section', $(event.currentTarget).data('section'));
+        $('#restore-backup-modal').modal('show');
+      });
+      $('.delete-crud-entry').on('click', function (event) {
+        event.preventDefault();
+        $('.modal-confirm-delete').modal('hide');
+        var deleteURL = $(event.currentTarget).data('section');
+        $httpClient.make()["delete"](deleteURL).then(function (_ref) {
+          var data = _ref.data;
+          if (backupTable.find('tbody tr').length <= 1) {
+            backupTable.load(window.location.href + ' #table-backups > *');
+          }
+          backupTable.find('a[data-section="' + deleteURL + '"]').closest('tr').remove();
+          Botble.showSuccess(data.message);
+        });
+      });
+      $('#restore-backup-button').on('click', function (event) {
+        event.preventDefault();
+        var _self = $(event.currentTarget);
+        _self.addClass('button-loading');
+        $httpClient.make().get(_self.data('section')).then(function (_ref2) {
+          var data = _ref2.data;
+          _self.closest('.modal').modal('hide');
+          Botble.showSuccess(data.message);
+          window.location.reload();
+        })["finally"](function () {
+          _self.removeClass('button-loading');
+        });
+      });
+      $(document).on('click', '#generate_backup', function (event) {
+        event.preventDefault();
+        $('#name').val('');
+        $('#description').val('');
+        $('#create-backup-modal').modal('show');
+      });
+      $('#create-backup-modal').on('click', '#create-backup-button', function (event) {
+        event.preventDefault();
+        var _self = $(event.currentTarget);
+        _self.addClass('button-loading');
+        var name = $('#name').val();
+        var description = $('#description').val();
+        var error = false;
+        if (name === '' || name === null) {
+          error = true;
+          Botble.showError('Backup name is required!');
+        }
+        if (!error) {
+          $httpClient.make().post($('div[data-route-create]').data('route-create'), {
+            name: name,
+            description: description
+          }).then(function (_ref3) {
+            var data = _ref3.data;
+            backupTable.find('.no-backup-row').remove();
+            backupTable.find('tbody').append(data.data);
+            Botble.showSuccess(data.message);
+          })["finally"](function () {
+            _self.removeClass('button-loading');
+            _self.closest('.modal').modal('hide');
+          });
+        } else {
+          _self.removeClass('button-loading');
+        }
+      });
+    }
+  }]);
+}();
+$(document).ready(function () {
+  new BackupManagement().init();
+});
+/******/ })()
+;

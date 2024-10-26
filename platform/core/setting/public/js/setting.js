@@ -1,1 +1,278 @@
-(()=>{function t(e){return t="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},t(e)}function e(){"use strict";/*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */e=function(){return r};var n,r={},o=Object.prototype,a=o.hasOwnProperty,i=Object.defineProperty||function(t,e,n){t[e]=n.value},c="function"==typeof Symbol?Symbol:{},l=c.iterator||"@@iterator",u=c.asyncIterator||"@@asyncIterator",s=c.toStringTag||"@@toStringTag";function f(t,e,n){return Object.defineProperty(t,e,{value:n,enumerable:!0,configurable:!0,writable:!0}),t[e]}try{f({},"")}catch(n){f=function(t,e,n){return t[e]=n}}function d(t,e,n,r){var o=e&&e.prototype instanceof b?e:b,a=Object.create(o.prototype),c=new P(r||[]);return i(a,"_invoke",{value:_(t,n,c)}),a}function h(t,e,n){try{return{type:"normal",arg:t.call(e,n)}}catch(t){return{type:"throw",arg:t}}}r.wrap=d;var p="suspendedStart",m="suspendedYield",v="executing",y="completed",g={};function b(){}function w(){}function $(){}var x={};f(x,l,(function(){return this}));var k=Object.getPrototypeOf,C=k&&k(k(D([])));C&&C!==o&&a.call(C,l)&&(x=C);var E=$.prototype=b.prototype=Object.create(x);function L(t){["next","throw","return"].forEach((function(e){f(t,e,(function(t){return this._invoke(e,t)}))}))}function S(e,n){function r(o,i,c,l){var u=h(e[o],e,i);if("throw"!==u.type){var s=u.arg,f=s.value;return f&&"object"==t(f)&&a.call(f,"__await")?n.resolve(f.__await).then((function(t){r("next",t,c,l)}),(function(t){r("throw",t,c,l)})):n.resolve(f).then((function(t){s.value=t,c(s)}),(function(t){return r("throw",t,c,l)}))}l(u.arg)}var o;i(this,"_invoke",{value:function(t,e){function a(){return new n((function(n,o){r(t,e,n,o)}))}return o=o?o.then(a,a):a()}})}function _(t,e,r){var o=p;return function(a,i){if(o===v)throw new Error("Generator is already running");if(o===y){if("throw"===a)throw i;return{value:n,done:!0}}for(r.method=a,r.arg=i;;){var c=r.delegate;if(c){var l=j(c,r);if(l){if(l===g)continue;return l}}if("next"===r.method)r.sent=r._sent=r.arg;else if("throw"===r.method){if(o===p)throw o=y,r.arg;r.dispatchException(r.arg)}else"return"===r.method&&r.abrupt("return",r.arg);o=v;var u=h(t,e,r);if("normal"===u.type){if(o=r.done?y:m,u.arg===g)continue;return{value:u.arg,done:r.done}}"throw"===u.type&&(o=y,r.method="throw",r.arg=u.arg)}}}function j(t,e){var r=e.method,o=t.iterator[r];if(o===n)return e.delegate=null,"throw"===r&&t.iterator.return&&(e.method="return",e.arg=n,j(t,e),"throw"===e.method)||"return"!==r&&(e.method="throw",e.arg=new TypeError("The iterator does not provide a '"+r+"' method")),g;var a=h(o,t.iterator,e.arg);if("throw"===a.type)return e.method="throw",e.arg=a.arg,e.delegate=null,g;var i=a.arg;return i?i.done?(e[t.resultName]=i.value,e.next=t.nextLoc,"return"!==e.method&&(e.method="next",e.arg=n),e.delegate=null,g):i:(e.method="throw",e.arg=new TypeError("iterator result is not an object"),e.delegate=null,g)}function T(t){var e={tryLoc:t[0]};1 in t&&(e.catchLoc=t[1]),2 in t&&(e.finallyLoc=t[2],e.afterLoc=t[3]),this.tryEntries.push(e)}function O(t){var e=t.completion||{};e.type="normal",delete e.arg,t.completion=e}function P(t){this.tryEntries=[{tryLoc:"root"}],t.forEach(T,this),this.reset(!0)}function D(e){if(e||""===e){var r=e[l];if(r)return r.call(e);if("function"==typeof e.next)return e;if(!isNaN(e.length)){var o=-1,i=function t(){for(;++o<e.length;)if(a.call(e,o))return t.value=e[o],t.done=!1,t;return t.value=n,t.done=!0,t};return i.next=i}}throw new TypeError(t(e)+" is not iterable")}return w.prototype=$,i(E,"constructor",{value:$,configurable:!0}),i($,"constructor",{value:w,configurable:!0}),w.displayName=f($,s,"GeneratorFunction"),r.isGeneratorFunction=function(t){var e="function"==typeof t&&t.constructor;return!!e&&(e===w||"GeneratorFunction"===(e.displayName||e.name))},r.mark=function(t){return Object.setPrototypeOf?Object.setPrototypeOf(t,$):(t.__proto__=$,f(t,s,"GeneratorFunction")),t.prototype=Object.create(E),t},r.awrap=function(t){return{__await:t}},L(S.prototype),f(S.prototype,u,(function(){return this})),r.AsyncIterator=S,r.async=function(t,e,n,o,a){void 0===a&&(a=Promise);var i=new S(d(t,e,n,o),a);return r.isGeneratorFunction(e)?i:i.next().then((function(t){return t.done?t.value:i.next()}))},L(E),f(E,s,"Generator"),f(E,l,(function(){return this})),f(E,"toString",(function(){return"[object Generator]"})),r.keys=function(t){var e=Object(t),n=[];for(var r in e)n.push(r);return n.reverse(),function t(){for(;n.length;){var r=n.pop();if(r in e)return t.value=r,t.done=!1,t}return t.done=!0,t}},r.values=D,P.prototype={constructor:P,reset:function(t){if(this.prev=0,this.next=0,this.sent=this._sent=n,this.done=!1,this.delegate=null,this.method="next",this.arg=n,this.tryEntries.forEach(O),!t)for(var e in this)"t"===e.charAt(0)&&a.call(this,e)&&!isNaN(+e.slice(1))&&(this[e]=n)},stop:function(){this.done=!0;var t=this.tryEntries[0].completion;if("throw"===t.type)throw t.arg;return this.rval},dispatchException:function(t){if(this.done)throw t;var e=this;function r(r,o){return c.type="throw",c.arg=t,e.next=r,o&&(e.method="next",e.arg=n),!!o}for(var o=this.tryEntries.length-1;o>=0;--o){var i=this.tryEntries[o],c=i.completion;if("root"===i.tryLoc)return r("end");if(i.tryLoc<=this.prev){var l=a.call(i,"catchLoc"),u=a.call(i,"finallyLoc");if(l&&u){if(this.prev<i.catchLoc)return r(i.catchLoc,!0);if(this.prev<i.finallyLoc)return r(i.finallyLoc)}else if(l){if(this.prev<i.catchLoc)return r(i.catchLoc,!0)}else{if(!u)throw new Error("try statement without catch or finally");if(this.prev<i.finallyLoc)return r(i.finallyLoc)}}}},abrupt:function(t,e){for(var n=this.tryEntries.length-1;n>=0;--n){var r=this.tryEntries[n];if(r.tryLoc<=this.prev&&a.call(r,"finallyLoc")&&this.prev<r.finallyLoc){var o=r;break}}o&&("break"===t||"continue"===t)&&o.tryLoc<=e&&e<=o.finallyLoc&&(o=null);var i=o?o.completion:{};return i.type=t,i.arg=e,o?(this.method="next",this.next=o.finallyLoc,g):this.complete(i)},complete:function(t,e){if("throw"===t.type)throw t.arg;return"break"===t.type||"continue"===t.type?this.next=t.arg:"return"===t.type?(this.rval=this.arg=t.arg,this.method="return",this.next="end"):"normal"===t.type&&e&&(this.next=e),g},finish:function(t){for(var e=this.tryEntries.length-1;e>=0;--e){var n=this.tryEntries[e];if(n.finallyLoc===t)return this.complete(n.completion,n.afterLoc),O(n),g}},catch:function(t){for(var e=this.tryEntries.length-1;e>=0;--e){var n=this.tryEntries[e];if(n.tryLoc===t){var r=n.completion;if("throw"===r.type){var o=r.arg;O(n)}return o}}throw new Error("illegal catch attempt")},delegateYield:function(t,e,r){return this.delegate={iterator:D(t),resultName:e,nextLoc:r},"next"===this.method&&(this.arg=n),g}},r}function n(t,e,n,r,o,a,i){try{var c=t[a](i),l=c.value}catch(t){return void n(t)}c.done?e(l):Promise.resolve(l).then(r,o)}function r(e,n){for(var r=0;r<n.length;r++){var o=n[r];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(e,(a=o.key,i=void 0,i=function(e,n){if("object"!==t(e)||null===e)return e;var r=e[Symbol.toPrimitive];if(void 0!==r){var o=r.call(e,n||"default");if("object"!==t(o))return o;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===n?String:Number)(e)}(a,"string"),"symbol"===t(i)?i:String(i)),o)}var a,i}var o=function(){function t(){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,t)}var o,a,i,c,l;return o=t,a=[{key:"init",value:function(){var t=this;this.handleMultipleAdminEmails(),$("input[data-key=email-config-status-btn]").on("change",(function(t){var e=$(t.currentTarget),n=e.prop("name"),r=e.data("change-url");$httpClient.make().post(r,{key:n,value:e.prop("checked")?1:0}).then((function(t){var e=t.data;return Botble.showSuccess(e.message)}))})),$(document).on("change",".setting-select-options",(function(t){$(".setting-wrapper").addClass("hidden"),$(".setting-wrapper[data-type="+$(t.currentTarget).val()+"]").removeClass("hidden")})),$(".send-test-email-trigger-button").on("click",(function(t){t.preventDefault();var e=$(t.currentTarget),n=e.text(),r=new FormData(e.closest("form")[0]);e.text(e.data("saving")),$httpClient.make().postForm(route("settings.email.edit"),r).then((function(t){var e=t.data;Botble.showSuccess(e.message),$("#send-test-email-modal").modal("show")})).finally((function(){e.text(n)}))})),$("#send-test-email-btn").on("click",(function(t){t.preventDefault();var e=$(t.currentTarget);e.addClass("button-loading"),$httpClient.make().post(route("setting.email.send.test"),{email:e.closest(".modal-content").find("input[name=email]").val()}).then((function(t){var n=t.data;Botble.showSuccess(n.message),e.closest(".modal").modal("hide")})).finally((function(){e.removeClass("button-loading")}))})),$(".generate-thumbnails-trigger-button").on("click",(function(t){t.preventDefault();var e=$(t.currentTarget),n=e.text();e.text(e.data("saving")),$httpClient.make().postForm(route("settings.media.post"),new FormData(e.closest("form")[0])).then((function(){return $("#generate-thumbnails-modal").modal("show")})).finally((function(){e.text(n)}))})),$("#generate-thumbnails-button").on("click",(function(t){t.preventDefault();var e=$(t.currentTarget);e.addClass("button-loading"),$httpClient.make().post(route("settings.media.generate-thumbnails")).then((function(t){var e=t.data;return Botble.showSuccess(e.message)})).finally((function(){e.removeClass("button-loading"),e.closest(".modal").modal("hide")}))})),"undefined"!=typeof CodeMirror&&Botble.initCodeEditor("mail-template-editor"),$(document).on("click",".btn-trigger-reset-to-default",(function(t){t.preventDefault(),$("#reset-template-to-default-button").data("target",$(t.currentTarget).data("target")),$("#reset-template-to-default-modal").modal("show")})),$(document).on("click",".js-select-mail-variable",(function(t){t.preventDefault();var e=$(t.currentTarget),n=$(".CodeMirror")[0].CodeMirror,r="{{ "+e.data("key")+" }}";if(n.somethingSelected())n.replaceSelection(r);else{var o=n.getCursor(),a={line:o.line,ch:o.ch};n.replaceRange(r,a)}})),$(document).on("click",".js-select-mail-function",(function(t){t.preventDefault();var e=$(t.currentTarget),n=$(".CodeMirror")[0].CodeMirror,r=e.data("sample");if(n.somethingSelected())n.replaceSelection(r);else{var o=n.getCursor(),a={line:o.line,ch:o.ch};n.replaceRange(r,a)}})),$(document).on("click","#reset-template-to-default-button",(function(t){t.preventDefault();var e=$(t.currentTarget);e.addClass("button-loading"),$httpClient.make().post(e.data("target"),{email_subject_key:$("input[name=email_subject_key]").val(),module:$("input[name=module]").val(),template_file:$("input[name=template_file]").val()}).then((function(t){var e=t.data;Botble.showSuccess(e.message),setTimeout((function(){window.location.reload()}),1e3),$("#reset-template-to-default-modal").modal("hide")})).finally((function(){e.removeClass("button-loading")}))})),$(document).on("change",".check-all",(function(t){var e=$(t.currentTarget),n=e.attr("data-set"),r=e.prop("checked");$(n).each((function(t,e){r?$(e).prop("checked",!0):$(e).prop("checked",!1)}))})),$("input.setting-selection-option").each((function(t,e){var n=$($(e).data("target"));$(e).on("change",(function(){"1"==$(e).val()?(n.removeClass("d-none"),Botble.initResources()):n.addClass("d-none")}))})),$(document).on("click",".cronjob #copy-command",(function(){t.copyCommand()}))}},{key:"handleMultipleAdminEmails",value:function(){var t=$("#admin_email_wrapper");if(t.length){var e=t.find("#add"),n=parseInt(t.data("max"),10),r=t.data("emails");0===r.length&&(r=[""]);var o=function(){t.find("input[type=email]").length>=n?e.addClass("disabled"):e.removeClass("disabled")},a=function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"";return e.before('<div class="d-flex mt-2 more-email align-items-center">\n                <input type="email" class="next-input" placeholder="'.concat(e.data("placeholder"),'" name="admin_email[]" value="').concat(t||"",'" />\n                <a class="btn btn-link text-danger"><i class="fas fa-minus"></i></a>\n            </div>'))};t.on("click",".more-email > a",(function(){$(this).parent(".more-email").remove(),o()})),e.on("click",(function(t){t.preventDefault(),a(),o()})),r.forEach((function(t){a(t)})),o()}}},{key:"copyCommand",value:(c=e().mark((function t(){var n,r,o;return e().wrap((function(t){for(;;)switch(t.prev=t.next){case 0:if(n=$(".cronjob #command"),r=n.val(),!navigator.clipboard||!window.isSecureContext){t.next=8;break}return t.next=5,navigator.clipboard.writeText(r);case 5:Botble.showSuccess(n.data("copied")),t.next=15;break;case 8:(o=document.createElement("textarea")).value=r,o.style.position="absolute",o.style.left="-999999px",document.body.prepend(o),o.select();try{document.execCommand("copy"),Botble.showSuccess(n.data("copied"))}catch(t){console.error(t)}finally{o.remove()}case 15:case"end":return t.stop()}}),t)})),l=function(){var t=this,e=arguments;return new Promise((function(r,o){var a=c.apply(t,e);function i(t){n(a,r,o,i,l,"next",t)}function l(t){n(a,r,o,i,l,"throw",t)}i(void 0)}))},function(){return l.apply(this,arguments)})}],a&&r(o.prototype,a),i&&r(o,i),Object.defineProperty(o,"prototype",{writable:!1}),t}();$(document).ready((function(){(new o).init()}))})();
+/******/ (() => { // webpackBootstrap
+/*!**************************************************************!*\
+  !*** ./platform/core/setting/resources/assets/js/setting.js ***!
+  \**************************************************************/
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == _typeof(h) && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(_typeof(e) + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, "catch": function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
+function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
+function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+var SettingManagement = /*#__PURE__*/function () {
+  function SettingManagement() {
+    _classCallCheck(this, SettingManagement);
+  }
+  return _createClass(SettingManagement, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
+      this.handleMultipleAdminEmails();
+      $('input[data-key=email-config-status-btn]').on('change', function (event) {
+        var _self = $(event.currentTarget);
+        var key = _self.prop('name');
+        var url = _self.data('change-url');
+        $httpClient.make().post(url, {
+          key: key,
+          value: _self.prop('checked') ? 1 : 0
+        }).then(function (_ref) {
+          var data = _ref.data;
+          return Botble.showSuccess(data.message);
+        });
+      });
+      $(document).on('change', '.setting-select-options', function (event) {
+        $('.setting-wrapper').addClass('hidden');
+        $('.setting-wrapper[data-type=' + $(event.currentTarget).val() + ']').removeClass('hidden');
+      });
+      $('.send-test-email-trigger-button').on('click', function (event) {
+        event.preventDefault();
+        var _self = $(event.currentTarget);
+        var defaultText = _self.text();
+        var form = new FormData(_self.closest('form')[0]);
+        _self.text(_self.data('saving'));
+        $httpClient.make().postForm(route('settings.email.edit'), form).then(function (_ref2) {
+          var data = _ref2.data;
+          Botble.showSuccess(data.message);
+          $('#send-test-email-modal').modal('show');
+        })["finally"](function () {
+          _self.text(defaultText);
+        });
+      });
+      $('#send-test-email-btn').on('click', function (event) {
+        event.preventDefault();
+        var _self = $(event.currentTarget);
+        _self.addClass('button-loading');
+        $httpClient.make().post(route('setting.email.send.test'), {
+          email: _self.closest('.modal-content').find('input[name=email]').val()
+        }).then(function (_ref3) {
+          var data = _ref3.data;
+          Botble.showSuccess(data.message);
+          _self.closest('.modal').modal('hide');
+        })["finally"](function () {
+          _self.removeClass('button-loading');
+        });
+      });
+      $('.generate-thumbnails-trigger-button').on('click', function (event) {
+        event.preventDefault();
+        var _self = $(event.currentTarget);
+        var defaultText = _self.text();
+        _self.text(_self.data('saving'));
+        $httpClient.make().postForm(route('settings.media.post'), new FormData(_self.closest('form')[0])).then(function () {
+          return $('#generate-thumbnails-modal').modal('show');
+        })["finally"](function () {
+          _self.text(defaultText);
+        });
+      });
+      $('#generate-thumbnails-button').on('click', function (event) {
+        event.preventDefault();
+        var _self = $(event.currentTarget);
+        _self.addClass('button-loading');
+        $httpClient.make().post(route('settings.media.generate-thumbnails')).then(function (_ref4) {
+          var data = _ref4.data;
+          return Botble.showSuccess(data.message);
+        })["finally"](function () {
+          _self.removeClass('button-loading');
+          _self.closest('.modal').modal('hide');
+        });
+      });
+      if (typeof CodeMirror !== 'undefined') {
+        Botble.initCodeEditor('mail-template-editor');
+      }
+      $(document).on('click', '.btn-trigger-reset-to-default', function (event) {
+        event.preventDefault();
+        $('#reset-template-to-default-button').data('target', $(event.currentTarget).data('target'));
+        $('#reset-template-to-default-modal').modal('show');
+      });
+      $(document).on('click', '.js-select-mail-variable', function (event) {
+        event.preventDefault();
+        var $this = $(event.currentTarget);
+        var doc = $('.CodeMirror')[0].CodeMirror;
+        var key = '{{ ' + $this.data('key') + ' }}';
+
+        // If there's a selection, replace the selection.
+        if (doc.somethingSelected()) {
+          doc.replaceSelection(key);
+          return;
+        }
+
+        // Otherwise, we insert at the cursor position.
+        var cursor = doc.getCursor();
+        var pos = {
+          line: cursor.line,
+          ch: cursor.ch
+        };
+        doc.replaceRange(key, pos);
+      });
+      $(document).on('click', '.js-select-mail-function', function (event) {
+        event.preventDefault();
+        var $this = $(event.currentTarget);
+        var CodeMirror = $('.CodeMirror')[0].CodeMirror;
+        var key = $this.data('sample');
+
+        // If there's a selection, replace the selection.
+        if (CodeMirror.somethingSelected()) {
+          CodeMirror.replaceSelection(key);
+          return;
+        }
+
+        // Otherwise, we insert at the cursor position.
+        var cursor = CodeMirror.getCursor();
+        var position = {
+          line: cursor.line,
+          ch: cursor.ch
+        };
+        CodeMirror.replaceRange(key, position);
+      });
+      $(document).on('click', '#reset-template-to-default-button', function (event) {
+        event.preventDefault();
+        var _self = $(event.currentTarget);
+        _self.addClass('button-loading');
+        $httpClient.make().post(_self.data('target'), {
+          email_subject_key: $('input[name=email_subject_key]').val(),
+          module: $('input[name=module]').val(),
+          template_file: $('input[name=template_file]').val()
+        }).then(function (_ref5) {
+          var data = _ref5.data;
+          Botble.showSuccess(data.message);
+          setTimeout(function () {
+            window.location.reload();
+          }, 1000);
+          $('#reset-template-to-default-modal').modal('hide');
+        })["finally"](function () {
+          _self.removeClass('button-loading');
+        });
+      });
+      $(document).on('change', '.check-all', function (event) {
+        var _self = $(event.currentTarget);
+        var set = _self.attr('data-set');
+        var checked = _self.prop('checked');
+        $(set).each(function (index, el) {
+          if (checked) {
+            $(el).prop('checked', true);
+          } else {
+            $(el).prop('checked', false);
+          }
+        });
+      });
+      $('input.setting-selection-option').each(function (index, el) {
+        var $settingContentContainer = $($(el).data('target'));
+        $(el).on('change', function () {
+          if ($(el).val() == '1') {
+            $settingContentContainer.removeClass('d-none');
+            Botble.initResources();
+          } else {
+            $settingContentContainer.addClass('d-none');
+          }
+        });
+      });
+      $(document).on('click', '.cronjob #copy-command', function () {
+        _this.copyCommand();
+      });
+    }
+  }, {
+    key: "handleMultipleAdminEmails",
+    value: function handleMultipleAdminEmails() {
+      var $wrapper = $('#admin_email_wrapper');
+      if (!$wrapper.length) {
+        return;
+      }
+      var $addBtn = $wrapper.find('#add');
+      var max = parseInt($wrapper.data('max'), 10);
+      var emails = $wrapper.data('emails');
+      if (emails.length === 0) {
+        emails = [''];
+      }
+      var onAddEmail = function onAddEmail() {
+        var count = $wrapper.find('input[type=email]').length;
+        if (count >= max) {
+          $addBtn.addClass('disabled');
+        } else {
+          $addBtn.removeClass('disabled');
+        }
+      };
+      var addEmail = function addEmail() {
+        var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+        return $addBtn.before("<div class=\"d-flex mt-2 more-email align-items-center\">\n                <input type=\"email\" class=\"next-input\" placeholder=\"".concat($addBtn.data('placeholder'), "\" name=\"admin_email[]\" value=\"").concat(value ? value : '', "\" />\n                <a class=\"btn btn-link text-danger\"><i class=\"fas fa-minus\"></i></a>\n            </div>"));
+      };
+      var render = function render() {
+        emails.forEach(function (email) {
+          addEmail(email);
+        });
+        onAddEmail();
+      };
+      $wrapper.on('click', '.more-email > a', function () {
+        $(this).parent('.more-email').remove();
+        onAddEmail();
+      });
+      $addBtn.on('click', function (e) {
+        e.preventDefault();
+        addEmail();
+        onAddEmail();
+      });
+      render();
+    }
+  }, {
+    key: "copyCommand",
+    value: function () {
+      var _copyCommand = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var input, textToCopy, textarea;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              input = $('.cronjob #command');
+              textToCopy = input.val();
+              if (!(navigator.clipboard && window.isSecureContext)) {
+                _context.next = 8;
+                break;
+              }
+              _context.next = 5;
+              return navigator.clipboard.writeText(textToCopy);
+            case 5:
+              Botble.showSuccess(input.data('copied'));
+              _context.next = 15;
+              break;
+            case 8:
+              textarea = document.createElement('textarea');
+              textarea.value = textToCopy;
+              textarea.style.position = 'absolute';
+              textarea.style.left = '-999999px';
+              document.body.prepend(textarea);
+              textarea.select();
+              try {
+                document.execCommand('copy');
+                Botble.showSuccess(input.data('copied'));
+              } catch (error) {
+                console.error(error);
+              } finally {
+                textarea.remove();
+              }
+            case 15:
+            case "end":
+              return _context.stop();
+          }
+        }, _callee);
+      }));
+      function copyCommand() {
+        return _copyCommand.apply(this, arguments);
+      }
+      return copyCommand;
+    }()
+  }]);
+}();
+$(document).ready(function () {
+  new SettingManagement().init();
+});
+/******/ })()
+;

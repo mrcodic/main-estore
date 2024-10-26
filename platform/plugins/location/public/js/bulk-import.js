@@ -1,1 +1,277 @@
-(()=>{function e(e){return function(e){if(Array.isArray(e))return t(e)}(e)||function(e){if("undefined"!=typeof Symbol&&null!=e[Symbol.iterator]||null!=e["@@iterator"])return Array.from(e)}(e)||function(e,o){if(!e)return;if("string"==typeof e)return t(e,o);var r=Object.prototype.toString.call(e).slice(8,-1);"Object"===r&&e.constructor&&(r=e.constructor.name);if("Map"===r||"Set"===r)return Array.from(e);if("Arguments"===r||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(r))return t(e,o)}(e)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function t(e,t){(null==t||t>e.length)&&(t=e.length);for(var o=0,r=new Array(t);o<t;o++)r[o]=e[o];return r}$((function(){var t=$(".location-import"),o=t.find(".form-import-data"),r=new Dropzone(".location-dropzone",{url:t.data("upload-url"),method:"post",headers:{"X-CSRF-TOKEN":o.find("input[name=_token]").val()},previewTemplate:t.find("#preview-template").html(),autoProcessQueue:!1,chunking:!0,chunkSize:1048576,acceptedFiles:t.find(".location-dropzone").data("mimetypes"),maxFiles:1,maxfilesexceeded:function(e){this.removeFile(e)}});$(document).on("submit",".form-import-data",(function(a){a.preventDefault();var n=o.find("button[type=submit]"),l=[],i=function r(a){var i=arguments.length>1&&void 0!==arguments[1]?arguments[1]:0,d=arguments.length>2?arguments[2]:void 0;$.ajax({url:t.data("validate-url"),type:"POST",data:{file:a,offset:i,limit:d},beforeSend:function(){0===i&&(o.find(".status-text").text(n.data("validating-text")),n.prop("disabled",!0).addClass("button-loading"),$(".main-form-message").hide())},success:function(t){var i=t.error,d=t.message,u=t.data;if(i)Botble.showError(d);else if(u&&u.count>0)o.find(".status-text").text(d),r(a,u.offset),l=[].concat(e(l),e(u.failed));else if(n.prop("disabled",!1).removeClass("button-loading"),l.length>0){var c=$("#imported-listing"),f=$(".show-errors"),m=$("#failure-template").html(),p="";l.forEach((function(e){p+=m.replace("__row__",e.row).replace("__errors__",e.errors.join(", "))})),f.show(),$(".main-form-message").show(),c.show().html(p)}else s(a)},error:function(e){Botble.handleError(e)}})},s=function e(a){var l=arguments.length>1&&void 0!==arguments[1]?arguments[1]:0,i=arguments.length>2?arguments[2]:void 0;$.ajax({url:t.data("import-url"),type:"POST",data:{file:a,offset:l,limit:i},beforeSend:function(){0===l&&(o.find(".status-text").text(n.data("importing-text")),n.prop("disabled",!0).addClass("button-loading"))},success:function(l){var i=l.error,s=l.message,d=l.data;i?Botble.showError(s):d&&d.count>0?(e(a,d.offset),o.find(".status-text").text(s)):(Botble.showSuccess(s),n.prop("disabled",!1).removeClass("button-loading"),o.find(".status-text").hide(),Botble.unblockUI(o.find(".upload-form")),d.total_message&&(t.find(".main-form-message").show(),t.find(".success-message").show().text(d.total_message),r.removeAllFiles(!0)))},error:function(e){Botble.handleError(e),Botble.unblockUI(o.find(".upload-form"))}})};r.getQueuedFiles().length>0&&r.processQueue(),r.on("sending",(function(){Botble.blockUI({target:o.find(".upload-form"),iconOnly:!0,overlayColor:"none"}),o.find(".status-text").show().text(n.data("uploading-text")),n.prop("disabled",!0).addClass("button-loading")})),r.on("error",(function(e,t){Botble.showError(t.message)})),r.on("success",(function(e,t){var o=t.data;i(o.file_path)}))}));var a=$(".alert.alert-warning");a.length>0&&a.forEach((function(e){var t=localStorage.getItem("storage-alerts");if(t=t?JSON.parse(t):{},$(e).data("alert-id")){if(t[$(e).data("alert-id")])return void $(e).alert("close");$(e).removeClass("hidden")}})),a.on("closed.bs.alert",(function(e){var t=$(e.target).data("alert-id");if(t){var o=localStorage.getItem("storage-alerts");(o=o?JSON.parse(o):{})[t]=!0,localStorage.setItem("storage-alerts",JSON.stringify(o))}}));var n=!1;$(document).on("click",".download-template",(function(e){if(e.preventDefault(),!n){var t=$(e.currentTarget),o=t.data("extension"),r=t.html();$.ajax({url:t.data("url"),method:"POST",data:{extension:o},xhrFields:{responseType:"blob"},beforeSend:function(){t.html(t.data("downloading")),t.addClass("text-secondary"),n=!0},success:function(e){var o=document.createElement("a"),r=window.URL.createObjectURL(e);o.href=r,o.download=t.data("filename"),document.body.append(o),o.click(),o.remove(),window.URL.revokeObjectURL(r)},error:function(e){Botble.handleError(e)},complete:function(){setTimeout((function(){t.html(r),t.removeClass("text-secondary"),n=!1}),2e3)}})}}));var l=$("#available-remote-locations");if(l.length){var i=function(){$.ajax({url:l.data("url"),type:"GET",success:function(e){var t=e.error,o=e.message,r=e.data;t?Botble.showError(o):l.html(r)},error:function(e){Botble.handleError(e)}})};i(),$(document).on("click",".btn-import-location-data",(function(e){e.preventDefault(),$(".button-confirm-import").data("url",$(this).data("url")),$(".modal-confirm-import").modal("show")})),$(".button-confirm-import").on("click",(function(e){e.preventDefault();var t=$(e.currentTarget);t.addClass("button-loading");var o=t.data("url");$.ajax({url:o,type:"POST",success:function(e){var o=e.error,r=e.message;o?Botble.showError(r):(Botble.showSuccess(r),i()),t.closest(".modal").modal("hide"),t.removeClass("button-loading")},error:function(e){Botble.handleError(e),t.removeClass("button-loading")}})}))}}))})();
+/******/ (() => { // webpackBootstrap
+/*!**********************************************************************!*\
+  !*** ./platform/plugins/location/resources/assets/js/bulk-import.js ***!
+  \**********************************************************************/
+function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
+function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+$(function () {
+  var $locationImport = $('.location-import');
+  var $form = $locationImport.find('.form-import-data');
+  var dropzone = new Dropzone('.location-dropzone', {
+    url: $locationImport.data('upload-url'),
+    method: 'post',
+    headers: {
+      'X-CSRF-TOKEN': $form.find('input[name=_token]').val()
+    },
+    previewTemplate: $locationImport.find('#preview-template').html(),
+    autoProcessQueue: false,
+    chunking: true,
+    chunkSize: 1048576,
+    acceptedFiles: $locationImport.find('.location-dropzone').data('mimetypes'),
+    maxFiles: 1,
+    maxfilesexceeded: function maxfilesexceeded(file) {
+      this.removeFile(file);
+    }
+  });
+  $(document).on('submit', '.form-import-data', function (event) {
+    event.preventDefault();
+    var $button = $form.find('button[type=submit]');
+    var failedRows = [];
+    var _validateData = function validateData(file) {
+      var offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      var limit = arguments.length > 2 ? arguments[2] : undefined;
+      $.ajax({
+        url: $locationImport.data('validate-url'),
+        type: 'POST',
+        data: {
+          file: file,
+          offset: offset,
+          limit: limit
+        },
+        beforeSend: function beforeSend() {
+          if (offset === 0) {
+            $form.find('.status-text').text($button.data('validating-text'));
+            $button.prop('disabled', true).addClass('button-loading');
+            $('.main-form-message').hide();
+          }
+        },
+        success: function success(_ref) {
+          var error = _ref.error,
+            message = _ref.message,
+            data = _ref.data;
+          if (error) {
+            Botble.showError(message);
+            return;
+          }
+          if (data && data.count > 0) {
+            $form.find('.status-text').text(message);
+            _validateData(file, data.offset);
+            failedRows = [].concat(_toConsumableArray(failedRows), _toConsumableArray(data.failed));
+          } else {
+            $button.prop('disabled', false).removeClass('button-loading');
+            if (failedRows.length > 0) {
+              var $listing = $('#imported-listing');
+              var $show = $('.show-errors');
+              var failureTemplate = $('#failure-template').html();
+              var result = '';
+              failedRows.forEach(function (val) {
+                result += failureTemplate.replace('__row__', val.row).replace('__errors__', val.errors.join(', '));
+              });
+              $show.show();
+              $('.main-form-message').show();
+              $listing.show().html(result);
+            } else {
+              _importData(file);
+            }
+          }
+        },
+        error: function error(_error) {
+          Botble.handleError(_error);
+        }
+      });
+    };
+    var _importData = function importData(file) {
+      var offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      var limit = arguments.length > 2 ? arguments[2] : undefined;
+      $.ajax({
+        url: $locationImport.data('import-url'),
+        type: 'POST',
+        data: {
+          file: file,
+          offset: offset,
+          limit: limit
+        },
+        beforeSend: function beforeSend() {
+          if (offset === 0) {
+            $form.find('.status-text').text($button.data('importing-text'));
+            $button.prop('disabled', true).addClass('button-loading');
+          }
+        },
+        success: function success(_ref2) {
+          var error = _ref2.error,
+            message = _ref2.message,
+            data = _ref2.data;
+          if (error) {
+            Botble.showError(message);
+            return;
+          }
+          if (data && data.count > 0) {
+            _importData(file, data.offset);
+            $form.find('.status-text').text(message);
+          } else {
+            Botble.showSuccess(message);
+            $button.prop('disabled', false).removeClass('button-loading');
+            $form.find('.status-text').hide();
+            Botble.unblockUI($form.find('.upload-form'));
+            if (data.total_message) {
+              $locationImport.find('.main-form-message').show();
+              $locationImport.find('.success-message').show().text(data.total_message);
+              dropzone.removeAllFiles(true);
+            }
+          }
+        },
+        error: function error(_error2) {
+          Botble.handleError(_error2);
+          Botble.unblockUI($form.find('.upload-form'));
+        }
+      });
+    };
+    if (dropzone.getQueuedFiles().length > 0) {
+      dropzone.processQueue();
+    }
+    dropzone.on('sending', function () {
+      Botble.blockUI({
+        target: $form.find('.upload-form'),
+        iconOnly: true,
+        overlayColor: 'none'
+      });
+      $form.find('.status-text').show().text($button.data('uploading-text'));
+      $button.prop('disabled', true).addClass('button-loading');
+    });
+    dropzone.on('error', function (file, message) {
+      Botble.showError(message.message);
+    });
+    dropzone.on('success', function (file, _ref3) {
+      var data = _ref3.data;
+      _validateData(data.file_path);
+    });
+  });
+  var alertWarning = $('.alert.alert-warning');
+  if (alertWarning.length > 0) {
+    alertWarning.forEach(function (el) {
+      var storageAlert = localStorage.getItem('storage-alerts');
+      storageAlert = storageAlert ? JSON.parse(storageAlert) : {};
+      if ($(el).data('alert-id')) {
+        if (storageAlert[$(el).data('alert-id')]) {
+          $(el).alert('close');
+          return;
+        }
+        $(el).removeClass('hidden');
+      }
+    });
+  }
+  alertWarning.on('closed.bs.alert', function (el) {
+    var storage = $(el.target).data('alert-id');
+    if (storage) {
+      var storageAlert = localStorage.getItem('storage-alerts');
+      storageAlert = storageAlert ? JSON.parse(storageAlert) : {};
+      storageAlert[storage] = true;
+      localStorage.setItem('storage-alerts', JSON.stringify(storageAlert));
+    }
+  });
+  var isDownloadingTemplate = false;
+  $(document).on('click', '.download-template', function (event) {
+    event.preventDefault();
+    if (isDownloadingTemplate) {
+      return;
+    }
+    var $this = $(event.currentTarget);
+    var extension = $this.data('extension');
+    var $content = $this.html();
+    $.ajax({
+      url: $this.data('url'),
+      method: 'POST',
+      data: {
+        extension: extension
+      },
+      xhrFields: {
+        responseType: 'blob'
+      },
+      beforeSend: function beforeSend() {
+        $this.html($this.data('downloading'));
+        $this.addClass('text-secondary');
+        isDownloadingTemplate = true;
+      },
+      success: function success(data) {
+        var a = document.createElement('a');
+        var url = window.URL.createObjectURL(data);
+        a.href = url;
+        a.download = $this.data('filename');
+        document.body.append(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      },
+      error: function error(data) {
+        Botble.handleError(data);
+      },
+      complete: function complete() {
+        setTimeout(function () {
+          $this.html($content);
+          $this.removeClass('text-secondary');
+          isDownloadingTemplate = false;
+        }, 2000);
+      }
+    });
+  });
+  var $availableRemoteLocations = $('#available-remote-locations');
+  if ($availableRemoteLocations.length) {
+    var getRemoteLocations = function getRemoteLocations() {
+      $.ajax({
+        url: $availableRemoteLocations.data('url'),
+        type: 'GET',
+        success: function success(_ref4) {
+          var error = _ref4.error,
+            message = _ref4.message,
+            data = _ref4.data;
+          if (error) {
+            Botble.showError(message);
+          } else {
+            $availableRemoteLocations.html(data);
+          }
+        },
+        error: function error(_error3) {
+          Botble.handleError(_error3);
+        }
+      });
+    };
+    getRemoteLocations();
+    $(document).on('click', '.btn-import-location-data', function (event) {
+      event.preventDefault();
+      $('.button-confirm-import').data('url', $(this).data('url'));
+      $('.modal-confirm-import').modal('show');
+    });
+    $('.button-confirm-import').on('click', function (event) {
+      event.preventDefault();
+      var _self = $(event.currentTarget);
+      _self.addClass('button-loading');
+      var url = _self.data('url');
+      $.ajax({
+        url: url,
+        type: 'POST',
+        success: function success(_ref5) {
+          var error = _ref5.error,
+            message = _ref5.message;
+          if (error) {
+            Botble.showError(message);
+          } else {
+            Botble.showSuccess(message);
+            getRemoteLocations();
+          }
+          _self.closest('.modal').modal('hide');
+          _self.removeClass('button-loading');
+        },
+        error: function error(_error4) {
+          Botble.handleError(_error4);
+          _self.removeClass('button-loading');
+        }
+      });
+    });
+  }
+});
+/******/ })()
+;

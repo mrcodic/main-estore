@@ -1,1 +1,51 @@
-(()=>{"use strict";function t(e){return t="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},t(e)}function e(e,o){for(var n=0;n<o.length;n++){var r=o[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,(i=r.key,l=void 0,l=function(e,o){if("object"!==t(e)||null===e)return e;var n=e[Symbol.toPrimitive];if(void 0!==n){var r=n.call(e,o||"default");if("object"!==t(r))return r;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===o?String:Number)(e)}(i,"string"),"symbol"===t(l)?l:String(l)),r)}var i,l}var o=function(){function t(){!function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}(this,t)}var o,n,r;return o=t,(n=[{key:"init",value:function(){var t=document.getElementById("list-photo");t&&(imagesLoaded(t,(function(){new Masonry(t,{isOriginLeft:"rtl"!==$("body").prop("dir")})})),jQuery().lightGallery&&($(t).lightGallery({loop:!0,thumbnail:!0,fourceAutoply:!1,autoplay:!1,pager:!1,speed:300,scale:1,keypress:!0}),$(document).on("click",".lg-toogle-thumb",(function(){$(document).find(".lg-sub-html").toggleClass("inactive")}))))}}])&&e(o.prototype,n),r&&e(o,r),Object.defineProperty(o,"prototype",{writable:!1}),t}();$(document).ready((function(){(new o).init()}))})();
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/*!*****************************************************************!*\
+  !*** ./platform/plugins/gallery/resources/assets/js/gallery.js ***!
+  \*****************************************************************/
+
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+var GalleryManagement = /*#__PURE__*/function () {
+  function GalleryManagement() {
+    _classCallCheck(this, GalleryManagement);
+  }
+  return _createClass(GalleryManagement, [{
+    key: "init",
+    value: function init() {
+      var container = document.getElementById('list-photo');
+      if (container) {
+        imagesLoaded(container, function () {
+          new Masonry(container, {
+            isOriginLeft: $('body').prop('dir') !== 'rtl'
+          });
+        });
+        if (jQuery().lightGallery) {
+          $(container).lightGallery({
+            loop: true,
+            thumbnail: true,
+            fourceAutoply: false,
+            autoplay: false,
+            pager: false,
+            speed: 300,
+            scale: 1,
+            keypress: true
+          });
+          $(document).on('click', '.lg-toogle-thumb', function () {
+            $(document).find('.lg-sub-html').toggleClass('inactive');
+          });
+        }
+      }
+    }
+  }]);
+}();
+$(document).ready(function () {
+  new GalleryManagement().init();
+});
+/******/ })()
+;

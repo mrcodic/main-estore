@@ -293,7 +293,7 @@ class MainCheckout {
             return validated
         }
 
-        $(document).on('change', customerShippingAddressForm + ' .form-control', (event) => {
+        $(document).on('change', customerShippingAddressForm + ' .address_country', (event) => {
             setTimeout(function () {
                 let _self = $(event.currentTarget)
                 _self.closest('.form-group').find('.text-danger').remove()
@@ -336,7 +336,7 @@ class MainCheckout {
                         },
                     })
                 }
-            }, 1000)
+            }, 100)
         })
 
         $(document).on('change', customerBillingAddressForm + ' #billing_address_same_as_shipping_address', (event) => {

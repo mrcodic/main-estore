@@ -1,1 +1,126 @@
-$((function(){$(document).on("click",".btn-trigger-add-address",(function(e){e.preventDefault(),$("#add-address-modal").modal("show")})),$(document).on("click","#confirm-add-address-button",(function(e){e.preventDefault();var o=$(e.currentTarget);o.addClass("button-loading"),$.ajax({type:"POST",cache:!1,url:o.closest(".modal-content").find("form").prop("action"),data:o.closest(".modal-content").find("form").serialize(),success:function(e){e.error?Botble.showNotice("error",e.message):(Botble.showNotice("success",e.message),$("#add-address-modal").modal("hide"),o.closest(".modal-content").find("form").get(0).reset(),$("#address-histories").load($(".page-content form").prop("action")+" #address-histories > *")),o.removeClass("button-loading")},error:function(e){Botble.handleError(e),o.removeClass("button-loading")}})})),$(document).on("click",".btn-trigger-edit-address",(function(e){e.preventDefault();var o=$(e.currentTarget),t=$("#edit-address-modal"),r=t.find(".modal-loading-block"),a=$("#edit-address-modal .modal-body .modal-form-content");a.html(""),r.removeClass("d-none"),t.modal("show"),$.ajax({type:"GET",cache:!1,url:o.data("section"),success:function(e){e.error?Botble.showNotice("error",e.message):(r.addClass("d-none"),a.html(e)),o.removeClass("button-loading")},error:function(e){Botble.handleError(e),o.removeClass("button-loading")}})})),$(document).on("click","#confirm-edit-address-button",(function(e){e.preventDefault();var o=$(e.currentTarget);o.addClass("button-loading"),$.ajax({type:"POST",cache:!1,url:o.closest(".modal-content").find("form").prop("action"),data:o.closest(".modal-content").find("form").serialize(),success:function(e){e.error?Botble.showNotice("error",e.message):(Botble.showNotice("success",e.message),$("#edit-address-modal").modal("hide"),o.closest(".modal-content").find("form").get(0).reset(),$("#address-histories").load($(".page-content form").prop("action")+" #address-histories > *")),o.removeClass("button-loading")},error:function(e){Botble.handleError(e),o.removeClass("button-loading")}})})),$(document).on("click",".deleteDialog",(function(e){e.preventDefault();var o=$(e.currentTarget);$(".delete-crud-entry").data("section",o.data("section")),$(".modal-confirm-delete").modal("show")})),$(".delete-crud-entry").on("click",(function(e){e.preventDefault();var o=$(e.currentTarget);o.addClass("button-loading");var t=o.data("section");$.ajax({url:t,type:"POST",data:{_method:"DELETE"},success:function(e){if(e.error)Botble.showError(e.message);else{Botble.showSuccess(e.message);var t=$(".page-content form").prop("action");$("#address-histories").load(t+" #address-histories > *")}o.closest(".modal").modal("hide"),o.removeClass("button-loading")},error:function(e){Botble.handleError(e),o.removeClass("button-loading")}})}))}));
+/******/ (() => { // webpackBootstrap
+/*!*******************************************************************!*\
+  !*** ./platform/plugins/ecommerce/resources/assets/js/address.js ***!
+  \*******************************************************************/
+$(function () {
+  $(document).on('click', '.btn-trigger-add-address', function (e) {
+    e.preventDefault();
+    $('#add-address-modal').modal('show');
+  });
+  $(document).on('click', '#confirm-add-address-button', function (event) {
+    event.preventDefault();
+    var _self = $(event.currentTarget);
+    _self.addClass('button-loading');
+    $.ajax({
+      type: 'POST',
+      cache: false,
+      url: _self.closest('.modal-content').find('form').prop('action'),
+      data: _self.closest('.modal-content').find('form').serialize(),
+      success: function success(res) {
+        if (!res.error) {
+          Botble.showNotice('success', res.message);
+          $('#add-address-modal').modal('hide');
+          _self.closest('.modal-content').find('form').get(0).reset();
+          $('#address-histories').load($('.page-content form').prop('action') + ' #address-histories > *');
+        } else {
+          Botble.showNotice('error', res.message);
+        }
+        _self.removeClass('button-loading');
+      },
+      error: function error(res) {
+        Botble.handleError(res);
+        _self.removeClass('button-loading');
+      }
+    });
+  });
+  $(document).on('click', '.btn-trigger-edit-address', function (event) {
+    event.preventDefault();
+    var _self = $(event.currentTarget);
+    var $modal = $('#edit-address-modal');
+    var $modalLoading = $modal.find('.modal-loading-block');
+    var $modalFormContent = $('#edit-address-modal .modal-body .modal-form-content');
+    $modalFormContent.html('');
+    $modalLoading.removeClass('d-none');
+    $modal.modal('show');
+    $.ajax({
+      type: 'GET',
+      cache: false,
+      url: _self.data('section'),
+      success: function success(res) {
+        if (!res.error) {
+          $modalLoading.addClass('d-none');
+          $modalFormContent.html(res);
+        } else {
+          Botble.showNotice('error', res.message);
+        }
+        _self.removeClass('button-loading');
+      },
+      error: function error(res) {
+        Botble.handleError(res);
+        _self.removeClass('button-loading');
+      }
+    });
+  });
+  $(document).on('click', '#confirm-edit-address-button', function (event) {
+    event.preventDefault();
+    var _self = $(event.currentTarget);
+    _self.addClass('button-loading');
+    $.ajax({
+      type: 'POST',
+      cache: false,
+      url: _self.closest('.modal-content').find('form').prop('action'),
+      data: _self.closest('.modal-content').find('form').serialize(),
+      success: function success(res) {
+        if (!res.error) {
+          Botble.showNotice('success', res.message);
+          $('#edit-address-modal').modal('hide');
+          _self.closest('.modal-content').find('form').get(0).reset();
+          $('#address-histories').load($('.page-content form').prop('action') + ' #address-histories > *');
+        } else {
+          Botble.showNotice('error', res.message);
+        }
+        _self.removeClass('button-loading');
+      },
+      error: function error(res) {
+        Botble.handleError(res);
+        _self.removeClass('button-loading');
+      }
+    });
+  });
+  $(document).on('click', '.deleteDialog', function (event) {
+    event.preventDefault();
+    var _self = $(event.currentTarget);
+    $('.delete-crud-entry').data('section', _self.data('section'));
+    $('.modal-confirm-delete').modal('show');
+  });
+  $('.delete-crud-entry').on('click', function (event) {
+    event.preventDefault();
+    var _self = $(event.currentTarget);
+    _self.addClass('button-loading');
+    var deleteURL = _self.data('section');
+    $.ajax({
+      url: deleteURL,
+      type: 'POST',
+      data: {
+        _method: 'DELETE'
+      },
+      success: function success(data) {
+        if (data.error) {
+          Botble.showError(data.message);
+        } else {
+          Botble.showSuccess(data.message);
+          var formAction = $('.page-content form').prop('action');
+          $('#address-histories').load(formAction + ' #address-histories > *');
+        }
+        _self.closest('.modal').modal('hide');
+        _self.removeClass('button-loading');
+      },
+      error: function error(data) {
+        Botble.handleError(data);
+        _self.removeClass('button-loading');
+      }
+    });
+  });
+});
+/******/ })()
+;
