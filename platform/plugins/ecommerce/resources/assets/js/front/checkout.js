@@ -293,51 +293,55 @@ class MainCheckout {
             return validated
         }
 
-        $(document).on('change', customerShippingAddressForm + ' .address_country', (event) => {
-            setTimeout(function () {
-                let _self = $(event.currentTarget)
-                _self.closest('.form-group').find('.text-danger').remove()
-                let $form = _self.closest('form')
-
-                // console.log(
-                //     validatedFormFields() , $form.valid , $form.valid()
-                // );
-                if (validatedFormFields() && $form.valid && $form.valid()) {
-
-                    $.ajax({
-                        type: 'POST',
-                        cache: false,
-                        url: $('#save-shipping-information-url').val(),
-                        data: new FormData($form[0]),
-                        contentType: false,
-                        processData: false,
-                        success: (res) => {
-                            if (!res.error) {
-                                disablePaymentMethodsForm()
-
-                                let $wrapper = $(shippingForm)
-                                if ($wrapper.length) {
-                                    $('.shipping-info-loading').show()
-                                    $wrapper.load(window.location.href + ' ' + shippingForm + ' > *', () => {
-                                        $('.shipping-info-loading').hide()
-                                        const isChecked = $wrapper.find('input[name=shipping_method]:checked')
-                                        if (!isChecked) {
-                                            $wrapper.find('input[name=shipping_method]:first-child').trigger('click') // need to check again
-                                        }
-                                        enablePaymentMethodsForm()
-                                    })
-                                }
-
-                                loadShippingFeeAtTheSecondTime() // marketplace
-                            }
-                        },
-                        error: (res) => {
-                            MainCheckout.handleError(res, $form)
-                        },
-                    })
-                }
-            }, 100)
+        $(document).on('keyup change', customerShippingAddressForm + ' .form-control', (event) => {
+            setTimeout( getShipping(event) , 100)
         })
+
+
+        // $(document).on('change', '#address_country', (event) => {
+        //     setTimeout( getShipping(event, true) , 100)
+        // })
+
+        function getShipping(event ,skipValidation=false) {
+            let _self = $(event.currentTarget)
+            _self.closest('.form-group').find('.text-danger').remove()
+            let $form = _self.closest('form')
+
+            if (skipValidation || (validatedFormFields() && $form.valid && $form.valid())) {
+
+                $.ajax({
+                    type: 'POST',
+                    cache: false,
+                    url: $('#save-shipping-information-url').val(),
+                    data: new FormData($form[0]),
+                    contentType: false,
+                    processData: false,
+                    success: (res) => {
+                        if (!res.error) {
+                            disablePaymentMethodsForm()
+
+                            let $wrapper = $(shippingForm)
+                            if ($wrapper.length) {
+                                $('.shipping-info-loading').show()
+                                $wrapper.load(window.location.href + ' ' + shippingForm + ' > *', () => {
+                                    $('.shipping-info-loading').hide()
+                                    const isChecked = $wrapper.find('input[name=shipping_method]:checked')
+                                    if (!isChecked) {
+                                        $wrapper.find('input[name=shipping_method]:first-child').trigger('click') // need to check again
+                                    }
+                                    enablePaymentMethodsForm()
+                                })
+                            }
+
+                            loadShippingFeeAtTheSecondTime() // marketplace
+                        }
+                    },
+                    error: (res) => {
+                        MainCheckout.handleError(res, $form)
+                    },
+                })
+            }
+        }
 
         $(document).on('change', customerBillingAddressForm + ' #billing_address_same_as_shipping_address', (event) => {
             let _self = $(event.currentTarget)
