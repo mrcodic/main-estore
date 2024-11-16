@@ -34,7 +34,7 @@ class HandleShippingFeeService
         $this->useCache = true;
     }
 
-    public function execute(array $data, string|null $method = null, string|null $option = null): array
+    public function execute(array $data, string|null $method = null, string|null $option = null, bool $order = false): array
     {
         $result = [];
 
@@ -52,7 +52,13 @@ class HandleShippingFeeService
             $this->setCacheValue($cacheKey, $default);
         }
 
-        $result = apply_filters('handle_shipping_fee', $result, $data, $option);
+        $fnHandelerMethod = !$order ? 'handle_shipping_fee' : 'handle_shipping_order';
+        $result = apply_filters($fnHandelerMethod, $result, $data, $option);
+
+        if ($order) {
+            
+            return $result;
+        }
 
         if ($method) {
             $options = Arr::get($result, $method, []);

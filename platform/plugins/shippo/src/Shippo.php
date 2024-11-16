@@ -201,7 +201,9 @@ class Shippo
                 $this->log([__LINE__, 'Cannot detect address, ' . json_encode($params)]);
             } else {
                 $requestParams = $this->getRatesParams($params);
+                // dd($requestParams);
                 $response = $this->createShipment($requestParams);
+                // dd($response);
             }
         } else {
             $this->log([__LINE__, 'Found previously returned rates, so return them']);
@@ -255,6 +257,8 @@ class Shippo
             $this->log([__LINE__, 'Found previously returned rates, so return them']);
         }
 
+        // $response['rates'] = [0=>['servicelevel'=>['token'=>'fff','name'=>'hjh'],'object_id'=>'qweipoip','provider'=>'provider','provider_image_75'=>'provider_image_75']];
+        // dd($response);
         return $response;
     }
 

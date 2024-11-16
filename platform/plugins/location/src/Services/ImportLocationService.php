@@ -72,6 +72,7 @@ class ImportLocationService
                 'slug' => Str::slug($row['slug'] ?: $row['name']),
                 'order' => $row['order'],
                 'status' => $row['status'],
+                'gov_id' => $row['gov_id'],
             ]
         );
 
@@ -97,6 +98,7 @@ class ImportLocationService
                 'slug' => Str::slug($row['slug'] ?: $row['name']),
                 'order' => $row['order'],
                 'status' => $row['status'],
+                'district_id' => $row['district_id'],
             ],
         );
 

@@ -127,6 +127,8 @@ class PublicCheckoutController
             session()->put('selected_payment_method', $paymentMethod);
         }
 
+        $defaultShippingMethod = null;
+
         if (is_plugin_active('marketplace')) {
             [
                 $sessionCheckoutData,
@@ -594,8 +596,6 @@ class PublicCheckoutController
                 ->setMessage(__('Your shopping cart has digital product(s), so you need to sign in to continue!'));
         }
 
-        $this->createDelivery();
-
         if (EcommerceHelper::getMinimumOrderAmount() > Cart::instance('cart')->rawSubTotal()) {
             return $response
                 ->setError()
@@ -654,6 +654,7 @@ class PublicCheckoutController
         $shippingAmount = 0;
 
         $shippingData = [];
+        $shippingMethod = [];
         if ($isAvailableShipping) {
             $origin = EcommerceHelper::getOriginAddress();
             $shippingData = EcommerceHelper::getShippingData(
@@ -667,11 +668,13 @@ class PublicCheckoutController
             $shippingMethodData = $shippingFeeService->execute(
                 $shippingData,
                 $shippingMethodInput,
-                $request->input('shipping_option')
+                $request->input('shipping_option'),
+                true
             );
 
-            $shippingMethod = Arr::first($shippingMethodData);
-            if (! $shippingMethod) {
+            $shippingMethod = $shippingMethodData;
+
+            if ( $shippingMethod['status'] != 'SUCCESS' ) {
                 throw ValidationException::withMessages([
                     'shipping_method' => trans(
                         'validation.exists',
@@ -741,9 +744,10 @@ class PublicCheckoutController
                 'type' => $order->shipping_method,
                 'status' => ShippingStatusEnum::PENDING,
                 'price' => $order->shipping_amount,
-                'rate_id' => $shippingData ? Arr::get($shippingMethod, 'id', '') : '',
+                'rate_id' => $shippingData ? Arr::get($shippingMethod, 'object_id', '') : '',
                 'shipment_id' => $shippingData ? Arr::get($shippingMethod, 'shipment_id', '') : '',
-                'shipping_company_name' => $shippingData ? Arr::get($shippingMethod, 'company_name', '') : '',
+                'shipping_company_name' => $shippingData ? Arr::get($shippingMethod, 'rates.provider', '') : '',
+                'tracking_id' => $shippingData ? Arr::get($shippingMethod, 'tracking_id', '') : '',
             ]);
         }
 

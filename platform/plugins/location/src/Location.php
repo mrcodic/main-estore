@@ -99,6 +99,7 @@ class Location
 
     public function supportedModels(): array
     {
+        // dd($this->getSupported());
         return array_keys($this->getSupported());
     }
 

@@ -27,6 +27,7 @@ class ShipmentController extends BaseController
     {
         PageTitle::setTitle(trans('plugins/ecommerce::shipping.shipments'));
 
+        // dd($dataTable);
         return $dataTable->renderTable();
     }
 
@@ -86,6 +87,7 @@ class ShipmentController extends BaseController
 
     public function postUpdateCodStatus(int|string $id, UpdateShipmentCodStatusRequest $request, BaseHttpResponse $response)
     {
+        // dd('df');
         $shipment = Shipment::query()->findOrFail($id);
         $shipment->cod_status = $request->input('status');
         $shipment->save();

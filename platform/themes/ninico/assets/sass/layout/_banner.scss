@@ -98,6 +98,7 @@
         @media #{$xs} {
             inset-inline-start: 15px;
         }
+        display: none;
     }
 
     &__contentarea {
@@ -107,7 +108,8 @@
         inset-inline-end: 0;
         text-align: center;
         transform: translateY(-50%);
-
+        display: none;
+        
         & p {
             color: var(--tp-common-white);
             font-size: 18px;

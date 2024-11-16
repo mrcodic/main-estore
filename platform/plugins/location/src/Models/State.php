@@ -24,6 +24,7 @@ class State extends BaseModel
         'order',
         'is_default',
         'status',
+        'gov_id',
     ];
 
     protected $casts = [

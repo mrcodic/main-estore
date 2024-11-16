@@ -124,8 +124,8 @@ trait BostaTrait
 
         if ($response->failed()) {
             // dd($response->json());
-            // معالجة الخطأ هنا
-            // return response()->json(['error' => $response->body()], $response->status());
+             // معالجة الخطأ هنا
+            return response()->json(['error' => $response->body()], $response->status());
         }
 
         return $response->json();
