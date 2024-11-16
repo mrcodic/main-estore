@@ -322,7 +322,7 @@ class Bosta
                     $priceAfterVat += $rate['price'];
                 }
 
-                $params['price']            = (float)$params['COD'] + $priceAfterVat;
+                $params['price']            = $priceAfterVat;
                 $params['status']           = 'SUCCESS';
                 $params['object_created']   = Carbon::now()->toIso8601String();
                 $params['object_id']        = $response['data']['_id'];
