@@ -294,7 +294,7 @@ class MainCheckout {
         }
 
         $(document).on('keyup change', customerShippingAddressForm + ' .form-control', (event) => {
-            setTimeout( getShipping(event) , 100)
+            setTimeout( getShipping(event) , 1000)
         })
 
 

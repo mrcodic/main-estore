@@ -3,7 +3,7 @@ const glob = require('glob')
 
 mix.options({
     processCssUrls: false,
-    clearConsole: true,
+    clearConsole: false,
     terser: {
         extractComments: false,
     },
@@ -12,7 +12,7 @@ mix.options({
 
 mix.webpackConfig({
     stats: {
-        children: false,
+        children: true,
     },
     externals: {
         vue: 'Vue',
