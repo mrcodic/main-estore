@@ -293,7 +293,7 @@ class MainCheckout {
             return validated
         }
 
-        $(document).on('keyup change', customerShippingAddressForm + ' .form-control', (event) => {
+        $(document).on('change', customerShippingAddressForm + ' .form-control', (event) => {
             setTimeout( getShipping(event) , 1000)
         })
 
