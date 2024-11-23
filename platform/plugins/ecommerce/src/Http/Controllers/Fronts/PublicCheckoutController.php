@@ -674,11 +674,11 @@ class PublicCheckoutController
 
             $shippingMethod = $shippingMethodData;
 
-            if ( $shippingMethod['status'] != 'SUCCESS' ) {
+            if ( $shippingMethod['status'] != 'SUCCESS' || isset($shippingMethodData['error']) ? !$shippingMethodData['error']->success : false) {
                 throw ValidationException::withMessages([
                     'shipping_method' => trans(
                         'validation.exists',
-                        ['attribute' => trans('plugins/ecommerce::shipping.shipping_method')]
+                        ['attribute' => $shippingMethodData['error']->message]
                     ),
                 ]);
             }

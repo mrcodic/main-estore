@@ -179,7 +179,7 @@ class Bosta
         $prepareParams = $this->getPrepareParams($params);
         $newResponse = $this->getCacheOrNewRates($prepareParams, $order);
 
-        if (! Arr::get($newResponse, 'shipment.rates', []) && $suggest && Arr::get($prepareParams, 'extra.COD', [])) {
+        if (!$order &&(! Arr::get($newResponse, 'shipment.rates', []) && $suggest && Arr::get($prepareParams, 'extra.COD', []))) {
             $suggestParams = $prepareParams;
             Arr::forget($suggestParams, 'extra.COD');
 
@@ -262,21 +262,6 @@ class Bosta
                     $params['object_updated'] = Carbon::now()->toIso8601String();
                     $params['shipment_date'] = Carbon::now()->toIso8601String();
 
-                    // if ($response['rates']) {
-                    //     $rates = $this->ratesByCurrency($rates);
-
-                    //     if (! $rates) {
-                    //         $ratesResponse = Bosta_Shipment::get_shipping_rates([
-                    //             'id' => Arr::get($response, 'object_id'),
-                    //             'currency' => $this->currency,
-                    //         ])->__toArray(true);
-
-                    //         $rates = $this->ratesByCurrency($ratesResponse['results']);
-                    //     }
-
-                    //     Arr::set($response, 'rates', $rates);
-                    // }
-
                     $this->log([__LINE__, 'Cache shipment for the future']);
                     $this->setCacheValue($cacheKey, $response);
                 }
@@ -285,6 +270,7 @@ class Bosta
             }
         } else {
             $this->log([__LINE__, 'Found previously returned rates, so return them']);
+            $params['error'] = json_decode($ex->getMessage());
         }
 
         return $params;
@@ -301,21 +287,11 @@ class Bosta
         }
 
         $paramsDeleivery = $this->getDeleiveryParams($params);
-        // dd($paramsDeleivery);
-        // try {
+
+        try {
             $response = Bosta_Order::create($paramsDeleivery);
 
             if (Arr::get($response, 'success')) {
-                // $params['rates'] = Arr::get($response, 'rates', [[
-                //     'servicelevel'=>[
-                //         'token'=>$response['data']['_id'],
-                //         'name'=>"Bosta"
-                //     ],
-                //     'object_id'=>$response['data']['_id'],
-                //     'provider'=>'Bosta',
-                //     'provider_image_75'=>'https://docs.bosta.co/img/logo.svg',
-                //     'price'=> $params['cod'] ?? $params['COD']
-                // ]]);
                 $priceAfterVat = 0;
 
                 foreach ($params['rates'] as $rate) {
@@ -335,11 +311,10 @@ class Bosta
                 $this->log([__LINE__, 'Cache shipment for the future']);
                 $this->setCacheValue($cacheKey, $response);
             }
-        // } catch (Exception $ex) {
-        //     report($ex);
-        // }
-
-        // dd($params);
+        } catch (Exception $ex) {
+            report($ex);
+            $params['error'] = json_decode($ex->getMessage());
+        }
 
         return $params;
     }

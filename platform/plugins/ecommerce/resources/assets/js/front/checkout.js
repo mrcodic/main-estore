@@ -53,7 +53,7 @@ class MainCheckout {
                     if (data.status === 422) {
                         MainCheckout.handleValidationError(data.responseJSON.errors, $container)
                     }
-                } else if (typeof data.responseJSON.message !== 'undefined') {
+                } else if (typeof data.responseJSON.message !== 'undefined' ) {
                     MainCheckout.showError(data.responseJSON.message)
                 } else {
                     $.each(data.responseJSON, (index, el) => {
@@ -294,53 +294,110 @@ class MainCheckout {
         }
 
         $(document).on('change', customerShippingAddressForm + ' .form-control', (event) => {
-            setTimeout( getShipping(event) , 1000)
+            setTimeout(getShipping(event),1000)
         })
 
+        // var shipping_input_var = ""
+        // var shipping_input_change = false
+        var timeoutIds = []
 
-        // $(document).on('change', '#address_country', (event) => {
-        //     setTimeout( getShipping(event, true) , 100)
-        // })
+        $(document).on('keyup', customerShippingAddressForm + ' .form-control', (event) => {
+            var currentEvent = event;
 
-        function getShipping(event ,skipValidation=false) {
+            clearTimeout(timeoutIds)
+            timeoutIds = []
+
+            const timeoutId = setTimeout( ()=>{
+                $("#"+$(currentEvent.currentTarget).attr('id')).trigger('change');
+            },2000)
+
+            timeoutIds.push(timeoutId);
+            // if(!shipping_input_change  ) {
+            //     shipping_input_var = $(event.currentTarget).val()
+            //     shipping_input_change = true
+            // };
+
+            // const intervalInputShipping = setInterval(() => {
+            //     console.log(shipping_input_var ," => ", $(event.currentTarget).val());
+            //     shipping_input_Timeout ??clearTimeout(shipping_input_Timeout)
+
+            //     if(shipping_input_var != $(event.currentTarget).val()) {
+                // requestShippingInformation ?requestShippingInformation.abort():null;
+                // clearTimeout(timeoutIds)
+                // const timeoutId = setTimeout(getShipping(event ,false),3000)
+
+                // timeoutIds.push(timeoutId);
+            //         shipping_input_change = false
+            //         console.log('input =>intervalInputShipping');
+            //     }else{
+            //         clearInterval(intervalInputShipping)
+            //     }
+            // }, 3000);
+        })
+
+        function getShipping(event ,skipValidation=false, intervalInputShipping=null) {
             let _self = $(event.currentTarget)
             _self.closest('.form-group').find('.text-danger').remove()
             let $form = _self.closest('form')
 
             if (skipValidation || (validatedFormFields() && $form.valid && $form.valid())) {
+                // setTimeout(
+                    const requestShippingInformation = $.ajax({
+                        type: 'POST',
+                        cache: false,
+                        url: $('#save-shipping-information-url').val(),
+                        data: new FormData($form[0]),
+                        contentType: false,
+                        processData: false,
+                        beforeSend: ()=> {
+                            // var stopChecking = setInterval(() => {
+                            //     $(document).on('input', customerShippingAddressForm + ' .form-control', () => {
+                            //         requestShippingInformation.abort()
+                            //         clearInterval(stopChecking)
+                            //     })
+                            // }, 100);
+                        },
+                        success: (res) => {
+                            if (!res.error) {
+                                disablePaymentMethodsForm()
 
-                $.ajax({
-                    type: 'POST',
-                    cache: false,
-                    url: $('#save-shipping-information-url').val(),
-                    data: new FormData($form[0]),
-                    contentType: false,
-                    processData: false,
-                    success: (res) => {
-                        if (!res.error) {
-                            disablePaymentMethodsForm()
+                                let $wrapper = $(shippingForm)
+                                if ($wrapper.length) {
+                                    $('.shipping-info-loading').show()
 
-                            let $wrapper = $(shippingForm)
-                            if ($wrapper.length) {
-                                $('.shipping-info-loading').show()
-                                $wrapper.load(window.location.href + ' ' + shippingForm + ' > *', () => {
-                                    $('.shipping-info-loading').hide()
-                                    const isChecked = $wrapper.find('input[name=shipping_method]:checked')
-                                    if (!isChecked) {
-                                        $wrapper.find('input[name=shipping_method]:first-child').trigger('click') // need to check again
-                                    }
-                                    enablePaymentMethodsForm()
-                                })
+                                    $wrapper.load(window.location.href + ' ' + shippingForm + ' > *', () => {
+                                        $('.shipping-info-loading').hide();
+                                        const isChecked = $wrapper.find('input[name=shipping_method]:checked');
+                                        if (!isChecked) {
+                                            $wrapper.find('input[name=shipping_method]:first-child').trigger('click') // need to check again
+                                        }
+                                        enablePaymentMethodsForm();
+                                    });
+
+                                    const stopCheckingJqxhr = setInterval(() => {
+                                        $(document).on('input', customerShippingAddressForm + ' .form-control', () => {
+                                            $wrapper.off('load');
+                                            $('.shipping-info-loading').hide();
+                                        })
+                                        setTimeout(() => {clearInterval(stopCheckingJqxhr)},3000)
+                                    }, 100);
+                                }
+
+                                loadShippingFeeAtTheSecondTime() // marketplace
                             }
-
-                            loadShippingFeeAtTheSecondTime() // marketplace
+                        },
+                        error: (res) => {
+                            if(res.statusText != 'abort'){
+                                MainCheckout.handleError(res, $form)
+                            }
+                        },
+                        complete: () => {
+                            // clearInterval(stopChecking)
                         }
-                    },
-                    error: (res) => {
-                        MainCheckout.handleError(res, $form)
-                    },
-                })
+                    })
+                // , 2000)
             }
+            // clearInterval(intervalInputShipping)
         }
 
         $(document).on('change', customerBillingAddressForm + ' #billing_address_same_as_shipping_address', (event) => {
