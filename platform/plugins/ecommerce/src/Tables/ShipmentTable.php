@@ -88,6 +88,7 @@ class ShipmentTable extends TableAbstract
             ->select([
                 'id',
                 'order_id',
+                'tracking_id',
                 'user_id',
                 'price',
                 'status',
@@ -103,6 +104,7 @@ class ShipmentTable extends TableAbstract
         return [
             IdColumn::make(),
             Column::make('order_id')->title(trans('plugins/ecommerce::shipping.order_id')),
+            Column::make('tracking_id')->title(trans('plugins/ecommerce::shipping.tracking_id')),
             Column::make('user_id')->title(trans('plugins/ecommerce::order.customer_label'))->alignStart(),
             Column::formatted('price')
                 ->title(trans('plugins/ecommerce::shipping.shipping_amount')),

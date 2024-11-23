@@ -38,6 +38,9 @@
         >
         <script src="{{ asset('vendor/core/core/base/libraries/select2/js/select2.min.js') }}"></script>
         <script src="{{ asset('vendor/core/plugins/location/js/location.js') }}?v=3.2.0"></script>
+
+        {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script> --}}
     @endif
 
     {!! apply_filters('ecommerce_checkout_header', null) !!}

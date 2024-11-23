@@ -179,11 +179,13 @@
                 <div class="col-sm-6 col-12">
                     <div class="form-group mb-3 @error('address.state') has-error @enderror">
                         @if (EcommerceHelper::loadCountriesStatesCitiesFromPluginLocation())
-                            <div class="select--arrow form-input-wrapper">
+                            <div class="select--arrow form-input-wrapper search-container">
+                                {{-- <input type="text" id="search-input" placeholder="search.."> --}}
                                 <select
                                     class="form-control"
                                     id="address_state"
                                     name="address[state]"
+                                    data-using-select2="true"
                                     data-form-parent=".customer-address-payment-form"
                                     data-type="state"
                                     data-url="{{ route('ajax.states-by-country') }}"
@@ -242,7 +244,7 @@
                                     id="address_city"
                                     name="address[city]"
                                     data-type="city"
-                                    data-using-select2="false"
+                                    data-using-select2="true"
                                     data-url="{{ route('ajax.cities-by-state') }}"
                                     required
                                 >
@@ -300,7 +302,7 @@
             </div>
         @endif
 
-        
+
         @if (!auth('customer')->check())
             <div class="mb-3 form-group">
                 <input

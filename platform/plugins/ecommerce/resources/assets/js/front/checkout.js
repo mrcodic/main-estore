@@ -415,6 +415,21 @@ class MainCheckout {
 
             $('.tax-information-form-wrapper').toggle(_self.is(':checked'))
         })
+
+        // const searchInput = document.getElementById("search-input");
+        // const select = document.getElementById("address_state");
+
+        // searchInput.addEventListener("input", function() {
+        //     const filter = searchInput.value.toLowerCase();
+        //     const options = select.getElementsByTagName("option");
+
+        //     for (let i = 0; i < options.length; i++) {
+        //         const option = options[i];
+        //         const text = option.textContent || option.innerText;
+
+        //         option.style.display = text.toLowerCase().includes(filter) ? "" : "none";
+        //     }
+        // });
     }
 }
 

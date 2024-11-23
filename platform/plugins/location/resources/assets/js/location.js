@@ -109,6 +109,7 @@ class Location {
             }
         })
 
+
         function stateFieldUsingSelect2() {
             if (jQuery().select2) {
                 $(document)
@@ -153,7 +154,13 @@ class Location {
                             options.minimumResultsForSearch = -1
                         }
 
-                        $(input).select2(options)
+                        $(input).select2()
+                        // $(input).next('.select2').find('span').addClass('form-control');
+                        let $select2 = $(input).next('.select2').find('.select2-selection.select2-selection--single')
+                        $select2.removeClass('select2-selection').removeClass('select2-selection--single');
+                        $select2.find('.select2-selection__rendered').addClass('form-control');
+                        $select2.find('.select2-selection__rendered').css({'line-height': '40px'});
+
                     })
             }
         }

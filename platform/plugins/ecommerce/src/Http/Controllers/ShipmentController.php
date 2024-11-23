@@ -27,7 +27,6 @@ class ShipmentController extends BaseController
     {
         PageTitle::setTitle(trans('plugins/ecommerce::shipping.shipments'));
 
-        // dd($dataTable);
         return $dataTable->renderTable();
     }
 
