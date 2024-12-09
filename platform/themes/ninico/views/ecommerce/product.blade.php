@@ -39,16 +39,18 @@
                     >{{ $label->name }}</span>
                 @endforeach
                 @if (EcommerceHelper::isReviewEnabled())
-                    <div class="tpproduct-details__rating">
-                        <div class="product-rating-wrapper">
-                            <div
-                                class="product-rating"
-                                style="width: {{ $product->reviews_avg * 20 }}%"
-                            ></div>
+                    @if($product->reviews_count > 0)
+                        <div class="tpproduct-details__rating">
+                            <div class="product-rating-wrapper">
+                                <div
+                                    class="product-rating"
+                                    style="width: {{ $product->reviews_avg * 20 }}%"
+                                ></div>
+                            </div>
                         </div>
-                    </div>
-                    <a
-                        class="tpproduct-details__reviewers">{{ __(':count Reviews', ['count' => $product->reviews_count]) }}</a>
+                        <a
+                            class="tpproduct-details__reviewers">{{ __(':count Reviews', ['count' => $product->reviews_count]) }}</a>
+                    @endif
                 @endif
             </div>
             <div class="tpproduct-details__title-area d-flex align-items-center flex-wrap mb-5">
@@ -339,7 +341,8 @@
                             aria-labelledby="description-tab"
                         >
                             <div class="ck-content">
-                                {!! BaseHelper::clean($product->trans('content')) !!}
+                                {!! BaseHelper::clean($product->content) !!}
+                                {{-- {!! BaseHelper::clean($product->trans('content')) !!} --}}
                             </div>
                             @if (theme_option('facebook_comment_enabled_in_product', 'no') === 'yes')
                                 <div class="postbox__comment mb-65">

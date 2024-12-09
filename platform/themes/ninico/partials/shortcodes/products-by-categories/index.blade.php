@@ -11,11 +11,13 @@
                                     <img src="{{ RvMedia::getImageUrl($product->image, 'small') }}" alt="{{ $product->name() }}">
                                 </div>
                                 <div class="tpselectproduct__content">
-                                    <div class="tpproduct-details__rating">
-                                        <div class="product-rating-wrapper">
-                                            <div class="product-rating" style="width: {{ $product->reviews_avg_star * 20 }}%"></div>
+                                    @if($product->reviews_count > 0)
+                                        <div class="tpproduct-details__rating">
+                                            <div class="product-rating-wrapper">
+                                                <div class="product-rating" style="width: {{ $product->reviews_avg_star * 20 }}%"></div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endif
                                     <h4 class="tpselectproduct__title">
                                         <a href="{{ $product->url }}">{{ $product->name() }}</a>
                                     </h4>

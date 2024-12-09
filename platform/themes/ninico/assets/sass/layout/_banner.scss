@@ -95,10 +95,10 @@
         top: 50%;
         transform: translateY(-50%);
         inset-inline-start: 100px;
+        display: none;
         @media #{$xs} {
             inset-inline-start: 15px;
         }
-        display: none;
     }
 
     &__contentarea {
@@ -109,7 +109,7 @@
         text-align: center;
         transform: translateY(-50%);
         display: none;
-        
+
         & p {
             color: var(--tp-common-white);
             font-size: 18px;

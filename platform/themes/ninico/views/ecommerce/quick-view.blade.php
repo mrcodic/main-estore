@@ -22,18 +22,20 @@
                     >{{ $label->name }}</span>
                 @endforeach
                 @if (EcommerceHelper::isReviewEnabled())
-                    <div class="tpproduct-details__rating">
-                        <div class="product-rating-wrapper">
-                            <div
-                                class="product-rating"
-                                style="width: {{ $product->reviews_avg * 20 }}%"
-                            ></div>
+                    @if($product->reviews_count > 0)
+                        <div class="tpproduct-details__rating">
+                            <div class="product-rating-wrapper">
+                                <div
+                                    class="product-rating"
+                                    style="width: {{ $product->reviews_avg * 20 }}%"
+                                ></div>
+                            </div>
                         </div>
-                    </div>
-                    <a
-                        class="tpproduct-details__reviewers"
-                        href="{{ $product->url }}#reviews"
-                    >{{ __(':count Reviews', ['count' => $product->reviews_count]) }}</a>
+                        <a
+                            class="tpproduct-details__reviewers"
+                            href="{{ $product->url }}#reviews"
+                        >{{ __(':count Reviews', ['count' => $product->reviews_count]) }}</a>
+                    @endif
                 @endif
             </div>
             <div class="tpproduct-details__title-area d-flex align-items-center flex-wrap mb-5">

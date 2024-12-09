@@ -31,12 +31,14 @@
                     @endif
                 </div>
                 @if (EcommerceHelper::isReviewEnabled())
-                    <div class="tpproduct__rating mb-15">
-                        <div class="product-rating-wrapper">
-                            <div class="product-rating" style="width: {{ $product->reviews_avg * 20 }}%"></div>
+                    @if($product->reviews_count > 0)
+                        <div class="tpproduct__rating mb-15">
+                            <div class="product-rating-wrapper">
+                                <div class="product-rating" style="width: {{ $product->reviews_avg * 20 }}%"></div>
+                            </div>
+                            <span>({{ $product->reviews_count }})</span>
                         </div>
-                        <span>({{ $product->reviews_count }})</span>
-                    </div>
+                    @endif
                 @endif
                 <p>{!! BaseHelper::clean(Str::limit($product->trans('description'), 200)) !!}</p>
                 <div class="tpproduct__action">

@@ -14,12 +14,14 @@
                                 <a href="{{ $product->url }}" class="product-name">{!! BaseHelper::clean($product->name()) !!}</a>
                             </div>
                             @if (EcommerceHelper::isReviewEnabled() && $product->reviews_count)
-                                <div class="product-rating">
-                                    <div class="product-rating-wrapper">
-                                        <div class="product-rating" style="width: {{ $product->reviews_avg * 20 }}%"></div>
+                                @if($product->reviews_count > 0)
+                                    <div class="product-rating">
+                                        <div class="product-rating-wrapper">
+                                            <div class="product-rating" style="width: {{ $product->reviews_avg * 20 }}%"></div>
+                                        </div>
+                                        <a href="{{ $product->url }}#reviews">({{ number_format($product->reviews_count) }})</a>
                                     </div>
-                                    <a href="{{ $product->url }}#reviews">({{ number_format($product->reviews_count) }})</a>
-                                </div>
+                                @endif
                             @endif
                             <div class="product-price">
                                 <span>{{ format_price($product->front_sale_price_with_taxes) }}</span>

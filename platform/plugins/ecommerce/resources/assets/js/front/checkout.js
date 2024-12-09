@@ -336,66 +336,61 @@ class MainCheckout {
         })
 
         function getShipping(event ,skipValidation=false, intervalInputShipping=null) {
+
+            console.log(event);
+
             let _self = $(event.currentTarget)
             _self.closest('.form-group').find('.text-danger').remove()
             let $form = _self.closest('form')
 
             if (skipValidation || (validatedFormFields() && $form.valid && $form.valid())) {
-                // setTimeout(
-                    const requestShippingInformation = $.ajax({
-                        type: 'POST',
-                        cache: false,
-                        url: $('#save-shipping-information-url').val(),
-                        data: new FormData($form[0]),
-                        contentType: false,
-                        processData: false,
-                        beforeSend: ()=> {
-                            // var stopChecking = setInterval(() => {
-                            //     $(document).on('input', customerShippingAddressForm + ' .form-control', () => {
-                            //         requestShippingInformation.abort()
-                            //         clearInterval(stopChecking)
-                            //     })
-                            // }, 100);
-                        },
-                        success: (res) => {
-                            if (!res.error) {
-                                disablePaymentMethodsForm()
+                $.ajax({
+                    type: 'POST',
+                    cache: false,
+                    url: $('#save-shipping-information-url').val(),
+                    data: new FormData($form[0]),
+                    contentType: false,
+                    processData: false,
+                    success: (res) => {
+                        if (!res.error) {
+                            disablePaymentMethodsForm()
 
-                                let $wrapper = $(shippingForm)
-                                if ($wrapper.length) {
-                                    $('.shipping-info-loading').show()
+                            let $wrapper = $(shippingForm)
+                            if ($wrapper.length) {
+                                $('.shipping-info-loading').show()
 
-                                    $wrapper.load(window.location.href + ' ' + shippingForm + ' > *', () => {
-                                        $('.shipping-info-loading').hide();
-                                        const isChecked = $wrapper.find('input[name=shipping_method]:checked');
-                                        if (!isChecked) {
-                                            $wrapper.find('input[name=shipping_method]:first-child').trigger('click') // need to check again
-                                        }
-                                        enablePaymentMethodsForm();
-                                    });
+                                $wrapper.load(window.location.href + ' ' + shippingForm + ' > *', () => {
+                                    $('.shipping-info-loading').hide();
+                                    const isChecked = $wrapper.find('input[name=shipping_method]:checked');
+                                    if (!isChecked) {
+                                        $wrapper.find('input[name=shipping_method]:first-child').trigger('click') // need to check again
+                                    }
+                                    enablePaymentMethodsForm();
+                                });
 
-                                    const stopCheckingJqxhr = setInterval(() => {
-                                        $(document).on('input', customerShippingAddressForm + ' .form-control', () => {
-                                            $wrapper.off('load');
-                                            $('.shipping-info-loading').hide();
-                                        })
-                                        setTimeout(() => {clearInterval(stopCheckingJqxhr)},3000)
-                                    }, 100);
-                                }
 
-                                loadShippingFeeAtTheSecondTime() // marketplace
+                                // const stopCheckingJqxhr = setInterval(() => {
+                                //     $(document).on('change', customerShippingAddressForm + ' .form-control', () => {
+                                //         console.log("iam here customerShippingAddressForm")
+                                //         $wrapper.off('load');
+                                //         $('.shipping-info-loading').hide();
+                                //     })
+                                //     setTimeout(() => {clearInterval(stopCheckingJqxhr)},3000)
+                                // }, 1000);
                             }
-                        },
-                        error: (res) => {
-                            if(res.statusText != 'abort'){
-                                MainCheckout.handleError(res, $form)
-                            }
-                        },
-                        complete: () => {
-                            // clearInterval(stopChecking)
+
+                            loadShippingFeeAtTheSecondTime() // marketplace
                         }
-                    })
-                // , 2000)
+                    },
+                    error: (res) => {
+                        if(res.statusText != 'abort'){
+                            MainCheckout.handleError(res, $form)
+                        }
+                    },
+                    complete: () => {
+                        // clearInterval(stopChecking)
+                    }
+                })
             }
             // clearInterval(intervalInputShipping)
         }

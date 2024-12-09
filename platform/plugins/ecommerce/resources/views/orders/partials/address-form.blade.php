@@ -310,7 +310,7 @@
                     name="create_account"
                     type="checkbox"
                     value="1"
-                    @if (old('create_account') == 1) checked @endif
+                    {{-- @if (old('create_account') == 1) checked @endif --}}
                 >
                 <label
                     class="control-label"
@@ -328,7 +328,7 @@
                                     id="password"
                                     name="password"
                                     type="password"
-                                    autocomplete="password"
+                                    {{-- autocomplete="password" --}}
                                 >
                                 <label for="password">{{ __('Password') }}</label>
                             </div>
@@ -344,7 +344,7 @@
                                     id="password-confirm"
                                     name="password_confirmation"
                                     type="password"
-                                    autocomplete="password-confirmation"
+                                    {{-- autocomplete="password-confirmation" --}}
                                 >
                                 <label for="password-confirm">{{ __('Password confirmation') }}</label>
                             </div>

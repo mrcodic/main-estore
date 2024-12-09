@@ -801,6 +801,7 @@ button {
 .mainmenuarea {
     .logo {
         max-width: 100px;
+        order: 1;
     }
 
     .header-meta {
@@ -824,6 +825,8 @@ main {
 }
 
 .footer-logo {
+    width: 41%;
+    margin-right: auto;
     img {
         max-width: 100%;
     }
